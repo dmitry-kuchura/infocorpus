@@ -7,6 +7,12 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'site/index',
+    'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'baseUrl' => '',
@@ -40,6 +46,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'api/' => 'api/api/index',
+                'api/<action>' => 'api/api/<action>',
+                '<action>' => 'site/<action>',
             ],
         ],
     ],
