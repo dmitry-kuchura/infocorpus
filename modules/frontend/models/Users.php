@@ -30,9 +30,6 @@ use Yii;
 class Users extends UserInterface
 {
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -44,9 +41,6 @@ class Users extends UserInterface
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -93,5 +87,14 @@ class Users extends UserInterface
         $user->generateAuthKey();
 
         return $user->save() ? $user : null;
+    }
+
+    public function login()
+    {
+        $user = $this->validatePassword();
+
+        if ($this->setPassword($this->password) == $user->password) {
+            return Yii::$app->user->login($user, 3600*24*30);
+        }
     }
 }

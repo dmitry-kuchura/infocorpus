@@ -10,9 +10,6 @@ use yii\web\IdentityInterface;
 class UserInterface extends ActiveRecord implements IdentityInterface
 {
 
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'users';
@@ -45,7 +42,7 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     public function setPassword($password)
@@ -60,11 +57,6 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public function validatePassword()
     {
-        /* @var $user Users */
-        $user = static::findOne(['username' => $this->username]);
-
-        if ($this->setPassword($this->password) == $user->password) {
-            return Yii::$app->user->login($user, 3600*24*30);
-        }
+        return static::findOne(['username' => $this->username]);
     }
 }
