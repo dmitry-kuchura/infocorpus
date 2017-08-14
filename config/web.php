@@ -10,7 +10,10 @@ $config = [
     'defaultRoute' => 'site/index',
     'modules' => [
         'api' => [
-            'class' => 'app\modules\api\Module',
+            'class' => 'app\modules\api\Api',
+        ],
+        'frontend' => [
+            'class' => 'app\modules\frontend\Frontend',
         ],
     ],
     'components' => [
@@ -22,7 +25,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\frontend\models\UserInterface',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -47,7 +50,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'api/' => 'api/api/index',
+                'frontend/' => 'frontend/frontend/index',
                 'api/<action>' => 'api/api/<action>',
+                'frontend/<action>' => 'frontend/frontend/<action>',
                 '<action>' => 'site/<action>',
             ],
         ],

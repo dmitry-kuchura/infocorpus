@@ -23,16 +23,12 @@ class ApiController extends Controller
      */
     public function beforeAction($action)
     {
-        // Standard before action start
         $result = parent::beforeAction($action);
 
-        // Data
         $this->action = $action->id;
 
-        // Set ajax response format to JSON as default
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        // Send result of standard before action in the end
         return $result;
 
     }
@@ -45,5 +41,13 @@ class ApiController extends Controller
     {
         Logger::saveLog(Yii::$app->request->get(), $this->action);
         return ['success' => true];
+    }
+
+    /**
+     *
+     */
+    public function actionLogin()
+    {
+
     }
 }

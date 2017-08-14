@@ -5,7 +5,7 @@ namespace app\modules\api;
 /**
  * api module definition class
  */
-class Module extends \yii\base\Module
+class Api extends \yii\base\Module
 {
     /**
      * @inheritdoc
