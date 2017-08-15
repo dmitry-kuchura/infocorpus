@@ -23,18 +23,18 @@ use Yii;
  * @property string $auth_key
  * @property string $hash
  * @property integer $v
+ * @property integer $role
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  */
 class Users extends UserInterface
 {
-
     public function rules()
     {
         return [
             [['client_id', 'uid', 'email', 'username', 'password', 'first_name', 'last_name', 'short_name'], 'required'],
-            [['client_id', 'v', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['client_id', 'v', 'status', 'created_at', 'updated_at', 'role'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['uid', 'username'], 'string', 'max' => 50],
             [['email', 'password', 'first_name', 'last_name', 'short_name', 'token', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],

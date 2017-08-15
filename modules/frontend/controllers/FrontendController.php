@@ -48,6 +48,7 @@ class FrontendController extends Controller
      * Login to FRONTEND
      *
      * @return array
+     * @throws Exception
      */
     public function actionAuth()
     {
@@ -62,7 +63,9 @@ class FrontendController extends Controller
             if ($model->login()) {
                 return [
                     'auth_key' => Yii::$app->user->identity->getAuthKey(),
-                    'success' => true
+                    'login' => Yii::$app->user->identity->username,
+                    'role' => Yii::$app->user->identity->role,
+                    'success' => true,
                 ];
             } else {
                 throw new Exception("Incorrect password!");
