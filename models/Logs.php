@@ -14,6 +14,7 @@ use Yii;
  * @property string $request
  * @property string $response
  * @property string $action
+ * @property string $agent
  */
 class Logs extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class Logs extends \yii\db\ActiveRecord
         return [
             [['created_at', 'updated_at', 'ip', 'request', 'action'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
-            [['response'], 'string'],
+            [['response', 'agent'], 'string'],
             [['ip'], 'string', 'max' => 39],
             [['request', 'action'], 'string', 'max' => 150],
         ];

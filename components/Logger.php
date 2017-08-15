@@ -13,8 +13,9 @@ class Logger
      *
      * @param $request
      * @param $action
+     * @param $result
      */
-    public static function saveLog($request, $action)
+    public static function saveLog($request, $action, $result)
     {
         $ip = Yii::$app->request->getUserIP();
         $agent = Yii::$app->request->getUserAgent();
@@ -26,6 +27,8 @@ class Logger
         $model->request = json_encode($request);
         $model->created_at = time();
         $model->updated_at = time();
+        $model->agent = $agent;
+        $model->response = implode(' ; ', $result);
 
         if ($model->validate()) {
             $model->save();
