@@ -32,7 +32,7 @@ class Logs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at', 'ip', 'request', 'action'], 'required'],
+            [['created_at', 'updated_at', 'ip', 'action'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
             [['response', 'agent'], 'string'],
             [['ip'], 'string', 'max' => 39],
