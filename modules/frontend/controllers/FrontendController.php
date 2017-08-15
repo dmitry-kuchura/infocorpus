@@ -116,4 +116,18 @@ class FrontendController extends Controller
             $model->signUp();
         }
     }
+
+    public function actionCheckAuth()
+    {
+        if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
+            return [
+                'auth_key' => Yii::$app->user->identity->getAuthKey(),
+                'login' => Yii::$app->user->identity->username,
+                'role' => Yii::$app->user->identity->role,
+                'success' => true,
+            ];
+        } else {
+            return ['success' => false];
+        }
+    }
 }
