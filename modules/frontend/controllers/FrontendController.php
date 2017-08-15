@@ -135,6 +135,12 @@ class FrontendController extends Controller
         }
     }
 
+    /**
+     * Reset password
+     *
+     * @return array
+     * @throws Exception
+     */
     public function actionResetPassword()
     {
         if (Yii::$app->request->get('email')) {
@@ -148,6 +154,11 @@ class FrontendController extends Controller
         }
     }
 
+    /**
+     * Markers for index map
+     *
+     * @return array
+     */
     public function actionMap()
     {
         return [
