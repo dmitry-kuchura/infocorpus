@@ -5,9 +5,20 @@ namespace app\modules\frontend\controllers;
 use Yii;
 use app\modules\frontend\models\Users;
 use yii\web\Controller;
+use yii\web\Response;
 
 class FrontendController extends Controller
 {
+
+    public function beforeAction($action)
+    {
+        $result = parent::beforeAction($action);
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return $result;
+    }
+
     public function actionAuth()
     {
         if (Yii::$app->request->get()) {
@@ -19,10 +30,11 @@ class FrontendController extends Controller
             $model->username = $data['login'];
             $model->password = $data['password'];
 
-            $model->validatePassword();
-
-            var_dump(Yii::$app->user->id);
-            die;
+            if ($model->login()) {
+                return ['auth' => Yii::$app->user->identity->getAuthKey()];
+            } else {
+                return ['auth' => false];
+            }
         }
 
     }

@@ -91,10 +91,13 @@ class Users extends UserInterface
 
     public function login()
     {
-        $user = $this->validatePassword();
+        $user = $this->getUser();
 
-        if ($this->setPassword($this->password) == $user->password) {
-            return Yii::$app->user->login($user, 3600*24*30);
+        if ($this->validatePassword()) {
+            Yii::$app->user->login($user, 3600 * 24 * 30);
+            
+            return Yii::$app->user->identity->auth_key;
         }
+
     }
 }

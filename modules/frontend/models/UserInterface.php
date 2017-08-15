@@ -35,6 +35,11 @@ class UserInterface extends ActiveRecord implements IdentityInterface
         return $this->id;
     }
 
+    public function getUser()
+    {
+        return static::findOne(['username' => $this->username]);
+    }
+
     public function getAuthKey()
     {
         return $this->auth_key;
@@ -57,6 +62,10 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public function validatePassword()
     {
-        return static::findOne(['username' => $this->username]);
+        $data = static::findOne(['username' => $this->username]);
+
+        if ($data->password === md5($this->password)) {
+            return true;
+        }
     }
 }
