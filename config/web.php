@@ -49,7 +49,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'api/<action>' => 'frontend/frontend/<action>',
+                'frontend/<action>' => 'frontend/frontend/<action>',
+                'api/<action>' => 'api/api/<action>',
                 '<action>' => 'site/<action>',
             ],
         ],

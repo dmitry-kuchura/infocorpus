@@ -21,21 +21,27 @@ class FrontendController extends Controller
 
     public function actionAuth()
     {
-        if (Yii::$app->request->get()) {
 
-            $data = Yii::$app->request->get();
+        if (Yii::$app->user->isGuest) {
+            if (Yii::$app->request->get()) {
 
-            $model = new Users();
+                $data = Yii::$app->request->get();
 
-            $model->username = $data['login'];
-            $model->password = $data['password'];
+                $model = new Users();
 
-            if ($model->login()) {
-                return ['auth' => Yii::$app->user->identity->getAuthKey()];
-            } else {
-                return ['auth' => false];
+                $model->username = $data['login'];
+                $model->password = $data['password'];
+
+                if ($model->login()) {
+                    return ['auth_key' => Yii::$app->user->identity->getAuthKey()];
+                } else {
+                    return ['auth' => false];
+                }
             }
+        } else {
+            return ['auth' => 'Already auth!', 'auth_key' => Yii::$app->user->identity->getAuthKey()];
         }
+
 
     }
 
