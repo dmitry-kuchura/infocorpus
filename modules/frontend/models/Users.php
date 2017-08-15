@@ -115,8 +115,6 @@ class Users extends UserInterface
 
         if ($result->validate()) {
 //            $result->save();
-
-
             Yii::$app->mailer->compose()
                 ->setFrom('kuchura.d.wezom@domain.com')
                 ->setTo($email)
