@@ -3,12 +3,11 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
-use yii\httpclient\Exception;
 use yii\web\Response;
 use yii\web\Controller;
+use yii\httpclient\Exception;
 use app\components\Logger;
 use app\modules\frontend\models\Users;
-use yii\web\NotFoundHttpException;
 
 class FrontendController extends Controller
 {
@@ -117,6 +116,11 @@ class FrontendController extends Controller
         }
     }
 
+    /**
+     * Check AuthKey
+     *
+     * @return array
+     */
     public function actionCheckAuth()
     {
         if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
@@ -128,6 +132,19 @@ class FrontendController extends Controller
             ];
         } else {
             return ['success' => false];
+        }
+    }
+
+    public function actionResetPassword()
+    {
+        if (Yii::$app->request->get('email')) {
+            if (Users::resetPassword(Yii::$app->request->get('email'))) {
+                return ['success' => true];
+            } else {
+                return ['success' => false];
+            }
+        } else {
+            throw new Exception('No email found!');
         }
     }
 }

@@ -95,9 +95,38 @@ class Users extends UserInterface
 
         if ($this->validatePassword()) {
             Yii::$app->user->login($user, 3600 * 24 * 30);
-            
+
             return Yii::$app->user->identity->auth_key;
         }
 
+    }
+
+    public static function resetPassword($email)
+    {
+        $result = self::findByEmail($email);
+
+        $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
+        $password = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
+
+        $result->password = md5($password);
+        $result->hash = Yii::$app->security->generatePasswordHash($result->email . $password);
+        $result->updated_at = time();
+        $result->generateAuthKey();
+
+        if ($result->validate()) {
+//            $result->save();
+
+
+            Yii::$app->mailer->compose()
+                ->setFrom('kuchura.d.wezom@domain.com')
+                ->setTo($email)
+                ->setSubject('Смена пароля')
+                ->setHtmlBody('Ваш новый пароль: <b>' . $password . '</b>')
+                ->send();
+
+            return $password;
+        }
+
+        return false;
     }
 }
