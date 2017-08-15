@@ -3,10 +3,12 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\httpclient\Exception;
 use yii\web\Response;
 use yii\web\Controller;
 use app\components\Logger;
 use app\modules\frontend\models\Users;
+use yii\web\NotFoundHttpException;
 
 class FrontendController extends Controller
 {
@@ -63,13 +65,14 @@ class FrontendController extends Controller
                     'success' => true
                 ];
             } else {
-                return [
-                    'auth' => 'Incorrect password!',
-                    'success' => false
-                ];
+                throw new Exception("Incorrect password!");
             }
         } else {
-            return ['auth' => 'Already auth!', 'auth_key' => Yii::$app->user->identity->getAuthKey()];
+            return [
+                'auth' => 'Already auth!',
+                'success' => false,
+                'auth_key' => Yii::$app->user->identity->getAuthKey()
+            ];
         }
     }
 
@@ -83,7 +86,8 @@ class FrontendController extends Controller
         Yii::$app->user->logout();
 
         return [
-            'auth' => 'Go home!'
+            'auth' => 'Go home!',
+            'success' => true
         ];
     }
 

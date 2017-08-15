@@ -24,7 +24,7 @@ class Logger
 
         $model->ip = $ip;
         $model->action = $action;
-        $model->request = json_encode($request);
+        $model->request = $request ? json_encode($request) : null;
         $model->created_at = time();
         $model->updated_at = time();
         $model->agent = $agent;
