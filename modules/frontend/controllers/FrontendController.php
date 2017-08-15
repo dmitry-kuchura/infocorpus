@@ -162,57 +162,60 @@ class FrontendController extends Controller
     public function actionMap()
     {
         return [
-            'groups' => [
-                0 => [
-                    'longitude' => 32.642713,
-                    'latitude' => 46.671288,
-                    'name' => 'Белка',
-                    'status' => 2
+            'success' => true,
+            'result' => [
+                'groups' => [
+                    0 => [
+                        'longitude' => 32.642713,
+                        'latitude' => 46.671288,
+                        'name' => 'Белка',
+                        'status' => 2
+                    ],
+                    1 => [
+                        'longitude' => 32.603832,
+                        'latitude' => 46.655619,
+                        'name' => 'Мангуст',
+                        'status' => 1
+                    ],
+                    2 => [
+                        'longitude' => 32.618337,
+                        'latitude' => 46.632992,
+                        'name' => 'Удав',
+                        'status' => 2
+                    ],
+                    3 => [
+                        'longitude' => 32.564006,
+                        'latitude' => 46.652261,
+                        'name' => 'Писец',
+                        'status' => 3
+                    ],
+                    4 => [
+                        'longitude' => 32.631297,
+                        'latitude' => 46.646193,
+                        'name' => 'Енот',
+                        'status' => 1
+                    ],
                 ],
-                1 => [
-                    'longitude' => 32.603832,
-                    'latitude' => 46.655619,
-                    'name' => 'Мангуст',
-                    'status' => 1
-                ],
-                2 => [
-                    'longitude' => 32.618337,
-                    'latitude' => 46.632992,
-                    'name' => 'Удав',
-                    'status' => 2
-                ],
-                3 => [
-                    'longitude' => 32.564006,
-                    'latitude' => 46.652261,
-                    'name' => 'Писец',
-                    'status' => 3
-                ],
-                4 => [
-                    'longitude' => 32.631297,
-                    'latitude' => 46.646193,
-                    'name' => 'Енот',
-                    'status' => 1
-                ],
-            ],
-            'alerts' => [
-                0 => [
-                    'longitude' => 32.630632,
-                    'latitude' => 46.638230,
-                    'location' => 'м. Херсон, вул. Артилерійська, 14',
-                    'phone' => '+38(099)999-99-99'
-                ],
-                1 => [
-                    'longitude' => 32.612513,
-                    'latitude' => 46.637316,
-                    'location' => 'м. Херсон, вул. Ярослава Мудрого, 12',
-                    'phone' => '+38(099)999-99-99'
-                ],
-                2 => [
-                    'longitude' => 32.620988,
-                    'latitude' => 46.628622,
-                    'location' => 'м. Херсон, просп. Ушакова, 1А',
-                    'phone' => '+38(099)999-99-99'
-                ],
+                'alerts' => [
+                    0 => [
+                        'longitude' => 32.630632,
+                        'latitude' => 46.638230,
+                        'location' => 'м. Херсон, вул. Артилерійська, 14',
+                        'phone' => '+38(099)999-99-99'
+                    ],
+                    1 => [
+                        'longitude' => 32.612513,
+                        'latitude' => 46.637316,
+                        'location' => 'м. Херсон, вул. Ярослава Мудрого, 12',
+                        'phone' => '+38(099)999-99-99'
+                    ],
+                    2 => [
+                        'longitude' => 32.620988,
+                        'latitude' => 46.628622,
+                        'location' => 'м. Херсон, просп. Ушакова, 1А',
+                        'phone' => '+38(099)999-99-99'
+                    ],
+                ]
             ]
         ];
     }
