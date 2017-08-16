@@ -4,7 +4,7 @@ namespace app\modules\frontend\controllers;
 
 use Yii;
 use yii\web\Response;
-use yii\web\Controller;
+use yii\rest\Controller;
 use yii\httpclient\Exception;
 use app\components\Logger;
 use app\modules\frontend\models\Users;
@@ -19,6 +19,8 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
+        Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
+
         Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
@@ -124,9 +126,9 @@ class FrontendController extends Controller
      */
     public function actionCheckAuth()
     {
-        if (Yii::$app->request->get('key') == Users::findByAuthKey(Yii::$app->request->get('key'))) {
+        if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
             return [
-                'auth_key' => Yii::$app->request->get('key'),
+                'auth_key' => Yii::$app->user->identity->getAuthKey(),
                 'login' => Yii::$app->user->identity->username,
                 'role' => Yii::$app->user->identity->role,
                 'success' => true,

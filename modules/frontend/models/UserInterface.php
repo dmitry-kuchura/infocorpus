@@ -22,7 +22,10 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['token' => $token]);
+        $user = static::findOne(['auth_key' => $token]);
+        Yii::$app->user->login($user, 3600 * 24 * 30);
+
+        return true;
     }
 
     public static function findByUsername($username)
@@ -63,17 +66,6 @@ class UserInterface extends ActiveRecord implements IdentityInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-
-    public static function findByAuthKey($key)
-    {
-        $result =  static::findOne(['auth_key' => $key]);
-
-        if ($result) {
-            return $result->auth_key;
-        } else {
-            return Yii::$app->security->generateRandomString();
-        }
     }
 
     public function validatePassword()
