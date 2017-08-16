@@ -4,7 +4,7 @@ namespace app\modules\frontend\controllers;
 
 use Yii;
 use yii\web\Response;
-use yii\rest\Controller;
+use yii\web\Controller;
 use yii\httpclient\Exception;
 use app\components\Logger;
 use app\modules\frontend\models\Users;
