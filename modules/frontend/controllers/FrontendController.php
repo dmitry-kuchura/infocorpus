@@ -126,7 +126,7 @@ class FrontendController extends Controller
     {
         if (Yii::$app->request->get('key') == Users::findByAuthKey(Yii::$app->request->get('key'))) {
             return [
-                'auth_key' => Yii::$app->user->identity->getAuthKey(),
+                'auth_key' => Yii::$app->request->get('key'),
                 'login' => Yii::$app->user->identity->username,
                 'role' => Yii::$app->user->identity->role,
                 'success' => true,
