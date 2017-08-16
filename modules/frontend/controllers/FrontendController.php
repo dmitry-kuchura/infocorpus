@@ -19,7 +19,11 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
+
+        if ($action->id != 'auth' && $action->id != 'logout') {
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
+            Yii::$app->user->login($user, 3600 * 24 * 30);
+        }
 
         Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
 

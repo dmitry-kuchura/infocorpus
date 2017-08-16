@@ -22,10 +22,7 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $user = static::findOne(['auth_key' => $token]);
-        Yii::$app->user->login($user, 3600 * 24 * 30);
-
-        return true;
+        return static::findOne(['auth_key' => $token]);
     }
 
     public static function findByUsername($username)
