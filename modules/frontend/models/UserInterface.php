@@ -65,6 +65,11 @@ class UserInterface extends ActiveRecord implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
+    public static function findByAuthKey($key)
+    {
+        return static::findOne(['auth_key' => $key])->auth_key;
+    }
+
     public function validatePassword()
     {
         $data = static::findOne(['username' => $this->username]);

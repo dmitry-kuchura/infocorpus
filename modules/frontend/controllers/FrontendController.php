@@ -124,7 +124,7 @@ class FrontendController extends Controller
      */
     public function actionCheckAuth()
     {
-        if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
+        if (Yii::$app->request->get('key') == Users::findByAuthKey(Yii::$app->request->get('key'))) {
             return [
                 'auth_key' => Yii::$app->user->identity->getAuthKey(),
                 'login' => Yii::$app->user->identity->username,
