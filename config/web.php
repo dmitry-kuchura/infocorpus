@@ -27,7 +27,6 @@ $config = [
         'user' => [
             'identityClass' => 'app\modules\frontend\models\UserInterface',
             'enableAutoLogin' => true,
-            'enableSession' => false,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
