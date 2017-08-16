@@ -3,14 +3,44 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 use yii\web\Response;
 use yii\web\Controller;
+use yii\filters\Cors;
 use yii\httpclient\Exception;
 use app\components\Logger;
 use app\modules\frontend\models\Users;
 
 class FrontendController extends Controller
 {
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['corsFilter'] = [
+            'class' => Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST'],
+                'Access-Control-Request-Headers' => ['*'],
+            ],
+        ];
+
+        $behaviors['authenticator'] = [
+            'class' => CompositeAuth::className(),
+            'except' => ['index', 'view', 'options'],
+            'authMethods' => [
+                HttpBasicAuth::className(),
+                HttpBearerAuth::className(),
+                QueryParamAuth::className(),
+            ],
+        ];
+
+        return $behaviors;
+    }
 
     /**
      * Application/JSON response
@@ -20,6 +50,8 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
+        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
+
         $result = parent::beforeAction($action);
 
         Yii::$app->response->format = Response::FORMAT_JSON;
