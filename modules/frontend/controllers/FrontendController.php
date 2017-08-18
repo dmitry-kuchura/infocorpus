@@ -45,7 +45,11 @@ class FrontendController extends Controller
     {
         $result = parent::afterAction($action, $result);
 
-        Logger::saveLog(Yii::$app->request->get(), $action->id, $result);
+        try {
+            Logger::saveLog(Yii::$app->request->get(), $action->id, $result);
+        } catch (Exception $e) {
+            throw new Exception('Log no save');
+        }
 
         return $result;
     }
