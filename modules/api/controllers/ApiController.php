@@ -87,7 +87,7 @@ class ApiController extends Controller
     {
         if (Yii::$app->request->post()) {
 
-            $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization_token'));
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
             if (!$user) {
                 return [
@@ -148,7 +148,7 @@ class ApiController extends Controller
      */
     public function actionAlert()
     {
-        $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization_token'));
+        $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
         if (Yii::$app->request->post()) {
 
@@ -203,13 +203,7 @@ class ApiController extends Controller
      */
     public function actionStatus()
     {
-        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization_token'));
-
-        var_dump(Yii::$app->request->headers->get('Authorization_token'));
-        var_dump(Yii::$app->request->headers);
-        var_dump($car);
-        die;
-
+        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
 
         if (Yii::$app->request->post()) {
             $data = Yii::$app->request->post();
@@ -224,7 +218,7 @@ class ApiController extends Controller
                 ];
             }
 
-            $model = Cars::findOne(['token' => Yii::$app->request->headers->get('Authorization_token')]);
+            $model = Cars::findOne(['token' => Yii::$app->request->headers->get('Authorization-token')]);
 
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
