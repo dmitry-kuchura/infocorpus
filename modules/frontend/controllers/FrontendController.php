@@ -7,7 +7,7 @@ use yii\web\Response;
 use yii\rest\Controller;
 use yii\httpclient\Exception;
 use app\components\Logger;
-use app\modules\frontend\models\Users;
+use app\models\Users;
 
 class FrontendController extends Controller
 {

@@ -26,7 +26,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\modules\frontend\models\UserInterface',
+            'identityClass' => 'app\models\UserInterface',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -35,14 +35,6 @@ $config = [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
-//            'transport' => [
-//                'class' => 'Swift_SmtpTransport',
-//                'host' => 'smtp.gmail.com',
-//                'username' => 'my@gmail.com',
-//                'password' => 'pass',
-//                'port' => '587',
-//                'encryption' => 'tls',
-//            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -59,8 +51,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'frontend/<action>' => 'frontend/frontend/<action>',
-                'api/<action>' => 'api/api/<action>',
-                '<action>' => 'site/<action>',
+                'api/<action>' => 'api/api/<action>'
             ],
         ],
     ],

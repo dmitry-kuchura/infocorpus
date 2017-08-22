@@ -2,16 +2,14 @@
 
 namespace app\modules\api\controllers;
 
-use app\models\Cars;
-use app\models\Tasks;
 use Yii;
-use http\Exception;
 use yii\web\Response;
 use yii\web\Controller;
 use app\models\Recall;
-use app\modules\frontend\models\Users;
+use app\models\Users;
+use app\models\Cars;
+use app\models\Tasks;
 use app\components\Logger;
-use yii\web\User;
 
 class ApiController extends Controller
 {
