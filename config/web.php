@@ -20,6 +20,7 @@ $config = [
         'request' => [
             'baseUrl' => '',
             'cookieValidationKey' => '1BnCAZ8kv_7XylMUUoBV4woJ2Gvihjb3',
+            'enableCsrfValidation' => false
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

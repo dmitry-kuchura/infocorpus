@@ -2,11 +2,15 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\Tasks;
 use Yii;
+use http\Exception;
 use yii\web\Response;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use app\models\Recall;
+use app\modules\frontend\models\Users;
 use app\components\Logger;
+use yii\web\User;
 
 class ApiController extends Controller
 {
@@ -37,26 +41,175 @@ class ApiController extends Controller
     {
         $result = parent::afterAction($action, $result);
 
-        Logger::saveLog(Yii::$app->request->get(), $action->id, $result);
+        Logger::saveLog(Yii::$app->request->post(), $action->id, $result);
 
         return $result;
     }
 
+    /**
+     * Авторизация
+     *
+     * @return array
+     */
     public function actionLogin()
     {
-        return ['auth' => false];
+        $user = Users::findByUid(Yii::$app->request->post('uid'));
+
+        if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
+            return [
+                'success' => true,
+                'error' => [
+                    'code' => 200,
+                    'message' => 'User found!'
+                ],
+                'token' => Yii::$app->user->identity->auth_key
+            ];
+        } else {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 200,
+                    'message' => 'Ooooops. User not found!'
+                ],
+                'token' => null
+            ];
+        }
+
     }
 
-    public function actionChangeClientStatus()
+    /**
+     * Заказ звонка
+     *
+     * @return array
+     */
+    public function actionRecall()
     {
-        return [
-            'aid' => 'some_string',
-            'status' => true
-        ];
+        if (Yii::$app->request->post()) {
+
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization_token'));
+
+            if (!$user) {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'User not found!'
+                    ]
+                ];
+            }
+
+            $data = Yii::$app->request->post();
+
+            $model = new Recall();
+
+            $model->user_id = $user->id;
+            $model->call_request = $data['call'] == true ? 1 : 0;
+            $model->date = $data['date'];
+            $model->time = $data['time'];
+            $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
+            $model->recall_after = $data['time'];
+            $model->recall_during = $data['time'];
+            $model->call_security_after = $data['time'];
+
+            if ($model->validate() && $model->save()) {
+                return [
+                    'success' => true,
+                    'error' => [
+                        'code' => 200,
+                        'message' => 'Recall was save!'
+                    ]
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Wrong data!'
+                    ]
+                ];
+            }
+        } else {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 500,
+                    'message' => 'Wrong data!'
+                ]
+            ];
+        }
+
     }
 
-    public function actionChangeGroupStatus()
+    /**
+     * Простановка таска и запрос статуса тревоги
+     *
+     * @return array
+     */
+    public function actionAlert()
     {
+        $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization_token'));
+
+        if (Yii::$app->request->post()) {
+
+            $data = Yii::$app->request->post();
+
+            if (!$user) {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'User not found!'
+                    ]
+                ];
+            }
+
+            $model = new Tasks();
+
+            $model->user_id = $user->id;
+            $model->status = 1;
+            $model->longitude = $data['longitude'];
+            $model->latitude = $data['latitude'];
+
+            if ($model->validate() && $model->save()) {
+                return [
+                    'success' => true,
+                    'error' => [
+                        'code' => 200,
+                        'message' => 'Alarm was created!'
+                    ],
+                ];
+            }
+        } else {
+            $task = Tasks::getLastTask($user);
+
+            if ($task) {
+                return [
+                    'success' => true,
+                    'error' => [
+                        'code' => 200,
+                        'message' => 'Getting status'
+                    ],
+                    'isActive' => $task->status == 1 ? true : false
+                ];
+            }
+        }
+    }
+
+    public function actionStatus()
+    {
+        if (Yii::$app->request->post()) {
+            
+        } else {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 500,
+                    'message' => 'Cars status was not updated!'
+                ]
+            ];
+        }
+
+
         return [
             'uid' => 'user_id',
             'name' => 'name',
