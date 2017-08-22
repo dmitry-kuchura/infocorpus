@@ -218,10 +218,11 @@ class ApiController extends Controller
                 ];
             }
 
-            $model = new Cars();
+            $model = Cars::findOne(['token' => Yii::$app->request->headers->get('Authorization_token')]);
 
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
+            $model->status = $data['status'];
             $model->updated_at = time();
             $model->created_at = time();
 
@@ -243,16 +244,13 @@ class ApiController extends Controller
                 ];
             }
         } else {
-
-            $current = Cars::getCurrentStatus(Yii::$app->request->headers->get('Authorization_token'));
-
             return [
                 'success' => true,
                 'error' => [
                     'code' => 200,
                     'message' => 'Getting status!'
                 ],
-                'status' => $current->status,
+                'status' => $car->status,
                 'user' => [
                     'uid' => 'user_id',
                     'name' => 'name',

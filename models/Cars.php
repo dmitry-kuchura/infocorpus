@@ -103,9 +103,4 @@ class Cars extends ActiveRecord
     {
         return self::findOne(['token' => $token]);
     }
-
-    public static function getCurrentStatus($token)
-    {
-        return self::findOne(['token' => $token]);
-    }
 }
