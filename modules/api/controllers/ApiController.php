@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\Cars;
 use app\models\Tasks;
 use Yii;
 use http\Exception;
@@ -195,29 +196,73 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Обновление статуса автомобиля
+     *
+     * @return array
+     */
     public function actionStatus()
     {
+        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization_token'));
+
         if (Yii::$app->request->post()) {
-            
+            $data = Yii::$app->request->post();
+
+            if (!$car) {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Car not found!'
+                    ]
+                ];
+            }
+
+            $model = new Cars();
+
+            $model->longitude = $data['longitude'];
+            $model->latitude = $data['latitude'];
+            $model->updated_at = time();
+            $model->created_at = time();
+
+            if ($model->validate() && $model->save()) {
+                return [
+                    'success' => true,
+                    'error' => [
+                        'code' => 200,
+                        'message' => 'Cars was updated!'
+                    ]
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Cars status was not updated!'
+                    ]
+                ];
+            }
         } else {
+
+            $current = Cars::getCurrentStatus(Yii::$app->request->headers->get('Authorization_token'));
+
             return [
-                'success' => false,
+                'success' => true,
                 'error' => [
-                    'code' => 500,
-                    'message' => 'Cars status was not updated!'
+                    'code' => 200,
+                    'message' => 'Getting status!'
+                ],
+                'status' => $current->status,
+                'user' => [
+                    'uid' => 'user_id',
+                    'name' => 'name',
+                    'phone' => 'phone',
+                    'big_photo' => 'http =>//big_image.png',
+                    'small_photo' => 'http =>//small_image.png',
+                    'longitude' => 32.1111111,
+                    'latitude' => 46.1111111
                 ]
             ];
         }
-
-
-        return [
-            'uid' => 'user_id',
-            'name' => 'name',
-            'phone' => 'phone',
-            'big_photo' => 'http://big_image.png',
-            'small_photo' => 'http://small_image.png',
-            'longitude' => 32.1111111,
-            'latitude' => 46.1111111,
-        ];
     }
 }

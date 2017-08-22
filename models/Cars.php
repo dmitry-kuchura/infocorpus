@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "cars".
@@ -18,12 +19,12 @@ use Yii;
  * @property string $token
  * @property string $aid
  *
- * @property CarHistory $id0
- * @property Clients $clients
- * @property Users[] $ids
- * @property Tasks[] $tasks
+ * // * @property CarHistory $id0
+ * // * @property Clients $clients
+ * // * @property Users[] $ids
+ * // * @property Tasks[] $tasks
  */
-class Cars extends \yii\db\ActiveRecord
+class Cars extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -39,11 +40,11 @@ class Cars extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['client_id', 'cid', 'longitude', 'latitude', 'updated_at', 'created_at', 'token', 'aid'], 'required'],
+            [['longitude', 'latitude', 'updated_at', 'created_at',], 'required'],
             [['client_id', 'cid', 'status', 'updated_at', 'created_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['token', 'aid'], 'string', 'max' => 150],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => CarHistory::className(), 'targetAttribute' => ['id' => 'car_id']],
+//            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => CarHistory::className(), 'targetAttribute' => ['id' => 'car_id']],
         ];
     }
 
@@ -66,29 +67,29 @@ class Cars extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getId0()
-    {
-        return $this->hasOne(CarHistory::className(), ['car_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getClients()
-    {
-        return $this->hasOne(Clients::className(), ['id' => 'client_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIds()
-    {
-        return $this->hasMany(Users::className(), ['client_id' => 'id'])->viaTable('clients', ['id' => 'client_id']);
-    }
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getId0()
+//    {
+//        return $this->hasOne(CarHistory::className(), ['car_id' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getClients()
+//    {
+//        return $this->hasOne(Clients::className(), ['id' => 'client_id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getIds()
+//    {
+//        return $this->hasMany(Users::className(), ['client_id' => 'id'])->viaTable('clients', ['id' => 'client_id']);
+//    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -96,5 +97,15 @@ class Cars extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Tasks::className(), ['car_id' => 'id']);
+    }
+
+    public static function findByToken($token)
+    {
+        return self::findOne(['token' => $token]);
+    }
+
+    public static function getCurrentStatus($token)
+    {
+        return self::findOne(['token' => $token]);
     }
 }
