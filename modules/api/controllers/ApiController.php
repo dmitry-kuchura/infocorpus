@@ -205,6 +205,10 @@ class ApiController extends Controller
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization_token'));
 
+        var_dump($car);
+        die;
+
+
         if (Yii::$app->request->post()) {
             $data = Yii::$app->request->post();
 
