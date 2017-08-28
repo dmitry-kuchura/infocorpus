@@ -11,6 +11,40 @@ use app\models\Users;
 
 class FrontendController extends Controller
 {
+
+    /**
+     * List of allowed domains.
+     * Note: Restriction works only for AJAX (using CORS, is not secure).
+     *
+     * @return array List of domains, that can access to this API
+     */
+    public static function allowedDomains()
+    {
+        return [
+            'http://localhost:9000',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return array_merge(parent::behaviors(), [
+
+            'corsFilter' => [
+                'class' => \yii\filters\Cors::className(),
+                'cors' => [
+                    'Origin' => static::allowedDomains(),
+                    'Access-Control-Request-Method' => ['POST', 'GET'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Max-Age' => 3600,
+                ],
+            ],
+
+        ]);
+    }
+
     /**
      * Application/JSON response
      *
@@ -19,9 +53,6 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        var_dump(Yii::$app->request->getHeaders()->get('Access-Control-Request-Headers'));
-        die;
-
         if ($action->id != 'auth') {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->getHeaders()->get('Authorization'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
