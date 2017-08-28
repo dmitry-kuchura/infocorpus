@@ -38,6 +38,7 @@ class FrontendController extends Controller
                     'Origin' => static::allowedDomains(),
                     'Access-Control-Request-Method' => ['POST', 'GET'],
                     'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Allow-Headers' => 'X-PINGOTHER, Content-Type',
                     'Access-Control-Max-Age' => 3600,
                 ],
             ],
@@ -58,7 +59,7 @@ class FrontendController extends Controller
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
-        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
 
