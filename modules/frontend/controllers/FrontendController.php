@@ -260,6 +260,7 @@ class FrontendController extends Controller
                 'alerts' => [
                     0 => [
                         'id' => 15,
+                        'status' => 1,
                         'longitude' => 32.630632,
                         'latitude' => 46.638230,
                         'name' => 'Петренко Николай Борисович',
@@ -270,6 +271,7 @@ class FrontendController extends Controller
                     ],
                     1 => [
                         'id' => 17,
+                        'status' => 2,
                         'longitude' => 32.612513,
                         'latitude' => 46.637316,
                         'name' => 'Новиков Григорий Иванович',
@@ -280,6 +282,7 @@ class FrontendController extends Controller
                     ],
                     2 => [
                         'id' => 20,
+                        'status' => 1,
                         'longitude' => 32.620988,
                         'latitude' => 46.628622,
                         'name' => 'Иванов Пётр Сергеевич',
