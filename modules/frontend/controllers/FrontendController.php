@@ -13,29 +13,6 @@ use app\models\Users;
 class FrontendController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-//    public function behaviors()
-//    {
-//        return array_merge(parent::behaviors(), [
-//
-//            'corsFilter' => [
-//                'class' => Cors::className(),
-//                'cors' => [
-//                    'Origin' => ['*'],
-//                    'Access-Control-Allow-Origin' => '*',
-//                    'Access-Control-Request-Methods' => ['POST', 'GET', 'OPTION'],
-//                    'Access-Control-Allow-Credentials' => true,
-//                    'Access-Control-Expose-Headers' => ['authorization'],
-//                    'Access-Control-Allow-Headers' => ['authorization'],
-//                    'Access-Control-Max-Age' => 3600,
-//                ],
-//            ],
-//
-//        ]);
-//    }
-
-    /**
      * Application/JSON response
      *
      * @param \yii\base\Action $action
@@ -43,8 +20,8 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id != 'auth') {
-            $user = Users::findIdentityByAccessToken(Yii::$app->request->getHeaders()->get('Authorization'));
+        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'map') {
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
