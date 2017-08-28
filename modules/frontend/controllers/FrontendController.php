@@ -114,14 +114,23 @@ class FrontendController extends Controller
             $data = Yii::$app->request->get();
 
             $model = new Users();
-            $model->short_name = $data['name'];
+            $model->username = $data['name'];
             $model->email = $data['email'];
             $model->phone = $data['phone'];
             $model->password = $data['password'];
             $model->status = 1;
             $model->role = 1;
 
-            $model->signUp();
+            if ($model->validate() && $model->signUp()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors()
+                ];
+            }
         }
     }
 
