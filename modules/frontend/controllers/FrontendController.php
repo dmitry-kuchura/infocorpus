@@ -39,7 +39,7 @@ class FrontendController extends Controller
                     'Access-Control-Allow-Origin' => '*',
                     'Access-Control-Request-Methods' => ['POST', 'GET'],
                     'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => 'Authorization, Content-Type',
+                    'Access-Control-Allow-Headers' => 'authorization',
                     'Access-Control-Max-Age' => 3600,
                 ],
             ],
