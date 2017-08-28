@@ -36,9 +36,9 @@ class FrontendController extends Controller
                 'class' => \yii\filters\Cors::className(),
                 'cors' => [
                     'Origin' => static::allowedDomains(),
-                    'Access-Control-Request-Method' => ['POST', 'GET'],
-                    'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Allow-Origin' => '*',
+                    'Access-Control-Request-Methods' => ['POST', 'GET'],
+                    'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Allow-Headers' => 'Authorization, Content-Type',
                     'Access-Control-Max-Age' => 3600,
                 ],
