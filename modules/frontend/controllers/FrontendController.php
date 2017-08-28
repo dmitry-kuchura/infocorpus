@@ -3,6 +3,7 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\filters\Cors;
 use yii\web\Response;
 use yii\rest\Controller;
 use yii\httpclient\Exception;
@@ -11,42 +12,6 @@ use app\models\Users;
 
 class FrontendController extends Controller
 {
-
-    /**
-     * List of allowed domains.
-     * Note: Restriction works only for AJAX (using CORS, is not secure).
-     *
-     * @return array List of domains, that can access to this API
-     */
-    public static function allowedDomains()
-    {
-        return [
-            'http://localhost:9000',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return array_merge(parent::behaviors(), [
-
-            'corsFilter' => [
-                'class' => \yii\filters\Cors::className(),
-                'cors' => [
-                    'Origin' => static::allowedDomains(),
-                    'Access-Control-Allow-Origin' => '*',
-                    'Access-Control-Request-Methods' => ['POST', 'GET'],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => 'Authorization, Content-Type',
-                    'Access-Control-Max-Age' => 3600,
-                ],
-            ],
-
-        ]);
-    }
-
     /**
      * Application/JSON response
      *
@@ -55,10 +20,13 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id != 'auth') {
-            $user = Users::findIdentityByAccessToken(Yii::$app->request->getHeaders()->get('Authorization'));
+        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'map') {
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
+
+        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
 
