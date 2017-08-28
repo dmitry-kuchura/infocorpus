@@ -19,6 +19,9 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
+        var_dump(Yii::$app->request->getHeaders()->get('Access-Control-Request-Headers'));
+        die;
+
         if ($action->id != 'auth') {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->getHeaders()->get('Authorization'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
