@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-use app\modules\frontend\models\Users;
+use app\models\Users;
 use app\models\Cars;
 
 /**

@@ -11,6 +11,7 @@ use Yii;
  * @property integer $client_id
  * @property string $uid
  * @property string $email
+ * @property string $phone
  * @property string $username
  * @property string $password
  * @property string $first_name
@@ -37,7 +38,7 @@ class Users extends UserInterface
             [['client_id', 'v', 'status', 'created_at', 'updated_at', 'role'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['uid', 'username'], 'string', 'max' => 50],
-            [['email', 'password', 'first_name', 'last_name', 'short_name', 'token', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
+            [['email', 'password', 'phone', 'first_name', 'last_name', 'short_name', 'token', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
     }
 
@@ -48,6 +49,7 @@ class Users extends UserInterface
             'client_id' => 'Client ID',
             'uid' => 'Uid',
             'email' => 'Email',
+            'phone' => 'Phone',
             'username' => 'Username',
             'password' => 'Password',
             'first_name' => 'First Name',
@@ -75,10 +77,8 @@ class Users extends UserInterface
         $user = new Users();
         $user->uid = $this->uid;
         $user->username = $this->username;
-        $user->first_name = $this->first_name;
-        $user->last_name = $this->last_name;
         $user->short_name = $this->short_name;
-        $user->client_id = $this->client_id;
+        $user->phone = $this->phone;
         $user->email = $this->email;
         $user->password = md5($this->password);
         $user->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
