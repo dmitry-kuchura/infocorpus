@@ -1,3 +1,7 @@
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Headers "x-auth-token, authorization"
+Header add Access-Control-Allow-Methods "GET, POST"
+
 Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
