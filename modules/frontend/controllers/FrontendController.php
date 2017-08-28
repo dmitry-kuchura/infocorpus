@@ -20,7 +20,7 @@ class FrontendController extends Controller
     public function beforeAction($action)
     {
 
-        if ($action->id != 'auth' && $action->id != 'logout') {
+        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'map') {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
@@ -177,6 +177,7 @@ class FrontendController extends Controller
             'result' => [
                 'groups' => [
                     0 => [
+                        'id' => 13,
                         'longitude' => 32.642713,
                         'latitude' => 46.671288,
                         'name' => 'Белка',
@@ -184,6 +185,7 @@ class FrontendController extends Controller
                         'type' => 'group'
                     ],
                     1 => [
+                        'id' => 16,
                         'longitude' => 32.603832,
                         'latitude' => 46.655619,
                         'name' => 'Мангуст',
@@ -191,6 +193,7 @@ class FrontendController extends Controller
                         'type' => 'group'
                     ],
                     2 => [
+                        'id' => 17,
                         'longitude' => 32.618337,
                         'latitude' => 46.632992,
                         'name' => 'Удав',
@@ -198,6 +201,7 @@ class FrontendController extends Controller
                         'type' => 'group'
                     ],
                     3 => [
+                        'id' => 21,
                         'longitude' => 32.564006,
                         'latitude' => 46.652261,
                         'name' => 'Писец',
@@ -205,6 +209,7 @@ class FrontendController extends Controller
                         'type' => 'group'
                     ],
                     4 => [
+                        'id' => 27,
                         'longitude' => 32.631297,
                         'latitude' => 46.646193,
                         'name' => 'Енот',
@@ -214,28 +219,34 @@ class FrontendController extends Controller
                 ],
                 'alerts' => [
                     0 => [
+                        'id' => 15,
                         'longitude' => 32.630632,
                         'latitude' => 46.638230,
                         'name' => 'Петренко Николай Борисович',
                         'location' => 'м. Херсон, вул. Артилерійська, 14',
                         'phone' => '+38(099)999-99-99',
-                        'type' => 'alert'
+                        'type' => 'alert',
+                        'date' => date('d.m.Y в H:i'),
                     ],
                     1 => [
+                        'id' => 17,
                         'longitude' => 32.612513,
                         'latitude' => 46.637316,
                         'name' => 'Новиков Григорий Иванович',
                         'location' => 'м. Херсон, вул. Ярослава Мудрого, 12',
                         'phone' => '+38(099)999-99-99',
-                        'type' => 'alert'
+                        'type' => 'alert',
+                        'date' => date('d.m.Y в H:i'),
                     ],
                     2 => [
+                        'id' => 20,
                         'longitude' => 32.620988,
                         'latitude' => 46.628622,
                         'name' => 'Иванов Пётр Сергеевич',
                         'location' => 'м. Херсон, просп. Ушакова, 1А',
                         'phone' => '+38(099)999-99-99',
-                        'type' => 'alert'
+                        'type' => 'alert',
+                        'date' => date('d.m.Y в H:i'),
                     ],
                 ]
             ]
