@@ -3,6 +3,7 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\filters\Cors;
 use yii\web\Response;
 use yii\rest\Controller;
 use yii\httpclient\Exception;
@@ -33,13 +34,13 @@ class FrontendController extends Controller
         return array_merge(parent::behaviors(), [
 
             'corsFilter' => [
-                'class' => \yii\filters\Cors::className(),
+                'class' => Cors::className(),
                 'cors' => [
                     'Origin' => static::allowedDomains(),
                     'Access-Control-Allow-Origin' => '*',
                     'Access-Control-Request-Methods' => ['POST', 'GET'],
                     'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => 'authorization',
+                    'Access-Control-Allow-Headers' => ['*'],
                     'Access-Control-Max-Age' => 3600,
                 ],
             ],
