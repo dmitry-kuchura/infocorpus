@@ -15,25 +15,25 @@ class FrontendController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
-        return array_merge(parent::behaviors(), [
-
-            'corsFilter' => [
-                'class' => Cors::className(),
-                'cors' => [
-                    'Origin' => ['*'],
-                    'Access-Control-Allow-Origin' => '*',
-                    'Access-Control-Request-Methods' => ['POST', 'GET', 'OPTION'],
-                    'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Expose-Headers' => ['authorization'],
-                    'Access-Control-Allow-Headers' => ['authorization'],
-                    'Access-Control-Max-Age' => 3600,
-                ],
-            ],
-
-        ]);
-    }
+//    public function behaviors()
+//    {
+//        return array_merge(parent::behaviors(), [
+//
+//            'corsFilter' => [
+//                'class' => Cors::className(),
+//                'cors' => [
+//                    'Origin' => ['*'],
+//                    'Access-Control-Allow-Origin' => '*',
+//                    'Access-Control-Request-Methods' => ['POST', 'GET', 'OPTION'],
+//                    'Access-Control-Allow-Credentials' => true,
+//                    'Access-Control-Expose-Headers' => ['authorization'],
+//                    'Access-Control-Allow-Headers' => ['authorization'],
+//                    'Access-Control-Max-Age' => 3600,
+//                ],
+//            ],
+//
+//        ]);
+//    }
 
     /**
      * Application/JSON response
