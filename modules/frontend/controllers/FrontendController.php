@@ -24,7 +24,7 @@ class FrontendController extends Controller
                 'cors' => [
                     'Origin' => ['*'],
                     'Access-Control-Allow-Origin' => '*',
-                    'Access-Control-Request-Methods' => ['POST', 'GET'],
+                    'Access-Control-Request-Methods' => ['POST', 'GET', 'OPTION'],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Expose-Headers' => ['authorization'],
                     'Access-Control-Allow-Headers' => ['authorization'],
