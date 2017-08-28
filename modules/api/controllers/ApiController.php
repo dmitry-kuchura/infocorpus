@@ -176,6 +176,7 @@ class ApiController extends Controller
                         'code' => 200,
                         'message' => 'Alarm was created!'
                     ],
+                    'isActive' => true
                 ];
             }
         } else {
