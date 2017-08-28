@@ -25,6 +25,9 @@ class FrontendController extends Controller
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
+        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
+
         $result = parent::beforeAction($action);
 
         Yii::$app->response->format = Response::FORMAT_JSON;
