@@ -12,20 +12,6 @@ use app\models\Users;
 
 class FrontendController extends Controller
 {
-
-    /**
-     * List of allowed domains.
-     * Note: Restriction works only for AJAX (using CORS, is not secure).
-     *
-     * @return array List of domains, that can access to this API
-     */
-    public static function allowedDomains()
-    {
-        return [
-            'http://localhost:9000',
-        ];
-    }
-
     /**
      * @inheritdoc
      */
@@ -36,7 +22,7 @@ class FrontendController extends Controller
             'corsFilter' => [
                 'class' => Cors::className(),
                 'cors' => [
-                    'Origin' => static::allowedDomains(),
+                    'Origin' => ['*'],
                     'Access-Control-Allow-Origin' => '*',
                     'Access-Control-Request-Methods' => ['POST', 'GET'],
                     'Access-Control-Allow-Credentials' => true,
