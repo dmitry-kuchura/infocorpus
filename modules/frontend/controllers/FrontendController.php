@@ -107,7 +107,7 @@ class FrontendController extends Controller
     /**
      * Registered SuperUser
      */
-    public function actionRegistration()
+    public function actionCreateUser()
     {
         if (Yii::$app->request->get()) {
 
