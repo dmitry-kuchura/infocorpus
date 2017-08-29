@@ -57,7 +57,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Login to FRONTEND
+     * Login
      *
      * @return array
      * @throws Exception
@@ -95,7 +95,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Logout from FRONTEND
+     * Logout
      *
      * @return array
      */
@@ -110,7 +110,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Registered
+     * Create new User
      */
     public function actionCreateUser()
     {
@@ -139,6 +139,11 @@ class FrontendController extends Controller
         }
     }
 
+    /**
+     * Get users list
+     *
+     * @return array
+     */
     public function actionUsersList()
     {
         /* @var $result Users */
@@ -163,7 +168,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Check AuthKey
+     * Check AuthKey for fast login from React API
      *
      * @return array
      */
