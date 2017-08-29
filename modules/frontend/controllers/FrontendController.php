@@ -69,7 +69,7 @@ class FrontendController extends Controller
 
             $model = new Users();
 
-            $model->email = $data['username'];
+            $model->email = $data['login'];
             $model->password = $data['password'];
 
             if ($model->login()) {
