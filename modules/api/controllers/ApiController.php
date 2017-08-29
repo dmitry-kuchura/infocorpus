@@ -156,7 +156,7 @@ class ApiController extends Controller
                 return [
                     'success' => false,
                     'error' => [
-                        'code' => 500,
+                        'code' => 404,
                         'message' => 'User not found!'
                     ]
                 ];
@@ -172,11 +172,15 @@ class ApiController extends Controller
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
-                    'error' => [
-                        'code' => 200,
-                        'message' => 'Alarm was created!'
-                    ],
                     'isActive' => $model->status == 1 ? true : false
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Not created!'
+                    ]
                 ];
             }
         } else {
@@ -185,10 +189,6 @@ class ApiController extends Controller
             if ($task) {
                 return [
                     'success' => true,
-                    'error' => [
-                        'code' => 200,
-                        'message' => 'Getting status'
-                    ],
                     'isActive' => $task->status == 1 ? true : false
                 ];
             }
