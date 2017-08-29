@@ -19,7 +19,7 @@ class FrontendController extends Controller
                 'class' => Cors::className(),
                 'cors' => [
                     'Origin' => ['*'],
-                    'Access-Control-Request-Method' => ['*'],
+                    'Access-Control-Request-Method' => ['GET'],
                     'Access-Control-Request-Headers' => ['*'],
                     'Access-Control-Allow-Credentials' => false,
                     'Access-Control-Max-Age' => 0,
