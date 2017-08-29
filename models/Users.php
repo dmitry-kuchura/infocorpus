@@ -37,6 +37,7 @@ class Users extends UserInterface
             [['email', 'username', 'password',], 'required'],
             [['client_id', 'v', 'status', 'created_at', 'updated_at', 'role'], 'integer'],
             [['longitude', 'latitude'], 'number'],
+            [['email'], 'unique'],
             [['uid', 'username'], 'string', 'max' => 50],
             [['email', 'password', 'phone', 'first_name', 'last_name', 'short_name', 'token', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
@@ -91,12 +92,14 @@ class Users extends UserInterface
 
     public function login()
     {
-        $user = $this->getUser();
+        $user = self::findByEmail($this->email);
 
         if ($this->validatePassword()) {
             Yii::$app->user->login($user, 3600 * 24 * 30);
 
-            return Yii::$app->user->identity->auth_key;
+            return true;
+        } else {
+            return false;
         }
 
     }

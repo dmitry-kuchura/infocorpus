@@ -41,6 +41,7 @@ class FrontendController extends Controller
      * @param \yii\base\Action $action
      * @param mixed $result
      * @return mixed
+     * @throws Exception
      */
     public function afterAction($action, $result)
     {
@@ -68,7 +69,7 @@ class FrontendController extends Controller
 
             $model = new Users();
 
-            $model->username = $data['login'];
+            $model->email = $data['username'];
             $model->password = $data['password'];
 
             if ($model->login()) {
@@ -79,7 +80,7 @@ class FrontendController extends Controller
                     'success' => true,
                 ];
             } else {
-                throw new Exception("Incorrect password!");
+                throw new Exception("Incorrect password or email!");
             }
         } else {
             return [

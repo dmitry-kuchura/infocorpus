@@ -74,8 +74,10 @@ class UserInterface extends ActiveRecord implements IdentityInterface
     {
         $data = static::findOne(['username' => $this->username]);
 
-        if ($data->password === md5($this->password)) {
+        if (isset($data) && $data->password === md5($this->password)) {
             return true;
+        } else {
+            return false;
         }
     }
 }
