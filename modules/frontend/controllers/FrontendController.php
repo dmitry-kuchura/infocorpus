@@ -19,12 +19,13 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'reset-password') {
+        $actions = ['auth', 'logout', 'reset-password', 'users-list'];
+
+        if (!in_array($action->id, $actions)) {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
-        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
         Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
@@ -136,6 +137,29 @@ class FrontendController extends Controller
                 ];
             }
         }
+    }
+
+    public function actionUsersList()
+    {
+        /* @var $result Users */
+        $result = Users::find()->where(['!=', 'role', 666])->all();
+
+        foreach ($result as $obj) {
+            $users[] = [
+                'id' => $obj->id,
+                'email' => $obj->email,
+                'password' => $obj->password,
+                'phone' => $obj->phone,
+                'name' => $obj->username,
+                'status' => $obj->status,
+                'role' => $obj->role == 1 ? 'Администратор' : 'Пользователь',
+            ];
+        }
+
+        return [
+            'success' => true,
+            'users' => $users
+        ];
     }
 
     /**
