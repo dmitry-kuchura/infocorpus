@@ -22,6 +22,9 @@ $config = [
             'cookieValidationKey' => '1BnCAZ8kv_7XylMUUoBV4woJ2Gvihjb3',
             'enableCsrfValidation' => false
         ],
+        'post' => [
+            'class' => 'app\components\Post',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

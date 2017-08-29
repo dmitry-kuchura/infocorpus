@@ -40,7 +40,9 @@ class ApiController extends Controller
     {
         $result = parent::afterAction($action, $result);
 
-        Logger::saveLog(Yii::$app->request->post(), $action->id, $result);
+        $request = Yii::$app->post->getRaw() ? Yii::$app->post->getRaw() : Yii::$app->request->post();
+
+        Logger::saveLog($request, $action->id, $result);
 
         return $result;
     }
@@ -83,7 +85,7 @@ class ApiController extends Controller
      */
     public function actionRecall()
     {
-        if (Yii::$app->request->post()) {
+        if (Yii::$app->post->getRaw()) {
 
             $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
@@ -97,7 +99,7 @@ class ApiController extends Controller
                 ];
             }
 
-            $data = Yii::$app->request->post();
+            $data = Yii::$app->post->getRaw();
 
             $model = new Recall();
 
