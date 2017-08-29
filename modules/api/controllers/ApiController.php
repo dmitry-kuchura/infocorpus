@@ -262,4 +262,15 @@ class ApiController extends Controller
             ];
         }
     }
+
+    public function actionResetStatus()
+    {
+        $status = Yii::$app->request->get('status');
+
+        if (isset($status)) {
+            Tasks::updateAll(['status' => $status], 'user_id = 8');
+
+            return ['success' => true];
+        }
+    }
 }
