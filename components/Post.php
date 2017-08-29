@@ -6,8 +6,15 @@ use yii\base\Component;
 
 class Post extends Component
 {
-    public function getRaw()
+
+    public function getRaw($value = null)
     {
-        return json_decode(file_get_contents('php://input'), true);
+        $array = json_decode(file_get_contents('php://input'), true);
+
+        if ($value) {
+            return $array[$value];
+        } else {
+            return $array;
+        }
     }
 }
