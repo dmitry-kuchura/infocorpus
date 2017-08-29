@@ -8,9 +8,28 @@ use yii\rest\Controller;
 use yii\httpclient\Exception;
 use app\components\Logger;
 use app\models\Users;
+use yii\filters\Cors;
 
 class FrontendController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'corsFilter' => [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['*'],
+                    'Access-Control-Request-Headers' => ['*'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Max-Age' => 0,
+                    'Access-Control-Expose-Headers' => ['*'],
+                ],
+
+            ],
+        ];
+    }
+
     /**
      * Application/JSON response
      *
@@ -302,6 +321,8 @@ class FrontendController extends Controller
 
     public function actionChangeAllow()
     {
+        if (Yii::$app->post->getRaw('ID')) {
 
+        };
     }
 }
