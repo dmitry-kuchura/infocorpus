@@ -26,6 +26,7 @@ class FrontendController extends Controller
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
+        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
         Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
@@ -106,64 +107,6 @@ class FrontendController extends Controller
         return [
             'auth' => 'Go home!',
             'success' => true
-        ];
-    }
-
-    /**
-     * Create new User
-     */
-    public function actionCreateUser()
-    {
-        if (Yii::$app->post->getRaw()) {
-
-            $data = Yii::$app->post->getRaw();
-
-            $model = new Users();
-            $model->username = $data['name'];
-            $model->email = $data['email'];
-            $model->phone = $data['phone'];
-            $model->password = $data['password'];
-            $model->status = 1;
-            $model->role = 1;
-
-            if ($model->validate() && $model->signUp()) {
-                return [
-                    'success' => true,
-                ];
-            } else {
-                return [
-                    'success' => false,
-                    'errors' => $model->getErrors()
-                ];
-            }
-        }
-    }
-
-    /**
-     * Get users list
-     *
-     * @return array
-     */
-    public function actionUsersList()
-    {
-        /* @var $result Users */
-        $result = Users::find()->where(['!=', 'role', 666])->all();
-
-        foreach ($result as $obj) {
-            $users[] = [
-                'id' => $obj->id,
-                'email' => $obj->email,
-                'password' => $obj->password,
-                'phone' => $obj->phone,
-                'name' => $obj->username,
-                'status' => $obj->status,
-                'role' => $obj->role == 1 ? 'Администратор' : 'Пользователь',
-            ];
-        }
-
-        return [
-            'success' => true,
-            'users' => $users
         ];
     }
 
@@ -297,5 +240,68 @@ class FrontendController extends Controller
                 ]
             ]
         ];
+    }
+
+    /**
+     * Create new User
+     */
+    public function actionCreateUser()
+    {
+        if (Yii::$app->post->getRaw()) {
+
+            $data = Yii::$app->post->getRaw();
+
+            $model = new Users();
+            $model->username = $data['name'];
+            $model->email = $data['email'];
+            $model->phone = $data['phone'];
+            $model->password = $data['password'];
+            $model->status = 1;
+            $model->role = 1;
+
+            if ($model->validate() && $model->signUp()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors()
+                ];
+            }
+        }
+    }
+
+    /**
+     * Get users list
+     *
+     * @return array
+     */
+    public function actionUsersList()
+    {
+        /* @var $result Users */
+        $result = Users::find()->where(['!=', 'role', 666])->all();
+
+        foreach ($result as $obj) {
+            $users[] = [
+                'id' => $obj->id,
+                'email' => $obj->email,
+                'password' => $obj->password,
+                'phone' => $obj->phone,
+                'name' => $obj->username,
+                'status' => $obj->status,
+                'role' => $obj->role == 1 ? 'Администратор' : 'Пользователь',
+            ];
+        }
+
+        return [
+            'success' => true,
+            'users' => $users
+        ];
+    }
+
+    public function actionChangeAllow()
+    {
+
     }
 }
