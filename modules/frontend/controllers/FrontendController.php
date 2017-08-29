@@ -12,24 +12,6 @@ use yii\filters\Cors;
 
 class FrontendController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'corsFilter' => [
-                'class' => Cors::className(),
-                'cors' => [
-                    'Origin' => ['*'],
-                    'Access-Control-Request-Method' => ['GET'],
-                    'Access-Control-Request-Headers' => ['*'],
-                    'Access-Control-Allow-Credentials' => false,
-                    'Access-Control-Max-Age' => 0,
-                    'Access-Control-Expose-Headers' => ['*'],
-                ],
-
-            ],
-        ];
-    }
-
     /**
      * Application/JSON response
      *
@@ -45,7 +27,13 @@ class FrontendController extends Controller
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
-        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Origin', '*');
+        Yii::$app->request->getHeaders()->set('Origin', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Request-Method', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Request-Headers', '*');
+        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Credentials', false);
+        Yii::$app->request->getHeaders()->set('Access-Control-Max-Age', 0);
+        Yii::$app->request->getHeaders()->set('Access-Control-Expose-Headers', '*');
+
         Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
