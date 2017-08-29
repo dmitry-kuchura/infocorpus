@@ -3,7 +3,6 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
-use yii\filters\Cors;
 use yii\web\Response;
 use yii\rest\Controller;
 use yii\httpclient\Exception;
@@ -170,7 +169,10 @@ class FrontendController extends Controller
             if (Users::resetPassword(Yii::$app->request->get('email'))) {
                 return ['success' => true];
             } else {
-                return ['success' => false];
+                return [
+                    'success' => false,
+                    'message' => 'Incorrect email, user not found!'
+                ];
             }
         } else {
             throw new Exception('No email found!');

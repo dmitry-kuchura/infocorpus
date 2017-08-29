@@ -107,6 +107,9 @@ class Users extends UserInterface
     public static function resetPassword($email)
     {
         $result = self::findByEmail($email);
+        if (!$result) {
+            return false;
+        }
 
         $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
         $password = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
@@ -126,8 +129,9 @@ class Users extends UserInterface
                 ->send();
 
             return $password;
+        } else {
+            return false;
         }
 
-        return false;
     }
 }
