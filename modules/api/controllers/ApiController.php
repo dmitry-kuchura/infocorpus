@@ -263,6 +263,11 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Сброс тревог к определенному статусу
+     *
+     * @return array
+     */
     public function actionResetStatus()
     {
         $status = Yii::$app->request->get('status');
