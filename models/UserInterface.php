@@ -72,7 +72,7 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public function validatePassword()
     {
-        $data = static::findOne(['username' => $this->username]);
+        $data = static::findOne(['email' => $this->email]);
 
         if (isset($data) && $data->password === md5($this->password)) {
             return true;
