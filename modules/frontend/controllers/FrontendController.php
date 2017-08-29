@@ -80,7 +80,10 @@ class FrontendController extends Controller
                     'success' => true,
                 ];
             } else {
-                throw new Exception("Incorrect password or email!");
+                return [
+                    'auth' => 'Incorrect password or email!',
+                    'success' => false,
+                ];
             }
         } else {
             return [
