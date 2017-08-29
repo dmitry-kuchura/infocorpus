@@ -171,7 +171,7 @@ class FrontendController extends Controller
             } else {
                 return [
                     'success' => false,
-                    'message' => 'Incorrect email, user not found!'
+                    'message' => 'Не корректный email, пользователь не был найден!'
                 ];
             }
         } else {
