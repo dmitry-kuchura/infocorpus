@@ -20,7 +20,7 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'map') {
+        if ($action->id != 'auth' && $action->id != 'logout' && $action->id != 'reset-password') {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
