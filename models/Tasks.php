@@ -82,6 +82,6 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public static function getLastTask($user)
     {
-        return self::find()->where(['user_id' => $user])->orderBy('id DESC')->one();
+        return self::find()->where(['user_id' => $user, 'status' => 1])->orderBy('id DESC')->one();
     }
 }
