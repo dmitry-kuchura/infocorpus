@@ -15,6 +15,8 @@ use app\models\Cars;
  * @property integer $status
  * @property string $longitude
  * @property string $latitude
+ * @property integer $created_at
+ * @property integer $updated_at
  *
  * @property Cars $car
  * @property Users $user
@@ -35,7 +37,7 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['car_id', 'user_id', 'status'], 'integer'],
+            [['car_id', 'user_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['user_id', 'longitude', 'latitude'], 'required'],
             [['longitude', 'latitude'], 'number'],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],

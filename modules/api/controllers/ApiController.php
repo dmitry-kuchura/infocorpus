@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\TasksHistory;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
@@ -156,16 +157,34 @@ class ApiController extends Controller
                 ];
             }
 
-            $model = Tasks::findOne(['user_id' => $user->id, 'status' => 0]);
+            $task = Tasks::getLastTask($user);
 
-            if (!$model) {
-                $model = new Tasks();
-                $model->user_id = $user->id;
-                $model->status = 0;
+            if (!$task) {
+                $task = new Tasks();
+                $task->user_id = $user->id;
+                $task->longitude = $data['longitude'];
+                $task->latitude = $data['latitude'];
+                $task->status = 1;
+                $task->created_at = time();
+                $task->updated_at = time();
+
+                $task->save();
+            } else {
+                $task->longitude = $data['longitude'];
+                $task->latitude = $data['latitude'];
+                $task->updated_at = time();
+
+                $task->save(false);
             }
 
+            $model = new TasksHistory();
+
+            $model->user_id = $user->id;
+            $model->task_id = $task->id;
+            $model->status = 1;
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
+            $model->updated_at = time();
 
             if ($model->validate() && $model->save()) {
                 return [
