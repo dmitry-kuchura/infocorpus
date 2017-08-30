@@ -135,7 +135,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Простановка таска и запрос статуса тревоги
+     * Запуск тревоги
      *
      * @return array
      */
@@ -157,41 +157,41 @@ class ApiController extends Controller
                 ];
             }
 
-            $task = Tasks::getLastTask($user);
+            $last = Tasks::getLastTask($user);
 
-            if (!$task) {
-                $task = new Tasks();
-                $task->user_id = $user->id;
-                $task->longitude = $data['longitude'];
-                $task->latitude = $data['latitude'];
-                $task->status = 1;
-                $task->created_at = time();
-                $task->updated_at = time();
-
-                $task->save();
-            } else {
-                $current = $task->status;
-
-                $task->status = $current;
-                $task->longitude = $data['longitude'];
-                $task->latitude = $data['latitude'];
-                $task->updated_at = time();
-
-                $task->save(false);
+            if ($last->status == 1) {
+                return [
+                    'success' => true,
+                    'identity' => $last->id,
+                    'isActive' => $last->status == 1 ? true : false
+                ];
             }
+
+            $task = new Tasks();
+            $time = time();
+
+            $task->user_id = $user->id;
+            $task->longitude = $data['longitude'];
+            $task->latitude = $data['latitude'];
+            $task->status = 1;
+            $task->created_at = $time;
+            $task->updated_at = $time;
+
+            $task->save();
 
             $model = new TasksHistory();
 
             $model->user_id = $user->id;
             $model->task_id = $task->id;
-            $model->status = $task->status;
+            $model->status = 1;
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
-            $model->updated_at = time();
+            $model->updated_at = $time;
 
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
+                    'identity' => $task->id,
                     'isActive' => $model->status == 1 ? true : false
                 ];
             } else {
@@ -203,6 +203,56 @@ class ApiController extends Controller
                     ]
                 ];
             }
+        }
+    }
+
+    /**
+     * Обновление координат тревоги
+     *
+     * @return array
+     */
+    public function actionUpdateAlert()
+    {
+        $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
+
+        if (Yii::$app->post->getRaw()) {
+            $data = Yii::$app->post->getRaw();
+            $time = time();
+
+            /* Обновление тривоги */
+            $task = Tasks::findOne($data['identity']);
+
+            if ($task->status == 1) {
+                $task->longitude = $data['longitude'];
+                $task->latitude = $data['latitude'];
+                $task->updated_at = $time;
+
+                $task->save();
+
+                /* Запись истории тривоги */
+                $model = new TasksHistory();
+
+                $model->user_id = $user->id;
+                $model->task_id = $task->id;
+                $model->status = $task->status;
+                $model->longitude = $data['longitude'];
+                $model->latitude = $data['latitude'];
+                $model->updated_at = $time;
+
+                $model->save();
+
+                return [
+                    'success' => true,
+                    'isActive' => true,
+                    'identity' => $task->id
+                ];
+            } else {
+                return [
+                    'success' => true,
+                    'isActive' => false
+                ];
+            }
+
         } else {
             $task = Tasks::getLastTask($user);
 
@@ -282,7 +332,9 @@ class ApiController extends Controller
      */
     public function actionResetStatus()
     {
-        $task = Tasks::findOne(['user_id' => 42]);
+        $id = Yii::$app->request->get('id');
+
+        $task = Tasks::findOne($id);
 
         $task->status = 0;
         $task->updated_at = time();
@@ -293,7 +345,7 @@ class ApiController extends Controller
 
         $model->task_id = $task->id;
         $model->status = 0;
-        $model->user_id = 9;
+        $model->user_id = $task->user_id;
         $model->updated_at = time();
 
         $model->save(false);
