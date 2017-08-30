@@ -5,9 +5,9 @@ namespace app\modules\frontend\controllers;
 use Yii;
 use yii\filters\Cors;
 use yii\web\Response;
+use yii\base\Exception;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
-use yii\httpclient\Exception;
 use app\models\Users;
 use app\components\Logger;
 
@@ -39,18 +39,21 @@ class FrontendController extends Controller
     }
 
     /**
-     * Ответ в формате JSON
-     *
      * @param \yii\base\Action $action
      * @return bool
+     * @throws Exception
      */
     public function beforeAction($action)
     {
         $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow'];
 
-        if (!in_array($action->id, $actions)) {
-            $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
-            Yii::$app->user->login($user, 3600 * 24 * 30);
+        if (Yii::$app->post->checkRaw('key')) {
+            if (!in_array($action->id, $actions)) {
+                $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
+                Yii::$app->user->login($user, 3600 * 24 * 30);
+            }
+        } else {
+            throw new Exception('Key is missing!');
         }
 
         $result = parent::beforeAction($action);

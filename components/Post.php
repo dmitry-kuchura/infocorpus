@@ -17,4 +17,15 @@ class Post extends Component
             return $array;
         }
     }
+
+    public function checkRaw($value = null)
+    {
+        $array = json_decode(file_get_contents('php://input'), true);
+
+        if (isset($array[$value])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
