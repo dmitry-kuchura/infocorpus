@@ -170,6 +170,9 @@ class ApiController extends Controller
 
                 $task->save();
             } else {
+                $current = $task->status;
+
+                $task->status = $current;
                 $task->longitude = $data['longitude'];
                 $task->latitude = $data['latitude'];
                 $task->updated_at = time();
@@ -181,7 +184,7 @@ class ApiController extends Controller
 
             $model->user_id = $user->id;
             $model->task_id = $task->id;
-            $model->status = 1;
+            $model->status = $task->status;
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
             $model->updated_at = time();
