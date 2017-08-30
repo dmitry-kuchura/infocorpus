@@ -14,7 +14,7 @@ use Yii;
  * @property string $username
  * @property string $password
  * @property string $phone
- * @property integer $imei
+ * @property string $imei
  * @property string $skype
  * @property string $address
  * @property string $organization
@@ -39,9 +39,10 @@ class Users extends UserInterface
     {
         return [
             [['uid', 'password'], 'required'],
-            [['imei', 'v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
+            [['v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['email'], 'unique'],
+            [['imei'], 'string', 'max' => 16],
             [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
             [['email', 'password', 'phone', 'address', 'organization', 'location', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
