@@ -445,4 +445,16 @@ class FrontendController extends Controller
             'customers' => $customers
         ];
     }
+
+    /**
+     * Получение конкретного пользователя по ID
+     *
+     * @return static
+     */
+    public function actionGetUserData()
+    {
+        if (Yii::$app->request->get('id')) {
+            return Users::findOne(Yii::$app->request->get('id'));
+        }
+    }
 }
