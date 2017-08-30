@@ -120,6 +120,9 @@ class Users extends UserInterface
         $model->updated_at = time();
         $model->generateAuthKey();
 
+        var_dump($model->getErrors());
+        die;
+
         if (!$model->validate()) {
             return null;
         }
