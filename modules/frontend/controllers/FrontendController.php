@@ -400,9 +400,6 @@ class FrontendController extends Controller
             $model->status = 1;
             $model->role = 0;
 
-            var_dump($model);
-            die;
-
             if ($model->createCustomer()) {
                 return [
                     'success' => true,
