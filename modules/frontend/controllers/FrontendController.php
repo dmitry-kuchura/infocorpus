@@ -288,7 +288,7 @@ class FrontendController extends Controller
             $model->status = 1;
             $model->role = 1;
 
-            if ($model->validate() && $model->signUp()) {
+            if ($model->signUp()) {
                 return [
                     'success' => true,
                 ];

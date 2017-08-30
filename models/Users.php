@@ -75,9 +75,6 @@ class Users extends UserInterface
 
     public function signUp()
     {
-        if (!$this->validate()) {
-            return null;
-        }
 
         $user = new Users();
         $user->uid = Yii::$app->security->generateRandomString();
@@ -91,6 +88,10 @@ class Users extends UserInterface
         $user->created_at = time();
         $user->updated_at = time();
         $user->generateAuthKey();
+
+        if (!$user->validate()) {
+            return null;
+        }
 
         return $user->save() ? $user : null;
     }
