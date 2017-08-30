@@ -47,9 +47,9 @@ class FrontendController extends Controller
     {
         $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow', 'remove-user'];
 
-        if (Yii::$app->post->checkRaw('key')) {
+        if (Yii::$app->request->get('key')) {
             if (!in_array($action->id, $actions)) {
-                $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
+                $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
                 Yii::$app->user->login($user, 3600 * 24 * 30);
             }
         } else {
@@ -76,7 +76,7 @@ class FrontendController extends Controller
         $result = parent::afterAction($action, $result);
 
         try {
-            Logger::saveLog(Yii::$app->post->getRaw(), $action->id, $result);
+            Logger::saveLog(Yii::$app->request->get(), $action->id, $result);
         } catch (Exception $e) {
             throw new Exception('Log no save');
         }
@@ -93,7 +93,7 @@ class FrontendController extends Controller
     public function actionAuth()
     {
         if (Yii::$app->user->isGuest) {
-            $data = Yii::$app->post->getRaw();
+            $data = Yii::$app->request->get();
 
             $model = new Users();
 
@@ -144,7 +144,7 @@ class FrontendController extends Controller
      */
     public function actionCheckAuth()
     {
-        if (Yii::$app->post->getRaw('key') == Yii::$app->user->identity->getAuthKey()) {
+        if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
             return [
                 'auth_key' => Yii::$app->user->identity->getAuthKey(),
                 'login' => Yii::$app->user->identity->username,
@@ -164,8 +164,8 @@ class FrontendController extends Controller
      */
     public function actionResetPassword()
     {
-        if (Yii::$app->post->getRaw('email')) {
-            if (Users::resetPassword(Yii::$app->post->getRaw('email'))) {
+        if (Yii::$app->request->get('email')) {
+            if (Users::resetPassword(Yii::$app->request->get('email'))) {
                 return ['success' => true];
             } else {
                 return [
@@ -276,9 +276,9 @@ class FrontendController extends Controller
      */
     public function actionCreateUser()
     {
-        if (Yii::$app->post->getRaw()) {
+        if (Yii::$app->request->get()) {
 
-            $data = Yii::$app->post->getRaw();
+            $data = Yii::$app->request->get();
 
             $model = new Users();
             $model->username = $data['name'];
@@ -336,8 +336,8 @@ class FrontendController extends Controller
      */
     public function actionChangeAllow()
     {
-        if (Yii::$app->post->getRaw('ID')) {
-            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
+        if (Yii::$app->request->get('ID')) {
+            $user = Users::findOne(Yii::$app->request->get('ID'));
 
             $user->status = $user->status == 1 ? 0 : 1;
 
@@ -361,8 +361,8 @@ class FrontendController extends Controller
      */
     public function actionRemoveUser()
     {
-        if (Yii::$app->post->getRaw('ID')) {
-            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
+        if (Yii::$app->request->get('ID')) {
+            $user = Users::findOne(Yii::$app->request->get('ID'));
 
             if ($user->delete()) {
                 return [
