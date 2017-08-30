@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tasks_history".
@@ -15,7 +16,7 @@ use Yii;
  * @property integer $status
  * @property integer $updated_at
  */
-class TasksHistory extends \yii\db\ActiveRecord
+class TasksHistory extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -31,7 +32,7 @@ class TasksHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'task_id', 'longitude', 'latitude', 'status', 'updated_at'], 'required'],
+            [['user_id', 'task_id', 'status', 'updated_at'], 'required'],
             [['user_id', 'task_id', 'status', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
         ];

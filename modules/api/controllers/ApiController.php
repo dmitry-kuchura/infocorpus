@@ -279,12 +279,22 @@ class ApiController extends Controller
      */
     public function actionResetStatus()
     {
-        $status = Yii::$app->request->get('status');
+        $task = Tasks::findOne(['user_id' => 8]);
 
-        if (isset($status)) {
-            Tasks::updateAll(['status' => $status], 'user_id = 8');
+        $task->status = 0;
+        $task->updated_at = time();
 
-            return ['success' => true];
-        }
+        $task->save(false);
+
+        $model = new TasksHistory();
+
+        $model->task_id = $task->id;
+        $model->status = 0;
+        $model->user_id = 9;
+        $model->updated_at = time();
+
+        $model->save(false);
+
+        return ['success' => true];
     }
 }
