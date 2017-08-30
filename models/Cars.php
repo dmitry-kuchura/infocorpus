@@ -16,11 +16,10 @@ use yii\db\ActiveRecord;
  * @property integer $status
  * @property integer $updated_at
  * @property integer $created_at
+ * @property string $name
  * @property string $token
  * @property string $aid
  *
- * // * @property CarHistory $id0
- * // * @property Clients $clients
  * // * @property Users[] $ids
  * // * @property Tasks[] $tasks
  */
@@ -40,11 +39,10 @@ class Cars extends ActiveRecord
     public function rules()
     {
         return [
-            [['longitude', 'latitude', 'updated_at', 'created_at',], 'required'],
             [['client_id', 'cid', 'status', 'updated_at', 'created_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
+            [['name'], 'string', 'max' => 50],
             [['token', 'aid'], 'string', 'max' => 150],
-//            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => CarHistory::className(), 'targetAttribute' => ['id' => 'car_id']],
         ];
     }
 
@@ -67,29 +65,13 @@ class Cars extends ActiveRecord
         ];
     }
 
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getId0()
-//    {
-//        return $this->hasOne(CarHistory::className(), ['car_id' => 'id']);
-//    }
-//
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getClients()
-//    {
-//        return $this->hasOne(Clients::className(), ['id' => 'client_id']);
-//    }
-//
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getIds()
-//    {
-//        return $this->hasMany(Users::className(), ['client_id' => 'id'])->viaTable('clients', ['id' => 'client_id']);
-//    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIds()
+    {
+        return $this->hasMany(Users::className(), ['client_id' => 'id'])->viaTable('clients', ['id' => 'client_id']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery

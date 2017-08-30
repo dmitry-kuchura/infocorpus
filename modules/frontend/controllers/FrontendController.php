@@ -2,6 +2,7 @@
 
 namespace app\modules\frontend\controllers;
 
+use app\models\Cars;
 use Yii;
 use yii\filters\Cors;
 use yii\web\Response;
@@ -455,6 +456,21 @@ class FrontendController extends Controller
     {
         if (Yii::$app->request->get('id')) {
             return Users::findOne(Yii::$app->request->get('id'));
+        }
+    }
+
+    public function actionCreateGroup()
+    {
+        if (Yii::$app->request->get()) {
+            $date = Yii::$app->request->get();
+
+            $model = new Cars();
+
+            $model->name = $date['name'];
+            $model->status = 0;
+            $model->created_at = time();
+            $model->updated_at = time();
+
         }
     }
 }

@@ -157,15 +157,6 @@ class ApiController extends Controller
                 ];
             }
 
-            $last = Tasks::getLastTask($user);
-
-            if ($last->status == 1) {
-                return [
-                    'success' => true,
-                    'identity' => $last->id,
-                    'isActive' => $last->status == 1 ? true : false
-                ];
-            }
 
             $task = new Tasks();
             $time = time();
@@ -203,6 +194,21 @@ class ApiController extends Controller
                     ]
                 ];
             }
+        }
+
+        $last = Tasks::getLastTask($user);
+
+        if ($last->status == 1) {
+            return [
+                'success' => true,
+                'identity' => $last->id,
+                'isActive' => $last->status == 1 ? true : false
+            ];
+        } else {
+            return [
+                'success' => true,
+                'isActive' => false
+            ];
         }
     }
 
