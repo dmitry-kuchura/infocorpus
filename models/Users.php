@@ -38,7 +38,7 @@ class Users extends UserInterface
     public function rules()
     {
         return [
-            [['uid', 'email', 'password'], 'required'],
+            [['uid', 'password'], 'required'],
             [['imei', 'v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['email'], 'unique'],
@@ -119,9 +119,6 @@ class Users extends UserInterface
         $model->created_at = time();
         $model->updated_at = time();
         $model->generateAuthKey();
-
-        var_dump($model);
-        die;
 
         if (!$model->validate()) {
             return null;
