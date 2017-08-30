@@ -13,7 +13,11 @@ use app\components\Logger;
 
 class FrontendController extends Controller
 {
-
+    /**
+     * Настройка кроссдоманных аяксов CORS
+     *
+     * @return array
+     */
     public function behaviors()
     {
         return ArrayHelper::merge([
@@ -34,16 +38,15 @@ class FrontendController extends Controller
         ], parent::behaviors());
     }
 
-
     /**
-     * Application/JSON response
+     * Ответ в формате JSON
      *
      * @param \yii\base\Action $action
      * @return bool
      */
     public function beforeAction($action)
     {
-        $actions = ['auth', 'logout', 'reset-password', 'users-list'];
+        $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow'];
 
         if (!in_array($action->id, $actions)) {
             $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
@@ -58,7 +61,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Save log
+     * Сохранение Лога с данными
      *
      * @param \yii\base\Action $action
      * @param mixed $result
@@ -79,7 +82,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Login
+     * Авторизация пользователя
      *
      * @return array
      * @throws Exception
@@ -117,7 +120,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Logout
+     * Разлогин пользователя в системе
      *
      * @return array
      */
@@ -132,7 +135,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Check AuthKey for fast login from React API
+     * Проверка существует ли еще пользователь в системе или нет React API
      *
      * @return array
      */
@@ -151,7 +154,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Reset password
+     * Сброс пароля, отправка на Email
      *
      * @return array
      * @throws Exception
@@ -173,7 +176,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Markers for index map
+     * Маркеры на карте группы и пользователи
      *
      * @return array
      */
@@ -264,7 +267,9 @@ class FrontendController extends Controller
     }
 
     /**
-     * Create new User
+     * Создание пользователя
+     *
+     * @return array
      */
     public function actionCreateUser()
     {
@@ -294,7 +299,7 @@ class FrontendController extends Controller
     }
 
     /**
-     * Get users list
+     * Список пользователей
      *
      * @return array
      */
@@ -321,10 +326,50 @@ class FrontendController extends Controller
         ];
     }
 
+    /**
+     * Изменение текущего статуса путем получения
+     *
+     * @return array
+     */
     public function actionChangeAllow()
     {
         if (Yii::$app->post->getRaw('ID')) {
+            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
 
+            $user->status = $user->status == 1 ? 0 : 1;
+
+            if ($user->validate() && $user->save()) {
+                return [
+                    'success' => true,
+                    'current' => $user->status
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
+        };
+    }
+
+    /**
+     * Удаление пользователя (насовсем)
+     *
+     * @return array
+     */
+    public function actionRemoveUser()
+    {
+        if (Yii::$app->post->getRaw('ID')) {
+            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
+
+            if ($user->delete()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
         };
     }
 }
