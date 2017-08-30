@@ -1,1 +1,0 @@
-<?php return json_encode(['first', 'second']); die;

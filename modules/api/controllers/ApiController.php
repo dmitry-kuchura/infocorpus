@@ -5,10 +5,10 @@ namespace app\modules\api\controllers;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
-use app\models\Recall;
-use app\models\Users;
 use app\models\Cars;
+use app\models\Users;
 use app\models\Tasks;
+use app\models\Recall;
 use app\components\Logger;
 
 class ApiController extends Controller
@@ -54,15 +54,11 @@ class ApiController extends Controller
      */
     public function actionLogin()
     {
-        $user = Users::findByUid(Yii::$app->request->post('uid'));
+        $user = Users::findByUid(Yii::$app->post->getRaw('uid'));
 
         if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
             return [
                 'success' => true,
-                'error' => [
-                    'code' => 200,
-                    'message' => 'User found!'
-                ],
                 'token' => Yii::$app->user->identity->auth_key
             ];
         } else {
@@ -115,10 +111,6 @@ class ApiController extends Controller
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
-                    'error' => [
-                        'code' => 200,
-                        'message' => 'Recall was save!'
-                    ]
                 ];
             } else {
                 return [
@@ -150,9 +142,9 @@ class ApiController extends Controller
     {
         $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
-        if (Yii::$app->request->post()) {
+        if (Yii::$app->post->getRaw()) {
 
-            $data = Yii::$app->request->post();
+            $data = Yii::$app->post->getRaw();
 
             if (!$user) {
                 return [
@@ -206,8 +198,8 @@ class ApiController extends Controller
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
 
-        if (Yii::$app->request->post()) {
-            $data = Yii::$app->request->post();
+        if (Yii::$app->post->getRaw()) {
+            $data = Yii::$app->post->getRaw();
 
             if (!$car) {
                 return [
@@ -230,10 +222,6 @@ class ApiController extends Controller
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
-                    'error' => [
-                        'code' => 200,
-                        'message' => 'Cars was updated!'
-                    ]
                 ];
             } else {
                 return [
@@ -247,10 +235,6 @@ class ApiController extends Controller
         } else {
             return [
                 'success' => true,
-                'error' => [
-                    'code' => 200,
-                    'message' => 'Getting status!'
-                ],
                 'status' => $car->status,
                 'user' => [
                     'uid' => 'user_id',

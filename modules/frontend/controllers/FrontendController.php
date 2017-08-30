@@ -3,15 +3,38 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\filters\Cors;
 use yii\web\Response;
 use yii\rest\Controller;
+use yii\helpers\ArrayHelper;
 use yii\httpclient\Exception;
-use app\components\Logger;
 use app\models\Users;
-use yii\filters\Cors;
+use app\components\Logger;
 
 class FrontendController extends Controller
 {
+
+    public function behaviors()
+    {
+        return ArrayHelper::merge([
+            [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['*'],
+                    'Access-Control-Max-Age' => 86400,
+                ],
+                'actions' => [
+                    'map' => [
+                        'Access-Control-Allow-Credentials' => true,
+                    ]
+                ]
+            ],
+        ], parent::behaviors());
+    }
+
+
     /**
      * Application/JSON response
      *
@@ -26,15 +49,6 @@ class FrontendController extends Controller
             $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
-
-        Yii::$app->request->getHeaders()->set('Origin', '*');
-        Yii::$app->request->getHeaders()->set('Access-Control-Request-Method', '*');
-        Yii::$app->request->getHeaders()->set('Access-Control-Request-Headers', '*');
-        Yii::$app->request->getHeaders()->set('Access-Control-Allow-Credentials', false);
-        Yii::$app->request->getHeaders()->set('Access-Control-Max-Age', 0);
-        Yii::$app->request->getHeaders()->set('Access-Control-Expose-Headers', '*');
-
-        Yii::$app->response->getHeaders()->set('Access-Control-Allow-Origin', '*');
 
         $result = parent::beforeAction($action);
 
