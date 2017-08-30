@@ -378,6 +378,38 @@ class FrontendController extends Controller
 
     public function actionCreateCustomer()
     {
+        $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
 
+        if (Yii::$app->request->get()) {
+
+            $data = Yii::$app->request->get();
+
+            $model = new Users();
+            $model->username = $data['name'];
+            $model->phone = $data['phone'];
+            $model->imei = $data['imei'];
+            $model->email = $data['email'];
+            $model->skype = $data['skype'];
+            $model->address = $data['location'];
+            $model->organization = $data['company'];
+            $model->location = $data['company-location'];
+            $model->car_name = $data['car'];
+            $model->car_color= $data['car-color'];
+            $model->car_number = $data['car-number'];
+            $model->password = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
+            $model->status = 1;
+            $model->role = 0;
+
+            if ($model->createCustomer()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors()
+                ];
+            }
+        }
     }
 }

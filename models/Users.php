@@ -96,6 +96,37 @@ class Users extends UserInterface
         return $user->save() ? $user : null;
     }
 
+    public function createCustomer()
+    {
+        $model = new Users();
+        $model->uid = Yii::$app->security->generateRandomString();
+        $model->username = $this->username;
+        $model->phone = $this->phone;
+        $model->imei = $this->imei;
+        $model->email = $this->email;
+        $model->skype = $this->skype;
+        $model->address = $this->address;
+        $model->organization = $this->organization;
+        $model->location = $this->location;
+        $model->car_name = $this->car_name;
+        $model->car_color= $this->car_color;
+        $model->car_number = $this->car_number;
+        $model->password = md5($this->password);
+        $model->status = $this->status;
+        $model->role = $this->role;
+
+        $model->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
+        $model->created_at = time();
+        $model->updated_at = time();
+        $model->generateAuthKey();
+
+        if (!$model->validate()) {
+            return null;
+        }
+
+        return $model->save() ? $model : null;
+    }
+
     public function login()
     {
         $user = self::findByEmail($this->email);
