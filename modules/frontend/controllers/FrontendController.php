@@ -47,13 +47,9 @@ class FrontendController extends Controller
     {
         $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow', 'remove-user'];
 
-        if (Yii::$app->request->get('key')) {
-            if (!in_array($action->id, $actions)) {
-                $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
-                Yii::$app->user->login($user, 3600 * 24 * 30);
-            }
-        } else {
-            throw new Exception('Key is missing!');
+        if (!in_array($action->id, $actions)) {
+            $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
+            Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
         $result = parent::beforeAction($action);
