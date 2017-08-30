@@ -45,7 +45,7 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow'];
+        $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow', 'remove-user'];
 
         if (Yii::$app->post->checkRaw('key')) {
             if (!in_array($action->id, $actions)) {
