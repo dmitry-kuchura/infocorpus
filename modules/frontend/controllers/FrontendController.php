@@ -45,7 +45,11 @@ class FrontendController extends Controller
      */
     public function beforeAction($action)
     {
-        $actions = ['auth', 'logout', 'reset-password', 'users-list', 'change-allow', 'remove-user'];
+        $actions = [
+            'auth',
+            'logout',
+            'reset-password'
+        ];
 
         if (!in_array($action->id, $actions)) {
             $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));

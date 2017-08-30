@@ -156,10 +156,14 @@ class ApiController extends Controller
                 ];
             }
 
-            $model = new Tasks();
+            $model = Tasks::findOne(['user_id' => $user->id, 'status' => 0]);
 
-            $model->user_id = $user->id;
-            $model->status = 1;
+            if (!$model) {
+                $model = new Tasks();
+                $model->user_id = $user->id;
+                $model->status = 0;
+            }
+
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
 
