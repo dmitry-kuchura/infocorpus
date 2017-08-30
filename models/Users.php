@@ -11,21 +11,25 @@ use Yii;
  * @property integer $client_id
  * @property string $uid
  * @property string $email
- * @property string $phone
  * @property string $username
  * @property string $password
- * @property string $first_name
- * @property string $last_name
- * @property string $short_name
+ * @property string $phone
+ * @property integer $imei
+ * @property string $skype
+ * @property string $address
+ * @property string $organization
+ * @property string $location
+ * @property string $car_name
+ * @property string $car_color
+ * @property string $car_number
  * @property string $longitude
  * @property string $latitude
- * @property string $token
  * @property string $password_hash
  * @property string $auth_key
  * @property string $hash
  * @property integer $v
- * @property integer $role
  * @property integer $status
+ * @property integer $role
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -34,12 +38,12 @@ class Users extends UserInterface
     public function rules()
     {
         return [
-            [['email', 'username', 'password',], 'required'],
-            [['client_id', 'v', 'status', 'created_at', 'updated_at', 'role'], 'integer'],
+            [['client_id', 'uid', 'email', 'password'], 'required'],
+            [['client_id', 'imei', 'v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['email'], 'unique'],
-            [['uid', 'username'], 'string', 'max' => 50],
-            [['email', 'password', 'phone', 'first_name', 'last_name', 'short_name', 'token', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
+            [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
+            [['email', 'password', 'phone', 'address', 'organization', 'location', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
     }
 
