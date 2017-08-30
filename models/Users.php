@@ -38,8 +38,8 @@ class Users extends UserInterface
     public function rules()
     {
         return [
-            [['client_id', 'uid', 'email', 'password'], 'required'],
-            [['client_id', 'imei', 'v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
+            [['uid', 'email', 'password'], 'required'],
+            [['imei', 'v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['email'], 'unique'],
             [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
@@ -82,9 +82,10 @@ class Users extends UserInterface
         $user = new Users();
         $user->uid = Yii::$app->security->generateRandomString();
         $user->username = $this->username;
-        $user->short_name = $this->short_name;
         $user->phone = $this->phone;
         $user->email = $this->email;
+        $user->status = $this->status;
+        $user->role = $this->role;
         $user->password = md5($this->password);
         $user->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
         $user->created_at = time();
