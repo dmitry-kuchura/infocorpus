@@ -282,7 +282,7 @@ class ApiController extends Controller
      */
     public function actionResetStatus()
     {
-        $task = Tasks::findOne(['user_id' => 8]);
+        $task = Tasks::findOne(['user_id' => 42]);
 
         $task->status = 0;
         $task->updated_at = time();

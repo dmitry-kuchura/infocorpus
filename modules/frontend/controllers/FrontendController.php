@@ -309,7 +309,7 @@ class FrontendController extends Controller
     public function actionUsersList()
     {
         /* @var $result Users */
-        $result = Users::find()->where(['!=', 'role', 666])->all();
+        $result = Users::find()->where(['IN', 'role', [666, 1]])->all();
 
         foreach ($result as $obj) {
             $users[] = [
