@@ -135,11 +135,11 @@ class ApiController extends Controller
     }
 
     /**
-     * Запуск тревоги
+     * Проверка тревоги
      *
      * @return array
      */
-    public function actionAlert()
+    public function actionCheckAlert()
     {
         $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
@@ -168,51 +168,78 @@ class ApiController extends Controller
                 'isActive' => false
             ];
         }
+    }
 
-        if (Yii::$app->post->getRaw()) {
+    /**
+     * Запуск тревоги
+     *
+     * @return array
+     */
+    public function actionAlert()
+    {
+        $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
-            $data = Yii::$app->post->getRaw();
-
-            $task = new Tasks();
-            $time = time();
-
-            $task->user_id = $user->id;
-            $task->longitude = $data['longitude'];
-            $task->latitude = $data['latitude'];
-            $task->status = 1;
-            $task->created_at = $time;
-            $task->updated_at = $time;
-
-            $task->save();
-
-            $model = new TasksHistory();
-
-            $model->user_id = $user->id;
-            $model->task_id = $task->id;
-            $model->status = 1;
-            $model->longitude = $data['longitude'];
-            $model->latitude = $data['latitude'];
-            $model->updated_at = $time;
-
-            if ($model->validate() && $model->save()) {
-                return [
-                    'success' => true,
-                    'identity' => $task->id,
-                    'isActive' => $model->status == 1 ? true : false
-                ];
-            } else {
-                return [
-                    'success' => false,
-                    'error' => [
-                        'code' => 500,
-                        'message' => 'Not created!'
-                    ]
-                ];
-            }
-        } else {
-
+        if (!$user) {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 404,
+                    'message' => 'User not found!'
+                ]
+            ];
         }
 
+        /* @var $last Tasks */
+        $last = Tasks::getLastTask($user);
+
+        if ($last && $last->status == 1) {
+            return [
+                'success' => true,
+                'identity' => $last->id,
+                'isActive' => $last->status == 1 ? true : false
+            ];
+        } else {
+            if (Yii::$app->post->getRaw()) {
+                $data = Yii::$app->post->getRaw();
+
+                $task = new Tasks();
+                $time = time();
+
+                $task->user_id = $user->id;
+                $task->longitude = $data['longitude'];
+                $task->latitude = $data['latitude'];
+                $task->status = 1;
+                $task->created_at = $time;
+                $task->updated_at = $time;
+
+                $task->save();
+
+                $model = new TasksHistory();
+
+                $model->user_id = $user->id;
+                $model->task_id = $task->id;
+                $model->status = 1;
+                $model->longitude = $data['longitude'];
+                $model->latitude = $data['latitude'];
+                $model->updated_at = $time;
+
+                if ($model->validate() && $model->save()) {
+                    return [
+                        'success' => true,
+                        'identity' => $task->id,
+                        'isActive' => $model->status == 1 ? true : false
+                    ];
+                } else {
+                    return [
+                        'success' => false,
+                        'error' => [
+                            'code' => 500,
+                            'message' => 'Not created!'
+                        ]
+                    ];
+                }
+            }
+        }
     }
 
     /**

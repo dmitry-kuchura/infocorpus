@@ -471,7 +471,7 @@ class FrontendController extends Controller
             $model->name = $date['name'];
             $model->status = 0;
             $model->aid = Yii::$app->security->generateRandomString();
-            $model->token = Yii::$app->security->generateRandomKey();
+            $model->token = Yii::$app->security->generateRandomString();
             $model->created_at = time();
             $model->updated_at = time();
 
@@ -508,5 +508,30 @@ class FrontendController extends Controller
             'success' => true,
             'customers' => $customers
         ];
+    }
+
+    public function actionGroupChangeStatus()
+    {
+        if (Yii::$app->post->getRaw('ID')) {
+            $car = Cars::findOne(Yii::$app->post->getRaw('ID'));
+
+            $car->status = Yii::$app->post->getRaw('ID');
+
+            if ($car->validate() && $car->save()) {
+                return [
+                    'success' => true,
+                    'current' => $user->status
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
+        };
+
+    }
+
+    public function actionGroupSendMessage()
+    {
     }
 }
