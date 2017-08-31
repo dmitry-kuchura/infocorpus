@@ -53,9 +53,7 @@ class FrontendController extends Controller
         ];
 
         if (!in_array($action->id, $actions)) {
-            $user = Users::findUserByAuth(Yii::$app->request->get('key'));
-            var_dump($user);
-            die;
+            $user = Users::findIdentityByAccessToken(Yii::$app->post->getRaw('key'));
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 
@@ -147,7 +145,7 @@ class FrontendController extends Controller
      */
     public function actionCheckAuth()
     {
-        if (Yii::$app->request->get('key') == Yii::$app->user->identity->getAuthKey()) {
+        if (Yii::$app->post->getRaw('key') == Yii::$app->user->identity->getAuthKey()) {
             return [
                 'auth_key' => Yii::$app->user->identity->getAuthKey(),
                 'login' => Yii::$app->user->identity->username,
