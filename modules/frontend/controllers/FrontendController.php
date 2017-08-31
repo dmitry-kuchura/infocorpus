@@ -4,6 +4,7 @@ namespace app\modules\frontend\controllers;
 
 use app\models\Cars;
 use app\models\Tasks;
+use app\models\TasksHistory;
 use Yii;
 use yii\filters\Cors;
 use yii\web\Response;
@@ -479,9 +480,21 @@ class FrontendController extends Controller
 
             $model = Tasks::findOne($data['alert-id']);
             $model->car_id = $data['group-id'];
+            $model->status = 2;
+            $model->updated_at = time();
 
             $car = Cars::findOne($data['group-id']);
             $car->status = 2;
+
+            $history = new TasksHistory();
+            $history->user_id = $model->id;
+            $history->task_id = $model->id;
+            $history->status = 2;
+            $history->longitude = $model->longitude;
+            $history->latitude = $model->latitude;
+            $history->updated_at = time();
+
+            $history->save();
 
             if ($model->save() && $car->save()) {
                 return [
