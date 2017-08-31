@@ -189,7 +189,7 @@ class FrontendController extends Controller
     public function actionMap()
     {
         /* @var $tasksData Tasks */
-        $tasksData = Tasks::find()->where(['status' => 1])->all();
+        $tasksData = Tasks::find()->where(['!=', 'status', 0])->all();
 
         $task = [];
 
@@ -563,6 +563,13 @@ class FrontendController extends Controller
                 ];
             }
         };
+    }
+
+    public function actionGroupCancel()
+    {
+        if (Yii::$app->post->getRaw()) {
+
+        }
     }
 
     public function actionGroupSendMessage()
