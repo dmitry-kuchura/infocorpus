@@ -455,11 +455,13 @@ class FrontendController extends Controller
     public function actionGetUserData()
     {
         if (Yii::$app->post->getRaw('id')) {
-            return Users::findOne(Yii::$app->post->getRaw('id'));
+            $data = Users::findOne(Yii::$app->post->getRaw('id'));
+
+            return ['data' => $data];
         }
     }
 
-    public function actionCreateGroup()
+    public function actionGroupCreate()
     {
         if (Yii::$app->post->getRaw()) {
             $date = Yii::$app->post->getRaw();
@@ -471,6 +473,38 @@ class FrontendController extends Controller
             $model->created_at = time();
             $model->updated_at = time();
 
+            if ($model->save()) {
+                return [
+                    'success' => true
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors()
+                ];
+            }
+
         }
+    }
+
+    public function actionGroupList()
+    {
+        /* @var $result Cars */
+        $result = Cars::find()->all();
+
+        foreach ($result as $obj) {
+            $customers[] = [
+                'id' => $obj->id,
+                'name' => $obj->name,
+                'status' => $obj->status,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'customers' => $customers
+        ];
     }
 }
