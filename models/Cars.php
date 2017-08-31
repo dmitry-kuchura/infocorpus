@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $longitude
  * @property string $latitude
  * @property integer $status
+ * @property integer $available
  * @property integer $updated_at
  * @property integer $created_at
  * @property string $name
@@ -39,7 +40,7 @@ class Cars extends ActiveRecord
     public function rules()
     {
         return [
-            [['client_id', 'cid', 'status', 'updated_at', 'created_at'], 'integer'],
+            [['client_id', 'cid', 'status', 'available', 'updated_at', 'created_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['token', 'aid'], 'string', 'max' => 150],
@@ -58,6 +59,7 @@ class Cars extends ActiveRecord
             'longitude' => 'Longitude',
             'latitude' => 'Latitude',
             'status' => 'Status',
+            'available' => 'Available',
             'updated_at' => 'Updated At',
             'created_at' => 'Created At',
             'token' => 'Token',

@@ -460,6 +460,7 @@ class FrontendController extends Controller
                 'id' => $obj->id,
                 'name' => $obj->name,
                 'status' => $obj->status,
+                'available' => $obj->available,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
             ];
@@ -478,7 +479,10 @@ class FrontendController extends Controller
 
             $model = Tasks::findOne($data['alert-id']);
             $model->car_id = $data['group-id'];
-            
+
+            $car = Cars::findOne($data['group-id']);
+            $car->status = 2;
+
             if ($model->save()) {
                 return [
                     'success' => true
