@@ -206,51 +206,26 @@ class FrontendController extends Controller
             ];
         }
 
+        /* @var $carsData Cars */
+        $carsData = Tasks::find()->where(['status' => 1])->all();
+
+        $cars = [];
+
+        foreach ($carsData as $key => $obj) {
+            $cars[] = [
+                'id' => $obj->id,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'name' => $obj->name,
+                'status' => $obj->status,
+                'type' => 'group'
+            ];
+        }
+
         return [
             'success' => true,
             'result' => [
-                'groups' => [
-                    0 => [
-                        'id' => 13,
-                        'longitude' => 32.642713,
-                        'latitude' => 46.671288,
-                        'name' => 'Белка',
-                        'status' => 2,
-                        'type' => 'group'
-                    ],
-                    1 => [
-                        'id' => 16,
-                        'longitude' => 32.603832,
-                        'latitude' => 46.655619,
-                        'name' => 'Мангуст',
-                        'status' => 1,
-                        'type' => 'group'
-                    ],
-                    2 => [
-                        'id' => 17,
-                        'longitude' => 32.618337,
-                        'latitude' => 46.632992,
-                        'name' => 'Удав',
-                        'status' => 2,
-                        'type' => 'group'
-                    ],
-                    3 => [
-                        'id' => 21,
-                        'longitude' => 32.564006,
-                        'latitude' => 46.652261,
-                        'name' => 'Писец',
-                        'status' => 3,
-                        'type' => 'group'
-                    ],
-                    4 => [
-                        'id' => 27,
-                        'longitude' => 32.631297,
-                        'latitude' => 46.646193,
-                        'name' => 'Енот',
-                        'status' => 1,
-                        'type' => 'group'
-                    ],
-                ],
+                'groups' => $cars,
                 'alerts' => $task
             ]
         ];
