@@ -500,7 +500,7 @@ class FrontendController extends Controller
         if (Yii::$app->post->getRaw('ID')) {
             $car = Cars::findOne(Yii::$app->post->getRaw('ID'));
 
-            $car->status = Yii::$app->post->getRaw('ID');
+            $car->status = Yii::$app->post->getRaw('status');
 
             if ($car->validate() && $car->save()) {
                 return [
@@ -513,7 +513,6 @@ class FrontendController extends Controller
                 ];
             }
         };
-
     }
 
     public function actionGroupChangeAllow()
@@ -526,7 +525,7 @@ class FrontendController extends Controller
             if ($group->validate() && $group->save()) {
                 return [
                     'success' => true,
-                    'current' => $group->status
+                    'current' => $group->available
                 ];
             } else {
                 return [
