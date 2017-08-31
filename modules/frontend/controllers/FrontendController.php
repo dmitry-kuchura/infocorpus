@@ -568,7 +568,33 @@ class FrontendController extends Controller
     public function actionGroupCancel()
     {
         if (Yii::$app->post->getRaw()) {
+            $model = Tasks::findOne(Yii::$app->post->getRaw('ID'));
 
+            $model->status = 0;
+            $model->updated_at = time();
+
+            $history = new TasksHistory();
+            $history->updated_at = time();
+            $history->status = 0;
+            $history->task_id = $model->id;
+            $history->user_id = $model->user_id;
+
+            if ($model->car_id) {
+                $car = Cars::findOne($model->car_id);
+
+                $car->status = 1;
+                $car->save(false);
+            }
+
+            if ($model->save() && $history->save()) {
+                return [
+                    'success' => true
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
         }
     }
 
