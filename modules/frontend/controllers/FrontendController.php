@@ -196,7 +196,7 @@ class FrontendController extends Controller
         foreach ($tasksData as $obj) {
             $task[] = [
                 'id' => $obj->id,
-                'status' => 1,
+                'status' => $obj->status,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
                 'name' => $obj->user->username,
