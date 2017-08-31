@@ -198,7 +198,7 @@ class FrontendController extends Controller
                 'status' => 1,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
-                'name' => $obj->user->name,
+                'name' => $obj->user->username,
                 'location' => 'м. Херсон, вул. Артилерійська, 14',
                 'phone' => '+38(099)999-99-99',
                 'type' => 'alert',
