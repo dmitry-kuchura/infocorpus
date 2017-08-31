@@ -53,7 +53,9 @@ class FrontendController extends Controller
         ];
 
         if (!in_array($action->id, $actions)) {
-            $user = Users::findIdentityByAccessToken(Yii::$app->request->get('key'));
+            $user = Users::findUserByAuth(Yii::$app->request->get('key'));
+            var_dump($user);
+            die;
             Yii::$app->user->login($user, 3600 * 24 * 30);
         }
 

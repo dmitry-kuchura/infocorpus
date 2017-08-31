@@ -25,6 +25,13 @@ class UserInterface extends ActiveRecord implements IdentityInterface
         return static::findOne(['auth_key' => $token]);
     }
 
+    public static function findUserByAuth($auth_key)
+    {
+        var_dump($auth_key);
+        die;
+        return static::findOne(['auth_key' => $auth_key]);
+    }
+
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username]);

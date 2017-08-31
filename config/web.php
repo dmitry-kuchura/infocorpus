@@ -30,7 +30,8 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\UserInterface',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -54,7 +55,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'frontend/<action>' => 'frontend/frontend/<action>',
-                'api/<action>' => 'api/api/<action>'
+                'api/<action>' => 'api/api/<action>',
+                '<action>' => 'site/index'
             ],
         ],
     ],
