@@ -456,7 +456,7 @@ class FrontendController extends Controller
         $result = Cars::find()->all();
 
         foreach ($result as $obj) {
-            $customers[] = [
+            $groups[] = [
                 'id' => $obj->id,
                 'name' => $obj->name,
                 'status' => $obj->status,
@@ -468,7 +468,7 @@ class FrontendController extends Controller
 
         return [
             'success' => true,
-            'customers' => $customers
+            'groups' => $groups
         ];
     }
 
