@@ -208,7 +208,7 @@ class FrontendController extends Controller
         }
 
         /* @var $carsData Cars */
-        $carsData = Cars::find()->where(['status' => 1])->all();
+        $carsData = Cars::find()->all();
 
         $cars = [];
 
@@ -496,7 +496,7 @@ class FrontendController extends Controller
 
             $history->save();
 
-            if ($model->save() && $car->save()) {
+            if ($model->save(false) && $car->save()) {
                 return [
                     'success' => true
                 ];
