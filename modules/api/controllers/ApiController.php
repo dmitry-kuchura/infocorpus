@@ -199,45 +199,37 @@ class ApiController extends Controller
                 'isActive' => $last->status == 1 ? true : false
             ];
         } else {
-            if (Yii::$app->post->getRaw()) {
-                $data = Yii::$app->post->getRaw();
+            $task = new Tasks();
+            $time = time();
 
-                $task = new Tasks();
-                $time = time();
+            $task->user_id = $user->id;
+            $task->status = 1;
+            $task->created_at = $time;
+            $task->updated_at = $time;
 
-                $task->user_id = $user->id;
-                $task->longitude = $data['longitude'];
-                $task->latitude = $data['latitude'];
-                $task->status = 1;
-                $task->created_at = $time;
-                $task->updated_at = $time;
+            $task->save();
 
-                $task->save();
+            $model = new TasksHistory();
 
-                $model = new TasksHistory();
+            $model->user_id = $user->id;
+            $model->task_id = $task->id;
+            $model->status = 1;
+            $model->updated_at = $time;
 
-                $model->user_id = $user->id;
-                $model->task_id = $task->id;
-                $model->status = 1;
-                $model->longitude = $data['longitude'];
-                $model->latitude = $data['latitude'];
-                $model->updated_at = $time;
-
-                if ($model->validate() && $model->save()) {
-                    return [
-                        'success' => true,
-                        'identity' => $task->id,
-                        'isActive' => $model->status == 1 ? true : false
-                    ];
-                } else {
-                    return [
-                        'success' => false,
-                        'error' => [
-                            'code' => 500,
-                            'message' => 'Not created!'
-                        ]
-                    ];
-                }
+            if ($model->validate() && $model->save()) {
+                return [
+                    'success' => true,
+                    'identity' => $task->id,
+                    'isActive' => $model->status == 1 ? true : false
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Not created!'
+                    ]
+                ];
             }
         }
     }
@@ -348,15 +340,15 @@ class ApiController extends Controller
             return [
                 'success' => true,
                 'status' => $car->status,
-                'user' => [
+                'user' => $car->status == 2 ? [
                     'uid' => 'user_id',
                     'name' => 'name',
                     'phone' => 'phone',
-                    'big_photo' => 'http =>//big_image.png',
-                    'small_photo' => 'http =>//small_image.png',
-                    'longitude' => 32.1111111,
-                    'latitude' => 46.1111111
-                ]
+                    'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                    'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                    'longitude' => 32.615762,
+                    'latitude' => 46.636992,
+                ] : null
             ];
         }
     }

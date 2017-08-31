@@ -38,7 +38,7 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             [['car_id', 'user_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['user_id', 'longitude', 'latitude'], 'required'],
+            [['user_id'], 'required'],
             [['longitude', 'latitude'], 'number'],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
