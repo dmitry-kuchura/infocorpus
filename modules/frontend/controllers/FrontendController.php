@@ -470,6 +470,8 @@ class FrontendController extends Controller
 
             $model->name = $date['name'];
             $model->status = 0;
+            $model->aid = Yii::$app->security->generateRandomString();
+            $model->token = Yii::$app->security->generateRandomKey();
             $model->created_at = time();
             $model->updated_at = time();
 
