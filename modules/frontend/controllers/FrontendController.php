@@ -476,9 +476,18 @@ class FrontendController extends Controller
         if (Yii::$app->post->getRaw()) {
             $data = Yii::$app->post->getRaw();
 
-
-            $data['alert-id'];
-            $data['group-id'];
+            $model = Tasks::findOne($data['alert-id']);
+            $model->car_id = $data['group-id'];
+            
+            if ($model->save()) {
+                return [
+                    'success' => true
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
         }
     }
 
