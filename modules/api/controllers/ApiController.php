@@ -255,7 +255,7 @@ class ApiController extends Controller
                 $task->latitude = $data['latitude'];
                 $task->updated_at = $time;
 
-                $task->save();
+                $task->save(false);
 
                 /* Запись истории тривоги */
                 $model = new TasksHistory();

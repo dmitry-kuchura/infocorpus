@@ -3,6 +3,7 @@
 namespace app\modules\frontend\controllers;
 
 use app\models\Cars;
+use app\models\Tasks;
 use Yii;
 use yii\filters\Cors;
 use yii\web\Response;
@@ -186,6 +187,25 @@ class FrontendController extends Controller
      */
     public function actionMap()
     {
+        /* @var $tasksData Tasks */
+        $tasksData = Tasks::find()->where(['status' => 1])->all();
+
+        $task = [];
+
+        foreach ($tasksData as $key => $obj) {
+            $task[] = [
+                'id' => $obj->id,
+                'status' => 1,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'name' => $obj->user->name,
+                'location' => 'м. Херсон, вул. Артилерійська, 14',
+                'phone' => '+38(099)999-99-99',
+                'type' => 'alert',
+                'date' => date('d.m.Y в H:i', $obj->created_at),
+            ];
+        }
+
         return [
             'success' => true,
             'result' => [
@@ -231,41 +251,7 @@ class FrontendController extends Controller
                         'type' => 'group'
                     ],
                 ],
-                'alerts' => [
-                    0 => [
-                        'id' => 15,
-                        'status' => 1,
-                        'longitude' => 32.630632,
-                        'latitude' => 46.638230,
-                        'name' => 'Петренко Николай Борисович',
-                        'location' => 'м. Херсон, вул. Артилерійська, 14',
-                        'phone' => '+38(099)999-99-99',
-                        'type' => 'alert',
-                        'date' => date('d.m.Y в H:i'),
-                    ],
-                    1 => [
-                        'id' => 17,
-                        'status' => 2,
-                        'longitude' => 32.612513,
-                        'latitude' => 46.637316,
-                        'name' => 'Новиков Григорий Иванович',
-                        'location' => 'м. Херсон, вул. Ярослава Мудрого, 12',
-                        'phone' => '+38(099)999-99-99',
-                        'type' => 'alert',
-                        'date' => date('d.m.Y в H:i'),
-                    ],
-                    2 => [
-                        'id' => 20,
-                        'status' => 1,
-                        'longitude' => 32.620988,
-                        'latitude' => 46.628622,
-                        'name' => 'Иванов Пётр Сергеевич',
-                        'location' => 'м. Херсон, просп. Ушакова, 1А',
-                        'phone' => '+38(099)999-99-99',
-                        'type' => 'alert',
-                        'date' => date('d.m.Y в H:i'),
-                    ],
-                ]
+                'alerts' => $task
             ]
         ];
     }
@@ -510,6 +496,17 @@ class FrontendController extends Controller
         ];
     }
 
+    public function actionGroupAlert()
+    {
+        if (Yii::$app->post->getRaw()) {
+            $data = Yii::$app->post->getRaw();
+
+
+            $data['alert-id'];
+            $data['group-id'];
+        }
+    }
+
     public function actionGroupChangeStatus()
     {
         if (Yii::$app->post->getRaw('ID')) {
@@ -520,7 +517,7 @@ class FrontendController extends Controller
             if ($car->validate() && $car->save()) {
                 return [
                     'success' => true,
-                    'current' => $user->status
+                    'current' => $car->status
                 ];
             } else {
                 return [
