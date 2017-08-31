@@ -539,7 +539,7 @@ class FrontendController extends Controller
     public function actionGroupDelete()
     {
         if (Yii::$app->post->getRaw('ID')) {
-            $group = Users::findOne(Yii::$app->post->getRaw('ID'));
+            $group = Cars::findOne(Yii::$app->post->getRaw('ID'));
 
             if ($group->delete()) {
                 return [
