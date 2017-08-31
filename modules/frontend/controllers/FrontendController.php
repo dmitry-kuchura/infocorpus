@@ -536,6 +536,23 @@ class FrontendController extends Controller
         }
     }
 
+    public function actionGroupDelete()
+    {
+        if (Yii::$app->post->getRaw('ID')) {
+            $group = Users::findOne(Yii::$app->post->getRaw('ID'));
+
+            if ($group->delete()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
+        };
+    }
+
     public function actionGroupSendMessage()
     {
     }
