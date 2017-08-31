@@ -586,7 +586,7 @@ class FrontendController extends Controller
                 $car->save(false);
             }
 
-            if ($model->save() && $history->save()) {
+            if ($model->save(false) && $history->save()) {
                 return [
                     'success' => true
                 ];
