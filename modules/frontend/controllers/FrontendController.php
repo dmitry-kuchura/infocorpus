@@ -192,7 +192,7 @@ class FrontendController extends Controller
 
         $task = [];
 
-        foreach ($tasksData as $key => $obj) {
+        foreach ($tasksData as $obj) {
             $task[] = [
                 'id' => $obj->id,
                 'status' => 1,
@@ -207,11 +207,11 @@ class FrontendController extends Controller
         }
 
         /* @var $carsData Cars */
-        $carsData = Tasks::find()->where(['status' => 1])->all();
+        $carsData = Cars::find()->where(['status' => 1])->all();
 
         $cars = [];
 
-        foreach ($carsData as $key => $obj) {
+        foreach ($carsData as $obj) {
             $cars[] = [
                 'id' => $obj->id,
                 'longitude' => $obj->longitude,
