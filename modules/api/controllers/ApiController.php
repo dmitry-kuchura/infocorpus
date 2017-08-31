@@ -143,9 +143,20 @@ class ApiController extends Controller
     {
         $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
+        if (!$user) {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 404,
+                    'message' => 'User not found!'
+                ]
+            ];
+        }
+
+        /* @var $last Tasks */
         $last = Tasks::getLastTask($user);
 
-        if ($last->status == 1) {
+        if ($last && $last->status == 1) {
             return [
                 'success' => true,
                 'identity' => $last->id,
@@ -161,17 +172,6 @@ class ApiController extends Controller
         if (Yii::$app->post->getRaw()) {
 
             $data = Yii::$app->post->getRaw();
-
-            if (!$user) {
-                return [
-                    'success' => false,
-                    'error' => [
-                        'code' => 404,
-                        'message' => 'User not found!'
-                    ]
-                ];
-            }
-
 
             $task = new Tasks();
             $time = time();
