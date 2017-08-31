@@ -516,6 +516,26 @@ class FrontendController extends Controller
 
     }
 
+    public function actionGroupChangeAllow()
+    {
+        if (Yii::$app->post->getRaw()) {
+            $group = Cars::findOne(Yii::$app->post->getRaw('ID'));
+
+            $group->available = $group->available == 1 ? 0 : 1;
+
+            if ($group->validate() && $group->save()) {
+                return [
+                    'success' => true,
+                    'current' => $group->status
+                ];
+            } else {
+                return [
+                    'success' => false
+                ];
+            }
+        }
+    }
+
     public function actionGroupSendMessage()
     {
     }
