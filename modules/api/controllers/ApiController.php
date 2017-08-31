@@ -143,6 +143,21 @@ class ApiController extends Controller
     {
         $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
+        $last = Tasks::getLastTask($user);
+
+        if ($last->status == 1) {
+            return [
+                'success' => true,
+                'identity' => $last->id,
+                'isActive' => $last->status == 1 ? true : false
+            ];
+        } else {
+            return [
+                'success' => true,
+                'isActive' => false
+            ];
+        }
+
         if (Yii::$app->post->getRaw()) {
 
             $data = Yii::$app->post->getRaw();
@@ -196,20 +211,6 @@ class ApiController extends Controller
             }
         }
 
-        $last = Tasks::getLastTask($user);
-
-        if ($last->status == 1) {
-            return [
-                'success' => true,
-                'identity' => $last->id,
-                'isActive' => $last->status == 1 ? true : false
-            ];
-        } else {
-            return [
-                'success' => true,
-                'isActive' => false
-            ];
-        }
     }
 
     /**
