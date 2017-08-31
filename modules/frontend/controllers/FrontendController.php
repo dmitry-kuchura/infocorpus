@@ -483,7 +483,7 @@ class FrontendController extends Controller
             $car = Cars::findOne($data['group-id']);
             $car->status = 2;
 
-            if ($model->save()) {
+            if ($model->save() && $car->save()) {
                 return [
                     'success' => true
                 ];
