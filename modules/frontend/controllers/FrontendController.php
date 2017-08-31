@@ -77,7 +77,7 @@ class FrontendController extends Controller
         $result = parent::afterAction($action, $result);
 
         try {
-            Logger::saveLog(Yii::$app->request->get(), $action->id, $result);
+            Logger::saveLog(Yii::$app->post->getRaw(), $action->id, $result);
         } catch (Exception $e) {
             throw new Exception('Log no save');
         }
@@ -94,7 +94,7 @@ class FrontendController extends Controller
     public function actionAuth()
     {
         if (Yii::$app->user->isGuest) {
-            $data = Yii::$app->request->get();
+            $data = Yii::$app->post->getRaw();
 
             $model = new Users();
 
@@ -165,8 +165,8 @@ class FrontendController extends Controller
      */
     public function actionResetPassword()
     {
-        if (Yii::$app->request->get('email')) {
-            if (Users::resetPassword(Yii::$app->request->get('email'))) {
+        if (Yii::$app->post->getRaw('email')) {
+            if (Users::resetPassword(Yii::$app->post->getRaw('email'))) {
                 return ['success' => true];
             } else {
                 return [
@@ -277,9 +277,9 @@ class FrontendController extends Controller
      */
     public function actionCreateUser()
     {
-        if (Yii::$app->request->get()) {
+        if (Yii::$app->post->getRaw()) {
 
-            $data = Yii::$app->request->get();
+            $data = Yii::$app->post->getRaw();
 
             $model = new Users();
             $model->username = $data['name'];
@@ -337,8 +337,8 @@ class FrontendController extends Controller
      */
     public function actionChangeAllow()
     {
-        if (Yii::$app->request->get('ID')) {
-            $user = Users::findOne(Yii::$app->request->get('ID'));
+        if (Yii::$app->post->getRaw('ID')) {
+            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
 
             $user->status = $user->status == 1 ? 0 : 1;
 
@@ -362,8 +362,8 @@ class FrontendController extends Controller
      */
     public function actionRemoveUser()
     {
-        if (Yii::$app->request->get('ID')) {
-            $user = Users::findOne(Yii::$app->request->get('ID'));
+        if (Yii::$app->post->getRaw('ID')) {
+            $user = Users::findOne(Yii::$app->post->getRaw('ID'));
 
             if ($user->delete()) {
                 return [
@@ -386,9 +386,9 @@ class FrontendController extends Controller
     {
         $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
 
-        if (Yii::$app->request->get()) {
+        if (Yii::$app->post->getRaw()) {
 
-            $data = Yii::$app->request->get();
+            $data = Yii::$app->post->getRaw();
 
             $model = new Users();
             $model->username = $data['name'];
@@ -454,15 +454,15 @@ class FrontendController extends Controller
      */
     public function actionGetUserData()
     {
-        if (Yii::$app->request->get('id')) {
-            return Users::findOne(Yii::$app->request->get('id'));
+        if (Yii::$app->post->getRaw('id')) {
+            return Users::findOne(Yii::$app->post->getRaw('id'));
         }
     }
 
     public function actionCreateGroup()
     {
-        if (Yii::$app->request->get()) {
-            $date = Yii::$app->request->get();
+        if (Yii::$app->post->getRaw()) {
+            $date = Yii::$app->post->getRaw();
 
             $model = new Cars();
 
