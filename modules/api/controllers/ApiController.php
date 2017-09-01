@@ -401,8 +401,7 @@ class ApiController extends Controller
 
             return [
                 'success' => true,
-                'id' => true,
-                'text' => $text
+                'message' => $text
             ];
         } else {
             return [
