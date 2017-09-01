@@ -321,7 +321,6 @@ class ApiController extends Controller
 
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
-            $model->status = 1;
             $model->updated_at = time();
             $model->created_at = time();
 
