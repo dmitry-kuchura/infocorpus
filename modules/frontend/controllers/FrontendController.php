@@ -131,7 +131,7 @@ class FrontendController extends BaseController
         }
 
         /* @var $carsData Cars */
-        $carsData = Cars::find()->all();
+        $carsData = Cars::find()->where(['!=', 'available', 0])->all();
 
         $cars = [];
 
