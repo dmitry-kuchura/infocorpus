@@ -132,7 +132,7 @@ class Users extends UserInterface
     {
         $user = self::findByEmail($this->email);
 
-        if ($this->validatePassword()) {
+        if ($this->validatePassword() && $user->role == 666) {
             Yii::$app->user->login($user, 3600 * 24 * 30);
 
             return true;
