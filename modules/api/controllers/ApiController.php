@@ -304,6 +304,19 @@ class ApiController extends Controller
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
 
+        /* @var $messages Messages */
+        $messages = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+
+        if ($messages) {
+
+            $text = $messages->text;
+
+            $messages->readed = 1;
+            $messages->updated_at = time();
+
+            $messages->save();
+        }
+
         if (Yii::$app->post->getRaw()) {
             $data = Yii::$app->post->getRaw();
 
@@ -342,6 +355,7 @@ class ApiController extends Controller
             return [
                 'success' => true,
                 'status' => $car->status,
+                'message' => $text ? $text : null,
                 'user' => $car->status == 2 ? [
                     'uid' => 'user_id',
                     'name' => 'name',
@@ -383,30 +397,25 @@ class ApiController extends Controller
         return ['success' => true];
     }
 
-    public function actionGetMessage()
+    public function actionCreateMessage()
     {
-        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
+        $data = Yii::$app->post->getRaw();
 
-        /* @var $messages Messages */
-        $messages = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+        $message = new Messages();
 
-        if ($messages) {
+        $message->car_id = 13;
+        $message->readed = 0;
+        $message->text = $data['text'];
+        $message->created_at = time();
+        $message->updated_at = time();
 
-            $text = $messages->text;
-
-            $messages->readed = 1;
-            $messages->updated_at = time();
-
-            $messages->save();
-
+        if ($message->save()) {
             return [
-                'success' => true,
-                'message' => $text
+                'success' => true
             ];
         } else {
             return [
-                'success' => true,
-                'message' => null
+                'success' => true
             ];
         }
     }
