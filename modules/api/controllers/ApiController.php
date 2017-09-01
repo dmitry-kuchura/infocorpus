@@ -328,6 +328,17 @@ class ApiController extends Controller
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
+                    'status' => $car->status,
+                    'message' => $this->getMessage($car->id),
+                    'user' => $car->status == 2 ? [
+                        'uid' => 'user_id',
+                        'name' => 'name',
+                        'phone' => 'phone',
+                        'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                        'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                        'longitude' => 32.615762,
+                        'latitude' => 46.636992,
+                    ] : null
                 ];
             } else {
                 return [
@@ -338,21 +349,6 @@ class ApiController extends Controller
                     ]
                 ];
             }
-        } else {
-            return [
-                'success' => true,
-                'status' => $car->status,
-                'message' => $this->getMessage($car->id),
-                'user' => $car->status == 2 ? [
-                    'uid' => 'user_id',
-                    'name' => 'name',
-                    'phone' => 'phone',
-                    'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                    'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                    'longitude' => 32.615762,
-                    'latitude' => 46.636992,
-                ] : null
-            ];
         }
     }
 
