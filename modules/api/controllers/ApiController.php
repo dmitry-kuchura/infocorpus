@@ -365,7 +365,7 @@ class ApiController extends Controller
     function getMessage($car)
     {
         /* @var $message Messages */
-        $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+        $message = Messages::find()->where(['readed' => 0, 'car_id' => $car])->orderBy('id DESC')->one();
         $text = '';
 
         if ($message) {
