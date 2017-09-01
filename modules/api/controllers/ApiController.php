@@ -57,7 +57,7 @@ class ApiController extends Controller
     {
         $user = Users::findByUid(Yii::$app->post->getRaw('uid'));
 
-        if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
+        if ($user && Yii::$app->user->login($user, 3600 * 24 * 30)) {
             return [
                 'success' => true,
                 'token' => Yii::$app->user->identity->auth_key
