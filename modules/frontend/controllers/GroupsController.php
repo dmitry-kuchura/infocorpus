@@ -235,5 +235,6 @@ class GroupsController extends BaseController
      */
     public function actionGroupSendMessage()
     {
+
     }
 }

@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\Messages;
 use app\models\TasksHistory;
 use Yii;
 use yii\web\Response;
@@ -380,5 +381,34 @@ class ApiController extends Controller
         $model->save(false);
 
         return ['success' => true];
+    }
+
+    public function actionGetMessage()
+    {
+        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
+
+        /* @var $messages Messages */
+        $messages = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+
+        if ($messages) {
+
+            $text = $messages->text;
+
+            $messages->readed = 1;
+            $messages->updated_at = time();
+
+            $messages->save();
+
+            return [
+                'success' => true,
+                'id' => true,
+                'text' => $text
+            ];
+        } else {
+            return [
+                'success' => true,
+                'message' => null
+            ];
+        }
     }
 }
