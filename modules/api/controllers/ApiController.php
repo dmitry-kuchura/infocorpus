@@ -339,23 +339,10 @@ class ApiController extends Controller
                 ];
             }
         } else {
-            /* @var $message Messages */
-            $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
-            $text = '';
-
-            if ($message) {
-                $text = $message->text;
-
-                $message->readed = 1;
-                $message->updated_at = time();
-
-                $message->save();
-            }
-
             return [
                 'success' => true,
                 'status' => $car->status,
-                'message' => $text ? $text : null,
+                'message' => $this->getMessage($car->id),
                 'user' => $car->status == 2 ? [
                     'uid' => 'user_id',
                     'name' => 'name',
@@ -368,6 +355,33 @@ class ApiController extends Controller
             ];
         }
     }
+
+    /**
+     * Получение последнего мессаджа
+     *
+     * @param $car
+     * @return string
+     */
+    function getMessage($car)
+    {
+        /* @var $message Messages */
+        $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+        $text = '';
+
+        if ($message) {
+            $text = $message->text;
+
+            $message->readed = 1;
+            $message->updated_at = time();
+
+            $message->save();
+        }
+
+        return $text;
+    }
+
+
+
 
     /**
      * Сброс тревог к определенному статусу
