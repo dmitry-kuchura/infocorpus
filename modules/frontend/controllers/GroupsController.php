@@ -7,8 +7,20 @@ use app\models\Cars;
 use app\models\Tasks;
 use app\models\TasksHistory;
 
+/**
+ * Class GroupsController
+ *
+ * Содержит все action'sы которые отсносятся к редактированию групп
+ *
+ * @package app\modules\frontend\controllers
+ */
 class GroupsController extends BaseController
 {
+    /**
+     * Создание группы
+     *
+     * @return array
+     */
     public function actionGroupCreate()
     {
         if (Yii::$app->post->getRaw()) {
@@ -37,6 +49,11 @@ class GroupsController extends BaseController
         }
     }
 
+    /**
+     * Получение списка всех групп
+     *
+     * @return array
+     */
     public function actionGroupList()
     {
         /* @var $result Cars */
@@ -59,6 +76,11 @@ class GroupsController extends BaseController
         ];
     }
 
+    /**
+     * Простановака или закрепления группы за конкретной тревогой
+     *
+     * @return array
+     */
     public function actionGroupAlert()
     {
         if (Yii::$app->post->getRaw()) {
@@ -94,6 +116,15 @@ class GroupsController extends BaseController
         }
     }
 
+    /**
+     * Изменение статуса группы:
+     *
+     * 0 - В гараже
+     * 1 - В патруле
+     * 2 - На вызове
+     *
+     * @return array
+     */
     public function actionGroupChangeStatus()
     {
         if (Yii::$app->post->getRaw('ID')) {
@@ -114,6 +145,11 @@ class GroupsController extends BaseController
         };
     }
 
+    /**
+     * Простановка статуса учетной записи группы
+     *
+     * @return array
+     */
     public function actionGroupChangeAllow()
     {
         if (Yii::$app->post->getRaw()) {
@@ -134,6 +170,11 @@ class GroupsController extends BaseController
         }
     }
 
+    /**
+     * Удаление группы
+     *
+     * @return array
+     */
     public function actionGroupDelete()
     {
         if (Yii::$app->post->getRaw('ID')) {
@@ -151,6 +192,11 @@ class GroupsController extends BaseController
         };
     }
 
+    /**
+     * Снятие/отмена группы с текущей тревоги
+     *
+     * @return array
+     */
     public function actionGroupCancel()
     {
         if (Yii::$app->post->getRaw()) {
@@ -184,6 +230,9 @@ class GroupsController extends BaseController
         }
     }
 
+    /**
+     * Отправка сообщения в группу [Будет в следующем релизе]
+     */
     public function actionGroupSendMessage()
     {
     }

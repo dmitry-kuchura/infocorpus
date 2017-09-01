@@ -9,7 +9,7 @@ use yii\web\Controller;
 class SiteController extends Controller
 {
     /**
-     * Displays main page.
+     * Отображение главной страницы
      *
      * @return string
      */
@@ -19,7 +19,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Display error page
+     * Отображение страницы 404 в формате JSON
      *
      * @return array
      */
