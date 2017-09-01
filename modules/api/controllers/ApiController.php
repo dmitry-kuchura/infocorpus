@@ -287,6 +287,7 @@ class ApiController extends Controller
             if ($task) {
                 return [
                     'success' => true,
+                    'identity' => $task->id,
                     'isActive' => $task->status == 1 ? true : false
                 ];
             }
