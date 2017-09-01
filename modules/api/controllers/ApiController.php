@@ -303,18 +303,18 @@ class ApiController extends Controller
     public function actionStatus()
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
+        $text = '';
 
-        /* @var $messages Messages */
-        $messages = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+        /* @var $message Messages */
+        $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
 
-        if ($messages) {
+        if ($message) {
+            $text = $message->text;
 
-            $text = $messages->text;
+            $message->readed = 1;
+            $message->updated_at = time();
 
-            $messages->readed = 1;
-            $messages->updated_at = time();
-
-            $messages->save();
+            $message->save();
         }
 
         if (Yii::$app->post->getRaw()) {
