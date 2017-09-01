@@ -66,7 +66,7 @@ class ApiController extends Controller
             return [
                 'success' => false,
                 'error' => [
-                    'code' => 200,
+                    'code' => 404,
                     'message' => 'Ooooops. User not found!'
                 ],
                 'token' => null
