@@ -303,19 +303,6 @@ class ApiController extends Controller
     public function actionStatus()
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
-        $text = '';
-
-        /* @var $message Messages */
-        $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
-
-        if ($message) {
-            $text = $message->text;
-
-            $message->readed = 1;
-            $message->updated_at = time();
-
-            $message->save();
-        }
 
         if (Yii::$app->post->getRaw()) {
             $data = Yii::$app->post->getRaw();
@@ -352,6 +339,19 @@ class ApiController extends Controller
                 ];
             }
         } else {
+            /* @var $message Messages */
+            $message = Messages::find()->where(['readed' => 0, 'car_id' => $car->id])->orderBy('id DESC')->one();
+            $text = '';
+
+            if ($message) {
+                $text = $message->text;
+
+                $message->readed = 1;
+                $message->updated_at = time();
+
+                $message->save();
+            }
+
             return [
                 'success' => true,
                 'status' => $car->status,
