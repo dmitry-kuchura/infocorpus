@@ -251,7 +251,7 @@ class ApiController extends Controller
             /* Обновление тривоги */
             $task = Tasks::findOne($data['identity']);
 
-            if ($task->status == 1) {
+            if ($task->status == 1 && $task->status == 2) {
                 $task->longitude = $data['longitude'];
                 $task->latitude = $data['latitude'];
                 $task->updated_at = $time;
@@ -322,7 +322,6 @@ class ApiController extends Controller
             $model->longitude = $data['longitude'];
             $model->latitude = $data['latitude'];
             $model->updated_at = time();
-            $model->created_at = time();
 
             if ($model->validate() && $model->save()) {
                 return [
@@ -374,9 +373,6 @@ class ApiController extends Controller
 
         return $text;
     }
-
-
-
 
     /**
      * Сброс тревог к определенному статусу
