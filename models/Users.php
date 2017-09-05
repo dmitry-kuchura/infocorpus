@@ -24,7 +24,6 @@ use Yii;
  * @property string $car_number
  * @property string $longitude
  * @property string $latitude
- * @property string $password_hash
  * @property string $auth_key
  * @property string $hash
  * @property integer $v
@@ -32,6 +31,7 @@ use Yii;
  * @property integer $role
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string $image
  */
 class Users extends UserInterface
 {
@@ -44,7 +44,7 @@ class Users extends UserInterface
             [['email'], 'unique'],
             [['imei'], 'string', 'max' => 16],
             [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
-            [['email', 'password', 'phone', 'address', 'organization', 'location', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
+            [['email', 'image', 'password', 'phone', 'address', 'organization', 'location', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
     }
 
@@ -158,7 +158,7 @@ class Users extends UserInterface
         $result->generateAuthKey();
 
         if ($result->validate()) {
-//            $result->save();
+            $result->save();
             Yii::$app->mailer->compose()
                 ->setFrom('kuchura.d.wezom@domain.com')
                 ->setTo($email)

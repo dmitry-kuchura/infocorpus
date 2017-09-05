@@ -248,6 +248,10 @@ class ApiController extends Controller
             $data = Yii::$app->post->getRaw();
             $time = time();
 
+            $user->longitude = $data['longitude'];
+            $user->latitude = $data['latitude'];
+            $user->save(false);
+
             /* Обновление тривоги */
             $task = Tasks::findOne($data['identity']);
 
