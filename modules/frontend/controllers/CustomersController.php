@@ -76,6 +76,7 @@ class CustomersController extends BaseController
                 'identity' => $obj->auth_key,
                 'location' => $obj->address,
                 'status' => $obj->status,
+                'image' => Yii::,
             ];
         }
 
