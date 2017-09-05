@@ -11,6 +11,17 @@ return [
     'frontend/group-cancel' => 'frontend/groups/group-cancel',
     'frontend/group-send-message' => 'frontend/groups/group-send-message',
 
+    /* Users actions */
+    'frontend/create-user' => 'frontend/users/crate-user',
+    'frontend/users-list' => 'frontend/users/users-list',
+    'frontend/remove-user' => 'frontend/users/remove-user',
+    'frontend/get-user-data' => 'frontend/users/get-user-data',
+
+    /* Customers actions */
+    'frontend/create-customer' => 'frontend/customers/create-customer',
+    'frontend/list-customers' => 'frontend/customers/list-customers',
+
+    /* Others actions */
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',
     '<action>' => 'site/index'
