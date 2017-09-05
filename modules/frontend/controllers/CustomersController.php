@@ -77,10 +77,10 @@ class CustomersController extends BaseController
                 'identity' => $obj->auth_key,
                 'location' => $obj->address,
                 'status' => $obj->status,
-                'image' => is_file(HOST . Url::to('/images/small/' . $obj->image)) ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
+                'image' => $obj->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
             ];
         }
-
+        
         return [
             'success' => true,
             'customers' => $customers,
