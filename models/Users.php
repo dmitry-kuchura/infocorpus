@@ -190,12 +190,13 @@ class Users extends UserInterface
 
         $config = Yii::$app->params['photo'];
 
-        $ext = end(explode('.', $file->name));
-        $filename = md5($file->name . '_' . time()) . '.' . $ext;
+        $filename = md5($file->name . '_' . time()) . '.' . $file->extension;
 
         foreach ($config as $one) {
-            $path = 'web/' . $one['path'];
-            $name = 'web/' . $one['path'] . '/' . $filename;
+
+
+            $path = 'images/' . $one['path'];
+            $name = 'images/' . $one['path'] . '/' . $filename;
             File::createFolder($path);
 
             if ($one['resize']) {
@@ -209,5 +210,7 @@ class Users extends UserInterface
                 $image->save($name);
             }
         }
+
+        return $filename;
     }
 }

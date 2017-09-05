@@ -9,9 +9,16 @@ return [
     ],
     'photo' => [
         [
-            'path' => 'small',
+            'path' => 'big',
             'width' => 400,
             'height' => 400,
+            'resize' => 1,
+            'crop' => 1,
+        ],
+        [
+            'path' => 'small',
+            'width' => 250,
+            'height' => 250,
             'resize' => 1,
             'crop' => 1,
         ],
