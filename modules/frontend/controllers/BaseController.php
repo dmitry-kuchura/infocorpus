@@ -50,7 +50,8 @@ class BaseController extends Controller
         $actions = [
             'auth',
             'logout',
-            'reset-password'
+            'reset-password',
+            'create-customer'
         ];
 
         if (!in_array($action->id, $actions)) {

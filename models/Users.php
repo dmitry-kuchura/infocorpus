@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use app\components\File;
+use app\components\Image;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "users".
@@ -109,7 +112,7 @@ class Users extends UserInterface
         $model->organization = $this->organization;
         $model->location = $this->location;
         $model->car_name = $this->car_name;
-        $model->car_color= $this->car_color;
+        $model->car_color = $this->car_color;
         $model->car_number = $this->car_number;
         $model->password = md5($this->password);
         $model->status = $this->status;
@@ -170,5 +173,41 @@ class Users extends UserInterface
             return false;
         }
 
+    }
+
+    /**
+     * Загрузка и Crop фото
+     *
+     * @return bool
+     */
+    public static function uploadPhoto()
+    {
+        $file = UploadedFile::getInstanceByName('photo');
+
+        if (!isset($file)) {
+            return false;
+        }
+
+        $config = Yii::$app->params['photo'];
+
+        $ext = end(explode('.', $file->name));
+        $filename = md5($file->name . '_' . time()) . '.' . $ext;
+
+        foreach ($config as $one) {
+            $path = 'web/' . $one['path'];
+            $name = 'web/' . $one['path'] . '/' . $filename;
+            File::createFolder($path);
+
+            if ($one['resize']) {
+                $image = new Image();
+                $image->load($file->tempName);
+                $image->resize($one['width'], $one['height']);
+                $image->save($name);
+            } else {
+                $image = new Image();
+                $image->load($file->tempName);
+                $image->save($name);
+            }
+        }
     }
 }

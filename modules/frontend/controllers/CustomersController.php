@@ -22,11 +22,10 @@ class CustomersController extends BaseController
     public function actionCreateCustomer()
     {
         $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
-//        var_dump(Yii::$app->request);
-//        die;
-        if (Yii::$app->post->getRaw()) {
 
-            $data = Yii::$app->post->getRaw();
+        if (Yii::$app->request->post()) {
+
+            $data = Yii::$app->request->post();
 
             $model = new Users();
             $model->username = $data['name'];
@@ -41,6 +40,7 @@ class CustomersController extends BaseController
             $model->car_color = $data['car-color'];
             $model->car_number = $data['car-number'];
             $model->password = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
+            $model->image = Users::uploadPhoto();
             $model->status = 1;
             $model->role = 0;
 
