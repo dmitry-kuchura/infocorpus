@@ -257,7 +257,7 @@ class ApiController extends Controller
             /* Обновление тривоги */
             $task = Tasks::findOne($data['identity']);
 
-            if ($task->status == 1 && $task->status == 2) {
+            if ($task->status == 1 || $task->status == 2) {
                 $task->longitude = $data['longitude'];
                 $task->latitude = $data['latitude'];
                 $task->updated_at = $time;
@@ -287,7 +287,6 @@ class ApiController extends Controller
                     'isActive' => false
                 ];
             }
-
         } else {
             $task = Tasks::getLastTask($user);
 
