@@ -328,15 +328,7 @@ class ApiController extends Controller
                     'success' => true,
                     'status' => $car->status,
                     'message' => $this->getMessage($car->id),
-                    'user' => $car->status == 2 ? [
-                        'uid' => 'user_id',
-                        'name' => 'name',
-                        'phone' => 'phone',
-                        'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                        'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                        'longitude' => 32.615762,
-                        'latitude' => 46.636992,
-                    ] : null
+                    'user' => $this->getTask($car),
                 ];
             } else {
                 return [
@@ -372,6 +364,27 @@ class ApiController extends Controller
         }
 
         return $text;
+    }
+
+    function getTask($car) {
+        if ($car->status == 2) {
+            /* @var $result Tasks */
+            $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
+
+            $data = [
+                'uid' => $result->user->id,
+                'name' => $result->user->username,
+                'phone' => $result->user->phone,
+                'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
+                'longitude' => $result->longitude,
+                'latitude' => $result->latitude,
+            ];
+
+            return $data;
+        } else {
+            return null;
+        }
     }
 
     /**
