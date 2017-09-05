@@ -117,6 +117,7 @@ class Users extends UserInterface
         $model->password = md5($this->password);
         $model->status = $this->status;
         $model->role = $this->role;
+        $model->image = $this->image;
 
         $model->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
         $model->created_at = time();
@@ -193,8 +194,6 @@ class Users extends UserInterface
         $filename = md5($file->name . '_' . time()) . '.' . $file->extension;
 
         foreach ($config as $one) {
-
-
             $path = 'images/' . $one['path'];
             $name = 'images/' . $one['path'] . '/' . $filename;
             File::createFolder($path);
