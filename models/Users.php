@@ -201,7 +201,7 @@ class Users extends UserInterface
             if ($one['resize']) {
                 $image = new Image();
                 $image->load($file->tempName);
-                $image->resize($one['width'], $one['height']);
+                $image->resizeToWidth($one['width']);
                 $image->save($name);
             } else {
                 $image = new Image();
