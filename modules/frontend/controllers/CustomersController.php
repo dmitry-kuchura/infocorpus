@@ -22,13 +22,11 @@ class CustomersController extends BaseController
     public function actionCreateCustomer()
     {
         $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
-
+//        var_dump(Yii::$app->request);
+//        die;
         if (Yii::$app->post->getRaw()) {
 
             $data = Yii::$app->post->getRaw();
-
-            var_dump($data);
-            die;
 
             $model = new Users();
             $model->username = $data['name'];
