@@ -27,6 +27,9 @@ class CustomersController extends BaseController
 
             $data = Yii::$app->post->getRaw();
 
+            var_dump($data);
+            die;
+
             $model = new Users();
             $model->username = $data['name'];
             $model->phone = $data['phone'];

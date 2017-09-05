@@ -43,7 +43,7 @@ class ApiController extends Controller
         $result = parent::afterAction($action, $result);
 
         $request = Yii::$app->post->getRaw() ? Yii::$app->post->getRaw() : Yii::$app->request->post();
-        
+
         $request['Authorization-token'] = Yii::$app->request->headers->get('Authorization-token');
 
         Logger::saveLog($request, $action->id, $result);

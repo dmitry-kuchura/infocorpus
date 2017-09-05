@@ -44,7 +44,7 @@ class Users extends UserInterface
             [['email'], 'unique'],
             [['imei'], 'string', 'max' => 16],
             [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
-            [['email', 'image', 'password', 'phone', 'address', 'organization', 'location', 'password_hash', 'auth_key', 'hash'], 'string', 'max' => 150],
+            [['email', 'image', 'password', 'phone', 'address', 'organization', 'location', 'auth_key', 'hash'], 'string', 'max' => 150],
         ];
     }
 
@@ -64,7 +64,6 @@ class Users extends UserInterface
             'longitude' => 'Longitude',
             'latitude' => 'Latitude',
             'token' => 'Token',
-            'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',
             'hash' => 'Hash',
             'v' => 'V',
