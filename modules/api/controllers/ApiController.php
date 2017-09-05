@@ -284,7 +284,8 @@ class ApiController extends Controller
             } else {
                 return [
                     'success' => true,
-                    'isActive' => false
+                    'isActive' => false,
+                    'data' => $task
                 ];
             }
         } else {
