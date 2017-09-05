@@ -3,8 +3,8 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use app\models\Users;
-use yii\helpers\Html;
 
 /**
  * Class CustomersController
@@ -77,7 +77,7 @@ class CustomersController extends BaseController
                 'identity' => $obj->auth_key,
                 'location' => $obj->address,
                 'status' => $obj->status,
-                'image' => '/images/small/' . $obj->image,
+                'image' => is_file(HOST . Url::to('/images/small/' . $obj->image)) ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
             ];
         }
 
