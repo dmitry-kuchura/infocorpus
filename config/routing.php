@@ -9,6 +9,7 @@ return [
     'frontend/group-change-allow' => 'frontend/groups/group-change-allow',
     'frontend/group-delete' => 'frontend/groups/group-delete',
     'frontend/group-cancel' => 'frontend/groups/group-cancel',
+    'frontend/group-get-data' => 'frontend/groups/group-get-data',
     'frontend/group-send-message' => 'frontend/groups/group-send-message',
 
     /* Users actions */

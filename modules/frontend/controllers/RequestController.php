@@ -3,7 +3,7 @@
 namespace app\modules\frontend\controllers;
 
 use Yii;
-use app\models\Users;
+use app\models\Recall;
 
 /**
  * Class RequestController
@@ -15,32 +15,30 @@ use app\models\Users;
 class RequestController extends BaseController
 {
     /**
-     * Создание пользователя
+     * Список запросов на перезвон
      *
      * @return array
      */
-    public function actionRequest()
+    public function actionRequestList()
     {
-        if (Yii::$app->post->getRaw()) {
+        if (Yii::$app->post->getRaw('id')) {
+            /* @var $result Recall */
+            $result = Recall::find()->all();
 
-            $data = Yii::$app->post->getRaw();
+            foreach ($result as $obj) {
+                $recall[] = [
+                    'id' => $obj->id,
+                ];
+            }
 
-            $model = new Users();
-            $model->username = $data['name'];
-            $model->email = $data['email'];
-            $model->phone = $data['phone'];
-            $model->password = $data['password'];
-            $model->status = 1;
-            $model->role = 1;
-
-            if ($model->signUp()) {
+            if (count($result)) {
                 return [
                     'success' => true,
+                    'data' => $result,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
         }
