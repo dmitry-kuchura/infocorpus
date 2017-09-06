@@ -46,7 +46,6 @@ class UsersController extends BaseController
         }
     }
 
-    // TODO НАДА сделать
     /**
      * Обновление пользовательских данных
      *
@@ -55,18 +54,14 @@ class UsersController extends BaseController
     public function actionUserUpdate()
     {
         if (Yii::$app->post->getRaw()) {
-
             $data = Yii::$app->post->getRaw();
 
-            $model = new Users();
+            $model = Users::findOne($data['id']);
             $model->username = $data['name'];
             $model->email = $data['email'];
             $model->phone = $data['phone'];
-            $model->password = $data['password'];
-            $model->status = 1;
-            $model->role = 1;
 
-            if ($model->signUp()) {
+            if ($model->save()) {
                 return [
                     'success' => true,
                 ];

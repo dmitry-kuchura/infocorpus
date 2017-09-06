@@ -16,9 +16,11 @@ return [
     'frontend/users-list' => 'frontend/users/users-list',
     'frontend/remove-user' => 'frontend/users/remove-user',
     'frontend/get-user-data' => 'frontend/users/get-user-data',
+    'frontend/user-update' => 'frontend/users/user-update',
 
     /* Customers actions */
     'frontend/create-customer' => 'frontend/customers/create-customer',
+    'frontend/update-customer' => 'frontend/customers/update-customer',
     'frontend/list-customers' => 'frontend/customers/list-customers',
 
     /* Others actions */

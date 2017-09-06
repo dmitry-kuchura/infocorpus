@@ -58,6 +58,38 @@ class CustomersController extends BaseController
         }
     }
 
+    public function actionUpdateCustomer()
+    {
+        if (Yii::$app->request->post()) {
+
+            $data = Yii::$app->request->post();
+
+            $model = Users::findOne($data['id']);
+            $model->username = $data['name'];
+            $model->phone = $data['phone'];
+            $model->imei = $data['imei'];
+            $model->email = $data['email'];
+            $model->skype = $data['skype'];
+            $model->address = $data['location'];
+            $model->organization = $data['company'];
+            $model->location = $data['company-location'];
+            $model->car_name = $data['car'];
+            $model->car_color = $data['car-color'];
+            $model->car_number = $data['car-number'];
+
+            if ($model->save()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors(),
+                ];
+            }
+        }
+    }
+
     /**
      * Получение списка клиентов
      *
@@ -80,7 +112,7 @@ class CustomersController extends BaseController
                 'image' => $obj->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
             ];
         }
-        
+
         return [
             'success' => true,
             'customers' => $customers,
