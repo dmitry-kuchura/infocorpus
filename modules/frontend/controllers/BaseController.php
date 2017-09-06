@@ -51,8 +51,8 @@ class BaseController extends Controller
             'auth',
             'logout',
             'reset-password',
-            'create-customer',
-            'create-update',
+            'customer-create',
+            'customer-update',
         ];
 
         if (!in_array($action->id, $actions)) {
