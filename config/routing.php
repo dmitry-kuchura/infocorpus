@@ -25,6 +25,11 @@ return [
     'frontend/customer-update' => 'frontend/customers/customer-update',
     'frontend/customer-list' => 'frontend/customers/customer-list',
 
+    /* Recall actions */
+    'frontend/request-list' => 'frontend/request/list',
+    'frontend/request-delete' => 'frontend/request/delete',
+    'frontend/request-status' => 'frontend/request/status',
+
     /* Others actions */
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',

@@ -19,22 +19,48 @@ class RequestController extends BaseController
      *
      * @return array
      */
-    public function actionRequestList()
+    public function actionList()
+    {
+        /* @var $result Recall */
+        $result = Recall::find()->all();
+
+        $recall = [];
+
+        foreach ($result as $obj) {
+            $recall = [
+                'id' => $obj->id,
+                'user' => $obj->user->username,
+                'status' => $obj->call_request,
+                'time_created' => date('Y-m-d H:i:s', $obj->time),
+                'alert_after' => $obj->call_security_after,
+            ];
+        }
+
+        if ($result) {
+            return [
+                'success' => true,
+                'data' => $recall,
+            ];
+        } else {
+            return [
+                'success' => false,
+            ];
+        }
+    }
+
+    /**
+     * Удаление на всякий случай
+     *
+     * @return array
+     */
+    public function actionDelete()
     {
         if (Yii::$app->post->getRaw('id')) {
-            /* @var $result Recall */
-            $result = Recall::find()->all();
+            $model = Recall::findOne(Yii::$app->post->getRaw('id'));
 
-            foreach ($result as $obj) {
-                $recall[] = [
-                    'id' => $obj->id,
-                ];
-            }
-
-            if (count($result)) {
+            if ($model->delete()) {
                 return [
                     'success' => true,
-                    'data' => $result,
                 ];
             } else {
                 return [
@@ -42,5 +68,30 @@ class RequestController extends BaseController
                 ];
             }
         }
+    }
+
+    /**
+     * Изменение статуса запроса звонка
+     *
+     * @return array
+     */
+    public function actionStatus()
+    {
+        if (Yii::$app->post->getRaw('id')) {
+            $model = Recall::findOne(Yii::$app->post->getRaw('id'));
+
+            $model->call_request = $model->call_request == 1 ? 0 : 1;
+
+            if ($model->validate() && $model->save()) {
+                return [
+                    'success' => true,
+                    'current' => $model->call_request,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                ];
+            }
+        };
     }
 }

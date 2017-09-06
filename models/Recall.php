@@ -16,6 +16,8 @@ use Yii;
  * @property integer $call_security_after
  * @property integer $call_request
  * @property integer $user_id
+ *
+ * @property Users $user
  */
 class Recall extends \yii\db\ActiveRecord
 {
@@ -33,8 +35,9 @@ class Recall extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request'], 'required'],
+            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'required'],
             [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'integer'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -52,6 +55,15 @@ class Recall extends \yii\db\ActiveRecord
             'recall_during' => 'Recall During',
             'call_security_after' => 'Call Security After',
             'call_request' => 'Call Request',
+            'user_id' => 'User ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }
