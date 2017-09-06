@@ -32,8 +32,8 @@ class BaseController extends Controller
                 'actions' => [
                     'map' => [
                         'Access-Control-Allow-Credentials' => true,
-                    ]
-                ]
+                    ],
+                ],
             ],
         ], parent::behaviors());
     }
@@ -51,7 +51,8 @@ class BaseController extends Controller
             'auth',
             'logout',
             'reset-password',
-            'create-customer'
+            'create-customer',
+            'create-update',
         ];
 
         if (!in_array($action->id, $actions)) {
