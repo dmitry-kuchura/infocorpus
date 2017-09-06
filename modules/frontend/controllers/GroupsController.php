@@ -67,7 +67,7 @@ class GroupsController extends BaseController
                 'available' => $obj->available,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
-                'identity' => $obj->auth_key,
+                'identity' => $obj->token,
             ];
         }
 
