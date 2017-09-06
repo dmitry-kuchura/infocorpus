@@ -20,7 +20,7 @@ class CustomersController extends BaseController
      *
      * @return array
      */
-    public function actionCreateCustomer()
+    public function actionCustomerCreate()
     {
         $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
 
@@ -58,7 +58,12 @@ class CustomersController extends BaseController
         }
     }
 
-    public function actionUpdateCustomer()
+    /**
+     * Обновление данных клиента
+     *
+     * @return array
+     */
+    public function actionCustomerUpdate()
     {
         if (Yii::$app->request->post()) {
 
@@ -95,7 +100,7 @@ class CustomersController extends BaseController
      *
      * @return array
      */
-    public function actionListCustomers()
+    public function actionCustomerList()
     {
         /* @var $result Users */
         $result = Users::find()->where(['role' => 0])->all();

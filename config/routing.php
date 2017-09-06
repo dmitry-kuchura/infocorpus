@@ -12,19 +12,19 @@ return [
     'frontend/group-send-message' => 'frontend/groups/group-send-message',
 
     /* Users actions */
-    'frontend/create-user' => 'frontend/users/crate-user',
-    'frontend/users-list' => 'frontend/users/users-list',
-    'frontend/remove-user' => 'frontend/users/remove-user',
-    'frontend/get-user-data' => 'frontend/users/get-user-data',
+    'frontend/user-create' => 'frontend/users/user-create',
+    'frontend/user-list' => 'frontend/users/user-list',
+    'frontend/user-remove' => 'frontend/users/user-remove',
+    'frontend/user-get-data' => 'frontend/users/user-get-data',
     'frontend/user-update' => 'frontend/users/user-update',
 
     /* Customers actions */
-    'frontend/create-customer' => 'frontend/customers/create-customer',
-    'frontend/update-customer' => 'frontend/customers/update-customer',
-    'frontend/list-customers' => 'frontend/customers/list-customers',
+    'frontend/customer-create' => 'frontend/customers/customer-create',
+    'frontend/customer-update' => 'frontend/customers/customer-update',
+    'frontend/customer-list' => 'frontend/customers/customer-list',
 
     /* Others actions */
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',
-    '<action>' => 'site/index'
+    '<action>' => 'site/index',
 ];

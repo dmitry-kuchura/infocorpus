@@ -19,7 +19,7 @@ class UsersController extends BaseController
      *
      * @return array
      */
-    public function actionCreateUser()
+    public function actionUserCreate()
     {
         if (Yii::$app->post->getRaw()) {
 
@@ -79,7 +79,7 @@ class UsersController extends BaseController
      *
      * @return array
      */
-    public function actionUsersList()
+    public function actionUserList()
     {
         /* @var $result Users */
         $result = Users::find()->where(['=', 'role', 1])->all();
@@ -107,7 +107,7 @@ class UsersController extends BaseController
      *
      * @return array
      */
-    public function actionRemoveUser()
+    public function actionUserRemove()
     {
         if (Yii::$app->post->getRaw('ID')) {
             $user = Users::findOne(Yii::$app->post->getRaw('ID'));
@@ -129,7 +129,7 @@ class UsersController extends BaseController
      *
      * @return array
      */
-    public function actionGetUserData()
+    public function actionUserGetData()
     {
         if (Yii::$app->post->getRaw('id')) {
             $data = Users::findOne(Yii::$app->post->getRaw('id'));
