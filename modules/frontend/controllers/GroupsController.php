@@ -37,12 +37,41 @@ class GroupsController extends BaseController
 
             if ($model->save()) {
                 return [
-                    'success' => true
+                    'success' => true,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors()
+                    'errors' => $model->getErrors(),
+                ];
+            }
+
+        }
+    }
+
+    /**
+     * Обновление группы
+     *
+     * @return array
+     */
+    public function actionGroupUpdate()
+    {
+        if (Yii::$app->post->getRaw()) {
+            $data = Yii::$app->post->getRaw();
+
+            $model = Cars::findOne($data['id']);
+
+            $model->name = $data['name'];
+            $model->updated_at = time();
+
+            if ($model->save()) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'errors' => $model->getErrors(),
                 ];
             }
 
@@ -73,7 +102,7 @@ class GroupsController extends BaseController
 
         return [
             'success' => true,
-            'groups' => $groups
+            'groups' => $groups,
         ];
     }
 
@@ -107,11 +136,11 @@ class GroupsController extends BaseController
 
             if ($model->save(false) && $car->save()) {
                 return [
-                    'success' => true
+                    'success' => true,
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         }
@@ -136,11 +165,11 @@ class GroupsController extends BaseController
             if ($car->validate() && $car->save()) {
                 return [
                     'success' => true,
-                    'current' => $car->status
+                    'current' => $car->status,
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         };
@@ -161,11 +190,11 @@ class GroupsController extends BaseController
             if ($group->validate() && $group->save()) {
                 return [
                     'success' => true,
-                    'current' => $group->available
+                    'current' => $group->available,
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         }
@@ -187,7 +216,7 @@ class GroupsController extends BaseController
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         };
@@ -221,11 +250,11 @@ class GroupsController extends BaseController
 
             if ($model->save(false) && $history->save()) {
                 return [
-                    'success' => true
+                    'success' => true,
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         }
@@ -239,6 +268,11 @@ class GroupsController extends BaseController
 
     }
 
+    /**
+     * Получение данных группы
+     *
+     * @return array
+     */
     public function actionGroupGetData()
     {
         if (Yii::$app->post->getRaw('id')) {
@@ -246,7 +280,7 @@ class GroupsController extends BaseController
 
             return [
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ];
         } else {
             return ['success' => false];
