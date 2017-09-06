@@ -186,7 +186,7 @@ class Users extends UserInterface
         $file = UploadedFile::getInstanceByName('photo');
 
         if (!isset($file)) {
-            return false;
+            return null;
         }
 
         $config = Yii::$app->params['photo'];
