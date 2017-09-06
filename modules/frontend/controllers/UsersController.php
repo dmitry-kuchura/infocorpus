@@ -134,7 +134,10 @@ class UsersController extends BaseController
         if (Yii::$app->post->getRaw('id')) {
             $data = Users::findOne(Yii::$app->post->getRaw('id'));
 
-            return ['data' => $data];
+            return [
+                'success' => true,
+                'data' => $data
+            ];
         } else {
             return ['success' => false];
         }
