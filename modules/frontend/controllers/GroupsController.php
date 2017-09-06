@@ -237,4 +237,15 @@ class GroupsController extends BaseController
     {
 
     }
+
+    public function actionGroupGetData()
+    {
+        if (Yii::$app->post->getRaw('id')) {
+            $data = Cars::findOne(Yii::$app->post->getRaw('id'));
+
+            return ['data' => $data];
+        } else {
+            return ['success' => false];
+        }
+    }
 }
