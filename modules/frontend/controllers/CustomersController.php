@@ -112,7 +112,7 @@ class CustomersController extends BaseController
                 'name' => $obj->username,
                 'phone' => $obj->phone,
                 'imei' => $obj->imei,
-                'identity' => $obj->auth_key,
+                'identity' => $obj->uid,
                 'location' => $obj->address,
                 'status' => $obj->status,
                 'image' => $obj->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
