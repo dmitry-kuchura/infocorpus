@@ -80,7 +80,7 @@ class Users extends UserInterface
     {
 
         $user = new Users();
-        $user->uid = Yii::$app->security->generateRandomString();
+        $user->uid = $this->uid;
         $user->username = $this->username;
         $user->phone = $this->phone;
         $user->email = $this->email;
