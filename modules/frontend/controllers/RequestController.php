@@ -27,7 +27,7 @@ class RequestController extends BaseController
         $recall = [];
 
         foreach ($result as $obj) {
-            $recall = [
+            $recall[] = [
                 'id' => $obj->id,
                 'user' => $obj->user->username,
                 'status' => $obj->call_request,
