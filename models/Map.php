@@ -41,7 +41,7 @@ class Map
     public static function getGroups()
     {
         /* @var $carsData Cars */
-        $carsData = Cars::find()->where(['available' => 1])->where(['IN', 'status', [1, 2]])->all();
+        $carsData = Cars::find()->where(['available' => 1])->andWhere(['IN', 'status', [1, 2]])->all();
 
         $cars = [];
 

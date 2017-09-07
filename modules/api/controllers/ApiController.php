@@ -80,7 +80,7 @@ class ApiController extends Controller
 
     public function actionLoginGroup()
     {
-        $car = Cars::findOne(['name' => Yii::$app->post->getRaw('uid')]);
+        $car = Cars::findOne(['name' => Yii::$app->post->getRaw('uid'), 'status' => 1]);
 
         if ($car) {
             return [
