@@ -88,4 +88,27 @@ class TasksHistory extends ActiveRecord
 
         return $history ? $history : null;
     }
+
+    public static function getTasksList()
+    {
+        /* @var $model Tasks */
+        $model = Tasks::find()->all();
+
+        $array = [];
+
+        foreach ($model as $obj) {
+            $array[] = [
+                'id' => $obj->id,
+                'user' => $obj->user->username,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
+                'status' => $obj->status,
+                'created_at' => $obj->created_at,
+                'updated_at' => $obj->updated_at,
+            ];
+        }
+
+        return $array ? $array : null;
+    }
 }

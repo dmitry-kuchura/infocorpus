@@ -2,13 +2,11 @@
 
 namespace app\modules\frontend\controllers;
 
-use app\models\Tasks;
-use app\models\TasksHistory;
 use Yii;
 use yii\base\Exception;
 use app\models\Map;
 use app\models\Users;
-use yii\db\Query;
+use app\models\TasksHistory;
 
 class FrontendController extends BaseController
 {
@@ -145,6 +143,27 @@ class FrontendController extends BaseController
                 ];
             }
         };
+    }
+
+    /**
+     * Список всех тревог
+     *
+     * @return array
+     */
+    public function actionTaskList()
+    {
+        $result = TasksHistory::getTasksList();
+
+        if (count($result)) {
+            return [
+                'success' => true,
+                'result' => $result,
+            ];
+        } else {
+            return [
+                'success' => false,
+            ];
+        }
     }
 
     /**
