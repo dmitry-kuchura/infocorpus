@@ -31,7 +31,7 @@ class UsersController extends BaseController
             $model->phone = $data['phone'];
             $model->password = $data['password'];
             $model->status = 1;
-            $model->role = 1;
+            $model->role = $data['admin'] ? 666 : 1;
 
             if ($model->signUp()) {
                 return [
@@ -84,6 +84,8 @@ class UsersController extends BaseController
         /* @var $result Users */
         $result = Users::find()->where(['=', 'role', 1])->all();
 
+        $roles = Yii::$app->params['roles'];
+
         foreach ($result as $obj) {
             $users[] = [
                 'id' => $obj->id,
@@ -92,7 +94,7 @@ class UsersController extends BaseController
                 'phone' => $obj->phone,
                 'name' => $obj->username,
                 'status' => $obj->status,
-                'role' => $obj->role == 1 ? 'Администратор' : 'Пользователь',
+                'role' => $roles[$obj->role],
             ];
         }
 
@@ -136,7 +138,7 @@ class UsersController extends BaseController
 
             return [
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ];
         } else {
             return ['success' => false];

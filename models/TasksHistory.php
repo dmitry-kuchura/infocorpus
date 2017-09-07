@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 /**
  * This is the model class for table "tasks_history".
@@ -53,5 +54,38 @@ class TasksHistory extends ActiveRecord
             'updated_at' => 'Updated At',
             'created_at' => 'Created At',
         ];
+    }
+
+    public static function getFullHistory($id)
+    {
+        $history = [];
+
+        $result = new Query();
+
+        $result = $result->select([
+            'tasks_history.longitude',
+            'tasks_history.latitude',
+            'tasks.user_id',
+            'tasks.car_id',
+            'tasks_history.updated_at',
+        ])
+            ->from('tasks')
+            ->join('LEFT JOIN', 'tasks_history', 'tasks_history.task_id = tasks.id')
+            ->where(['tasks.id' => $id])
+            ->groupBy('tasks_history.longitude')
+            ->orderBy('tasks_history.updated_at')
+            ->all();
+
+        foreach ($result as $obj) {
+            $history[] = [
+                'longitude' => $obj['longitude'],
+                'latitude' => $obj['latitude'],
+                'user_id' => $obj['user_id'],
+                'car_id' => $obj['car_id'],
+                'updated_at' => $obj['updated_at'],
+            ];
+        }
+
+        return $history ? $history : null;
     }
 }

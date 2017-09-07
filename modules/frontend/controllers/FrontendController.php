@@ -2,10 +2,13 @@
 
 namespace app\modules\frontend\controllers;
 
+use app\models\Tasks;
+use app\models\TasksHistory;
 use Yii;
 use yii\base\Exception;
 use app\models\Map;
 use app\models\Users;
+use yii\db\Query;
 
 class FrontendController extends BaseController
 {
@@ -142,5 +145,26 @@ class FrontendController extends BaseController
                 ];
             }
         };
+    }
+
+    /**
+     * Получение полной истории маршрута
+     *
+     * @return array
+     */
+    public function actionTaskHistory()
+    {
+        $history = TasksHistory::getFullHistory(Yii::$app->post->getRaw('id'));
+
+        if (count($history)) {
+            return [
+                'success' => true,
+                'history' => $history,
+            ];
+        } else {
+            return [
+                'success' => false,
+            ];
+        }
     }
 }
