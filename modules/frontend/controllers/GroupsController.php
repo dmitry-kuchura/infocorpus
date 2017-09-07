@@ -24,25 +24,15 @@ class GroupsController extends BaseController
     public function actionGroupCreate()
     {
         if (Yii::$app->post->getRaw()) {
-            $date = Yii::$app->post->getRaw();
+            $model = Cars::createCar(Yii::$app->post->getRaw());
 
-            $model = new Cars();
-
-            $model->name = $date['name'];
-            $model->status = 0;
-            $model->aid = Yii::$app->security->generateRandomString();
-            $model->token = Yii::$app->security->generateRandomString();
-            $model->created_at = time();
-            $model->updated_at = time();
-
-            if ($model->save()) {
+            if ($model) {
                 return [
                     'success' => true,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
 

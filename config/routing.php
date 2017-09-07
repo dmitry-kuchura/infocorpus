@@ -34,4 +34,5 @@ return [
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',
     '<action>' => 'site/index',
+    '<action>/<action>' => 'site/index',
 ];

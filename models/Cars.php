@@ -87,4 +87,28 @@ class Cars extends ActiveRecord
     {
         return self::findOne(['token' => $token]);
     }
+
+    /**
+     * Созданеи группы ОБР
+     *
+     * @param $data
+     * @return bool
+     */
+    public static function createCar($data)
+    {
+        $model = new Cars();
+
+        $model->name = $data['name'];
+        $model->status = 0;
+        $model->aid = Yii::$app->security->generateRandomString();
+        $model->token = Yii::$app->security->generateRandomString();
+        $model->created_at = time();
+        $model->updated_at = time();
+
+        if ($model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
