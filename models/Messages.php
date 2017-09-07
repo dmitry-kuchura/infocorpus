@@ -56,10 +56,35 @@ class Messages extends ActiveRecord
     }
 
     /**
+     * Поиск машины
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getCar()
     {
         return $this->hasOne(Cars::className(), ['id' => 'car_id']);
+    }
+
+    /**
+     * Создание сообщение группе
+     *
+     * @param $data
+     * @return bool
+     */
+    public static function createMessage($data)
+    {
+        $model = new Messages();
+
+        $model->car_id = $data['car-id'];
+        $model->text = $data['text'];
+        $model->readed = 0;
+        $model->created_at = time();
+        $model->updated_at = time();
+
+        if ($model->save(false)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

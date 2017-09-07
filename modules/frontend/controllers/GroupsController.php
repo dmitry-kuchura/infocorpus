@@ -2,6 +2,7 @@
 
 namespace app\modules\frontend\controllers;
 
+use app\models\Messages;
 use Yii;
 use app\models\Cars;
 use app\models\Tasks;
@@ -255,7 +256,19 @@ class GroupsController extends BaseController
      */
     public function actionGroupSendMessage()
     {
+        if (Yii::$app->post->getRaw()) {
+            $model = Messages::createMessage(Yii::$app->post->getRaw());
 
+            if ($model) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                ];
+            }
+        }
     }
 
     /**

@@ -4,9 +4,8 @@ namespace app\modules\frontend\controllers;
 
 use Yii;
 use yii\base\Exception;
-use app\models\Cars;
+use app\models\Map;
 use app\models\Users;
-use app\models\Tasks;
 
 class FrontendController extends BaseController
 {
@@ -43,7 +42,7 @@ class FrontendController extends BaseController
             return [
                 'auth' => 'Already auth!',
                 'success' => false,
-                'auth_key' => Yii::$app->user->identity->getAuthKey()
+                'auth_key' => Yii::$app->user->identity->getAuthKey(),
             ];
         }
     }
@@ -59,7 +58,7 @@ class FrontendController extends BaseController
 
         return [
             'auth' => 'Go home!',
-            'success' => true
+            'success' => true,
         ];
     }
 
@@ -96,7 +95,7 @@ class FrontendController extends BaseController
             } else {
                 return [
                     'success' => false,
-                    'message' => 'Не корректный email, пользователь не был найден!'
+                    'message' => 'Не корректный email, пользователь не был найден!',
                 ];
             }
         } else {
@@ -111,47 +110,12 @@ class FrontendController extends BaseController
      */
     public function actionMap()
     {
-        /* @var $tasksData Tasks */
-        $tasksData = Tasks::find()->where(['!=', 'status', 0])->all();
-
-        $task = [];
-
-        foreach ($tasksData as $obj) {
-            $task[] = [
-                'id' => $obj->id,
-                'status' => $obj->status,
-                'longitude' => $obj->longitude,
-                'latitude' => $obj->latitude,
-                'name' => $obj->user->username,
-                'location' => 'м. Херсон, вул. Артилерійська, 14',
-                'phone' => '+38(099)999-99-99',
-                'type' => 'alert',
-                'date' => date('d.m.Y в H:i', $obj->created_at),
-            ];
-        }
-
-        /* @var $carsData Cars */
-        $carsData = Cars::find()->where(['available' => 1])->all();
-
-        $cars = [];
-
-        foreach ($carsData as $obj) {
-            $cars[] = [
-                'id' => $obj->id,
-                'longitude' => $obj->longitude,
-                'latitude' => $obj->latitude,
-                'name' => $obj->name,
-                'status' => $obj->status,
-                'type' => 'group'
-            ];
-        }
-
         return [
             'success' => true,
             'result' => [
-                'groups' => $cars,
-                'alerts' => $task
-            ]
+                'groups' => Map::getGroups(),
+                'alerts' => Map::getAlerts(),
+            ],
         ];
     }
 
@@ -170,11 +134,11 @@ class FrontendController extends BaseController
             if ($user->validate() && $user->save()) {
                 return [
                     'success' => true,
-                    'current' => $user->status
+                    'current' => $user->status,
                 ];
             } else {
                 return [
-                    'success' => false
+                    'success' => false,
                 ];
             }
         };
