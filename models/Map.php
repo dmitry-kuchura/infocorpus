@@ -26,7 +26,7 @@ class Map
                 'latitude' => $obj->latitude,
                 'name' => $obj->user->username,
                 'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
-                'location' => 'м. Херсон, вул. Артилерійська, 14',
+                'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
                 'phone' => $obj->user->phone,
                 'type' => 'alert',
                 'date' => date('d.m.Y в H:i', $obj->created_at),
@@ -53,6 +53,7 @@ class Map
                 'id' => $obj->id,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
+                'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
                 'name' => $obj->name,
                 'status' => $obj->status,
                 'type' => 'group',
@@ -60,5 +61,18 @@ class Map
         }
 
         return $cars ? $cars : null;
+    }
+
+   public static function getAddressAPI($lat, $lng)
+    {
+        $url = 'http://maps.googleapis.com/maps/api/geocode/json?language=ru&latlng=' . trim($lat) . ',' . trim($lng) . '&sensor=false';
+        $json = @file_get_contents($url);
+        $data = json_decode($json);
+        $status = $data->status;
+        if ($status == 'OK') {
+            return $data->results[0]->formatted_address;
+        } else {
+            return null;
+        }
     }
 }
