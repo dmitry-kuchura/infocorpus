@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "tasks_history".
@@ -100,6 +101,7 @@ class TasksHistory extends ActiveRecord
             $array[] = [
                 'id' => $obj->id,
                 'user' => $obj->user->username,
+                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
                 'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
