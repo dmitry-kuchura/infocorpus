@@ -33,6 +33,6 @@ return [
     /* Others actions */
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',
-    '<action>' => 'site/index',
-    '<action>/<action>' => 'site/index',
+    '<controller:[\w_\/-]+>/<alias:[\w_\/-]+>' => 'site/index',
+    '<alias:[\w_\/-]+>' => 'site/index',
 ];
