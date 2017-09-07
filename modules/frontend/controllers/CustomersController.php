@@ -82,7 +82,9 @@ class CustomersController extends BaseController
             $model->car_name = $data['car'];
             $model->car_color = $data['car-color'];
             $model->car_number = $data['car-number'];
-            $model->image = Users::uploadPhoto();
+            if (Users::uploadPhoto()) {
+                $model->image = Users::uploadPhoto();
+            }
 
             if ($model->save()) {
                 return [

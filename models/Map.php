@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\helpers\Url;
+
 class Map
 {
     /**
@@ -23,8 +25,9 @@ class Map
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
                 'name' => $obj->user->username,
+                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
                 'location' => 'м. Херсон, вул. Артилерійська, 14',
-                'phone' => '+38(099)999-99-99',
+                'phone' => $obj->user->phone,
                 'type' => 'alert',
                 'date' => date('d.m.Y в H:i', $obj->created_at),
             ];
