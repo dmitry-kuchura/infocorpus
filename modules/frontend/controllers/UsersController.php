@@ -111,7 +111,7 @@ class UsersController extends BaseController
      */
     public function actionUserRemove()
     {
-        if (Yii::$app->post->getRaw('ID')) {
+        if (Yii::$app->post->getRaw('ID') && Yii::$app->post->getRaw('ID') != 1) {
             $user = Users::findOne(Yii::$app->post->getRaw('ID'));
 
             if ($user->delete()) {
