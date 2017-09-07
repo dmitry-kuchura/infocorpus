@@ -82,7 +82,7 @@ class UsersController extends BaseController
     public function actionUserList()
     {
         /* @var $result Users */
-        $result = Users::find()->where(['=', 'role', 1])->all();
+        $result = Users::find()->where(['IN', 'role', [1, 666]])->all();
 
         $roles = Yii::$app->params['roles'];
 
