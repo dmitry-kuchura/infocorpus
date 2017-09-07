@@ -102,7 +102,7 @@ class Users extends UserInterface
     public function createCustomer()
     {
         $model = new Users();
-        $model->uid = Yii::$app->security->generateRandomString();
+        $model->uid = $this->uid;
         $model->username = $this->username;
         $model->phone = $this->phone;
         $model->imei = $this->imei;

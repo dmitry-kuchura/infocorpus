@@ -30,6 +30,7 @@ class CustomersController extends BaseController
 
             $model = new Users();
             $model->username = $data['name'];
+            $model->uid = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
             $model->phone = $data['phone'];
             $model->imei = $data['imei'];
             $model->email = $data['email'];
