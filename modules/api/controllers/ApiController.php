@@ -63,16 +63,38 @@ class ApiController extends Controller
         if ($user && Yii::$app->user->login($user, 3600 * 24 * 30)) {
             return [
                 'success' => true,
-                'token' => Yii::$app->user->identity->auth_key
+                'token' => Yii::$app->user->identity->auth_key,
             ];
         } else {
             return [
                 'success' => false,
                 'error' => [
                     'code' => 404,
-                    'message' => 'Ooooops. User not found!'
+                    'message' => 'Ooooops. User not found!',
                 ],
-                'token' => null
+                'token' => null,
+            ];
+        }
+
+    }
+
+    public function actionLoginGroup()
+    {
+        $car = Cars::findOne(['name' => Yii::$app->post->getRaw('uid')]);
+
+        if ($car) {
+            return [
+                'success' => true,
+                'token' => $car->token,
+            ];
+        } else {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 404,
+                    'message' => 'Ooooops. Car not found!',
+                ],
+                'token' => null,
             ];
         }
 
@@ -94,8 +116,8 @@ class ApiController extends Controller
                     'success' => false,
                     'error' => [
                         'code' => 500,
-                        'message' => 'User not found!'
-                    ]
+                        'message' => 'User not found!',
+                    ],
                 ];
             }
 
@@ -121,8 +143,8 @@ class ApiController extends Controller
                     'success' => false,
                     'error' => [
                         'code' => 500,
-                        'message' => 'Wrong data!'
-                    ]
+                        'message' => 'Wrong data!',
+                    ],
                 ];
             }
         } else {
@@ -130,8 +152,8 @@ class ApiController extends Controller
                 'success' => false,
                 'error' => [
                     'code' => 500,
-                    'message' => 'Wrong data!'
-                ]
+                    'message' => 'Wrong data!',
+                ],
             ];
         }
 
@@ -151,8 +173,8 @@ class ApiController extends Controller
                 'success' => false,
                 'error' => [
                     'code' => 404,
-                    'message' => 'User not found!'
-                ]
+                    'message' => 'User not found!',
+                ],
             ];
         }
 
@@ -163,12 +185,12 @@ class ApiController extends Controller
             return [
                 'success' => true,
                 'identity' => $last->id,
-                'isActive' => $last->status == 1 ? true : false
+                'isActive' => $last->status == 1 ? true : false,
             ];
         } else {
             return [
                 'success' => true,
-                'isActive' => false
+                'isActive' => false,
             ];
         }
     }
@@ -187,8 +209,8 @@ class ApiController extends Controller
                 'success' => false,
                 'error' => [
                     'code' => 404,
-                    'message' => 'User not found!'
-                ]
+                    'message' => 'User not found!',
+                ],
             ];
         }
 
@@ -199,7 +221,7 @@ class ApiController extends Controller
             return [
                 'success' => true,
                 'identity' => $last->id,
-                'isActive' => $last->status == 1 ? true : false
+                'isActive' => $last->status == 1 ? true : false,
             ];
         } else {
             $task = new Tasks();
@@ -223,15 +245,15 @@ class ApiController extends Controller
                 return [
                     'success' => true,
                     'identity' => $task->id,
-                    'isActive' => $model->status == 1 ? true : false
+                    'isActive' => $model->status == 1 ? true : false,
                 ];
             } else {
                 return [
                     'success' => false,
                     'error' => [
                         'code' => 500,
-                        'message' => 'Not created!'
-                    ]
+                        'message' => 'Not created!',
+                    ],
                 ];
             }
         }
@@ -279,12 +301,12 @@ class ApiController extends Controller
                 return [
                     'success' => true,
                     'isActive' => true,
-                    'identity' => $task->id
+                    'identity' => $task->id,
                 ];
             } else {
                 return [
                     'success' => true,
-                    'isActive' => false
+                    'isActive' => false,
                 ];
             }
         } else {
@@ -294,7 +316,7 @@ class ApiController extends Controller
                 return [
                     'success' => true,
                     'identity' => $task->id,
-                    'isActive' => $task->status == 1 ? true : false
+                    'isActive' => $task->status == 1 ? true : false,
                 ];
             }
         }
@@ -317,8 +339,8 @@ class ApiController extends Controller
                     'success' => false,
                     'error' => [
                         'code' => 500,
-                        'message' => 'Car not found!'
-                    ]
+                        'message' => 'Car not found!',
+                    ],
                 ];
             }
 
@@ -340,8 +362,8 @@ class ApiController extends Controller
                     'success' => false,
                     'error' => [
                         'code' => 500,
-                        'message' => 'Cars status was not updated!'
-                    ]
+                        'message' => 'Cars status was not updated!',
+                    ],
                 ];
             }
         }
@@ -371,7 +393,8 @@ class ApiController extends Controller
         return $text;
     }
 
-    function getTask($car) {
+    function getTask($car)
+    {
         if ($car->status == 2) {
             /* @var $result Tasks */
             $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
@@ -434,11 +457,11 @@ class ApiController extends Controller
 
         if ($message->save()) {
             return [
-                'success' => true
+                'success' => true,
             ];
         } else {
             return [
-                'success' => true
+                'success' => true,
             ];
         }
     }
