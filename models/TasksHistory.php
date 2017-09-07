@@ -104,8 +104,8 @@ class TasksHistory extends ActiveRecord
                 'latitude' => $obj->latitude,
                 'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
                 'status' => $obj->status,
-                'created_at' => $obj->created_at,
-                'updated_at' => $obj->updated_at,
+                'created_at' => date('Y-m-d H:i:s', $obj->created_at),
+                'updated_at' => date('Y-m-d H:i:s', $obj->updated_at),
             ];
         }
 
