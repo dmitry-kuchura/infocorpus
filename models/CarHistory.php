@@ -80,18 +80,23 @@ class CarHistory extends ActiveRecord
     /**
      * Обновление координат машины
      *
-     * @param $post
-     * @param $task
+     * @param $post array
+     * @param $car integer
      * @return bool
      */
-    public static function saveCarHistory($post, $task)
+    public static function saveCarHistory($post, $car)
     {
+        /* @var $task Tasks */
+        $task = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
+
         $model = new CarHistory();
 
-        $model->car_id = $task['car_id'];
+        $model->car_id = $car;
+        $model->task_id = $task->id;
         $model->latitude = $post['latitude'];
         $model->longitude = $post['longitude'];
         $model->updated_at = time();
+        $model->created_at = time();
 
         if ($model->validate() && $model->save()) {
             return true;

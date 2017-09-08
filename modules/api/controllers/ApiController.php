@@ -351,7 +351,7 @@ class ApiController extends Controller
 
             $model = Cars::updateCar(Yii::$app->request->headers->get('Authorization-token'), Yii::$app->post->getRaw());
 
-            CarHistory::saveCarHistory(Yii::$app->post->getRaw(), $task);
+            CarHistory::saveCarHistory(Yii::$app->post->getRaw(), $car->id);
 
             if ($model) {
                 return [
