@@ -29,6 +29,7 @@ return [
     'frontend/request-list' => 'frontend/request/list',
     'frontend/request-delete' => 'frontend/request/delete',
     'frontend/request-status' => 'frontend/request/status',
+    'frontend/check-recall' => 'frontend/request/check-recall',
 
     /* Tasks actions */
     'frontend/task-list' => 'frontend/tasks/task-list',

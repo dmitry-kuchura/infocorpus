@@ -66,4 +66,10 @@ class Recall extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
+
+    public static function findCalls()
+    {
+        $time = time() * 1000;
+        return Recall::find()->where(['>=', 'date', $time])->groupBy('user_id')->all();
+    }
 }

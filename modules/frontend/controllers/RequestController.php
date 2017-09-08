@@ -101,6 +101,35 @@ class RequestController extends BaseController
      */
     public function actionCheckRecall()
     {
-//        $check = Recall::fi
+        /* @var $recall Recall */
+        $recall = Recall::findCalls();
+
+        $array = [];
+
+        if (count($recall)) {
+            foreach ($recall as $obj) {
+                $array[] = [
+                    'date-recall' => date('Y-m-d H:i:s', $obj->date / 1000),
+                    'recall-after' => $obj->recall_after,
+                    'recall-after-date' => date('H:i:s', $obj->recall_after / 1000),
+                    'user' => $obj->user->username,
+                ];
+            }
+
+            $call = true;
+        } else {
+            $call = false;
+        }
+
+        if ($call) {
+            return [
+                'success' => true,
+                'recalls' => $recall,
+            ];
+        } else {
+            return [
+                'success' => false,
+            ];
+        }
     }
 }
