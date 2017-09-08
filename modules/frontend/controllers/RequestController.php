@@ -95,4 +95,12 @@ class RequestController extends BaseController
             }
         };
     }
-};
+
+    /**
+     * Проверка на ближайший перезвон
+     */
+    public function actionCheckRecall()
+    {
+//        $check = Recall::fi
+    }
+}

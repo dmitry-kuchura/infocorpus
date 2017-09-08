@@ -26,7 +26,7 @@ class Map
                 'latitude' => $obj->latitude,
                 'name' => $obj->user->username,
                 'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->user->image) : Url::to('/img/no-photo.png'),
-                'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
+                'location' => $obj->latitude != null ? self::getAddressAPI($obj->latitude, $obj->longitude) : '',
                 'phone' => $obj->user->phone,
                 'type' => 'alert',
                 'date' => date('d.m.Y в H:i', $obj->created_at),
@@ -63,7 +63,7 @@ class Map
         return $cars ? $cars : null;
     }
 
-   public static function getAddressAPI($lat, $lng)
+    public static function getAddressAPI($lat, $lng)
     {
         $url = 'http://maps.googleapis.com/maps/api/geocode/json?language=ru&latlng=' . trim($lat) . ',' . trim($lng) . '&sensor=false';
         $json = @file_get_contents($url);
