@@ -124,7 +124,7 @@ class TasksHistory extends ActiveRecord
             $array[] = [
                 'id' => $obj->id,
                 'user' => $obj->user->username,
-                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
+                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->user->image) : Url::to('/img/no-photo.png'),
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
                 'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
