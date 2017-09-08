@@ -2,8 +2,6 @@
 
 namespace app\modules\api\controllers;
 
-use app\models\Messages;
-use app\models\TasksHistory;
 use Yii;
 use yii\web\Response;
 use yii\web\Controller;
@@ -11,6 +9,9 @@ use app\models\Cars;
 use app\models\Users;
 use app\models\Tasks;
 use app\models\Recall;
+use app\models\Messages;
+use app\models\CarHistory;
+use app\models\TasksHistory;
 use app\components\Logger;
 
 class ApiController extends Controller
@@ -32,7 +33,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Save log
+     * Сохранение логов
      *
      * @param \yii\base\Action $action
      * @param mixed $result
@@ -78,6 +79,11 @@ class ApiController extends Controller
 
     }
 
+    /**
+     * Авторизация группы
+     *
+     * @return array
+     */
     public function actionLoginGroup()
     {
         $car = Cars::findOne(['name' => Yii::$app->post->getRaw('uid'), 'status' => 1]);
@@ -331,8 +337,6 @@ class ApiController extends Controller
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
 
         if (Yii::$app->post->getRaw()) {
-            $data = Yii::$app->post->getRaw();
-
             if (!$car) {
                 return [
                     'success' => false,
@@ -343,18 +347,18 @@ class ApiController extends Controller
                 ];
             }
 
-            $model = Cars::findOne(['token' => Yii::$app->request->headers->get('Authorization-token')]);
+            $task = Tasks::getTaskForCar($car);
 
-            $model->longitude = $data['longitude'];
-            $model->latitude = $data['latitude'];
-            $model->updated_at = time();
+            $model = Cars::updateCar(Yii::$app->request->headers->get('Authorization-token'), Yii::$app->post->getRaw());
 
-            if ($model->validate() && $model->save()) {
+            CarHistory::saveCarHistory(Yii::$app->post->getRaw(), $task);
+
+            if ($model) {
                 return [
                     'success' => true,
                     'status' => $car->status,
                     'message' => $this->getMessage($car->id),
-                    'user' => $this->getTask($car),
+                    'user' => $task,
                 ];
             } else {
                 return [
@@ -390,78 +394,5 @@ class ApiController extends Controller
         }
 
         return $text;
-    }
-
-    function getTask($car)
-    {
-        if ($car->status == 2) {
-            /* @var $result Tasks */
-            $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
-
-            $data = [
-                'uid' => $result->user->id,
-                'name' => $result->user->username,
-                'phone' => $result->user->phone,
-                'big_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                'small_photo' => 'https://t4.ftcdn.net/jpg/01/13/92/79/500_F_113927934_sCoaIlA5zeK7yEskjh1tG7GAqseplkAT.jpg',
-                'longitude' => $result->longitude,
-                'latitude' => $result->latitude,
-            ];
-
-            return $data;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Сброс тревог к определенному статусу
-     *
-     * @return array
-     */
-    public function actionResetStatus()
-    {
-        $id = Yii::$app->request->get('id');
-
-        $task = Tasks::findOne($id);
-
-        $task->status = 0;
-        $task->updated_at = time();
-
-        $task->save(false);
-
-        $model = new TasksHistory();
-
-        $model->task_id = $task->id;
-        $model->status = 0;
-        $model->user_id = $task->user_id;
-        $model->updated_at = time();
-
-        $model->save(false);
-
-        return ['success' => true];
-    }
-
-    public function actionCreateMessage()
-    {
-        $data = Yii::$app->post->getRaw();
-
-        $message = new Messages();
-
-        $message->car_id = 13;
-        $message->readed = 0;
-        $message->text = $data['text'];
-        $message->created_at = time();
-        $message->updated_at = time();
-
-        if ($message->save()) {
-            return [
-                'success' => true,
-            ];
-        } else {
-            return [
-                'success' => true,
-            ];
-        }
     }
 }

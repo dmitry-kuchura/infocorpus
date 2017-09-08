@@ -111,4 +111,19 @@ class Cars extends ActiveRecord
             return false;
         }
     }
+
+    public static function updateCar($token, $data)
+    {
+        $model = Cars::findOne(['token' => $token]);
+
+        $model->longitude = $data['longitude'];
+        $model->latitude = $data['latitude'];
+        $model->updated_at = time();
+
+        if ($model->validate() && $model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

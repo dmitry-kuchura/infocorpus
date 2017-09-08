@@ -3,8 +3,8 @@
 namespace app\models;
 
 use Yii;
-use app\models\Users;
-use app\models\Cars;
+use yii\helpers\Url;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tasks".
@@ -21,7 +21,7 @@ use app\models\Cars;
  * @property Cars $car
  * @property Users $user
  */
-class Tasks extends \yii\db\ActiveRecord
+class Tasks extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -83,5 +83,27 @@ class Tasks extends \yii\db\ActiveRecord
     public static function getLastTask($user)
     {
         return self::find()->where(['user_id' => $user])->orderBy('id DESC')->one();
+    }
+
+    public static function getTaskForCar($car)
+    {
+        if ($car->status == 2) {
+            /* @var $result Tasks */
+            $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
+
+            $data = [
+                'uid' => $result->user->id,
+                'name' => $result->user->username,
+                'phone' => $result->user->phone,
+                'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                'longitude' => $result->longitude,
+                'latitude' => $result->latitude,
+            ];
+
+            return $data;
+        } else {
+            return null;
+        }
     }
 }
