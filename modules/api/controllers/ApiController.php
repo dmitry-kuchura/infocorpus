@@ -140,6 +140,8 @@ class ApiController extends Controller
             $model->recall_during = $data['time'];
             $model->call_security_after = $data['time'];
 
+            Logger::saveLog($data, 'recall', null);
+
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
