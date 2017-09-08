@@ -116,7 +116,7 @@ class TasksHistory extends ActiveRecord
     public static function getTasksList()
     {
         /* @var $model Tasks */
-        $model = Tasks::find()->all();
+        $model = Tasks::find()->orderBy('id DESC')->all();
 
         $array = [];
 
