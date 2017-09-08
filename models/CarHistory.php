@@ -99,4 +99,15 @@ class CarHistory extends ActiveRecord
             return false;
         }
     }
+
+    /**
+     * Полная история машины
+     *
+     * @param $task
+     * @return array|ActiveRecord[]
+     */
+    public static function getCarHistory($task)
+    {
+        return CarHistory::find()->where(['task_id' => $task])->all();
+    }
 }

@@ -6,7 +6,6 @@ use Yii;
 use yii\base\Exception;
 use app\models\Map;
 use app\models\Users;
-use app\models\TasksHistory;
 
 class FrontendController extends BaseController
 {
@@ -143,47 +142,5 @@ class FrontendController extends BaseController
                 ];
             }
         };
-    }
-
-    /**
-     * Список всех тревог
-     *
-     * @return array
-     */
-    public function actionTaskList()
-    {
-        $result = TasksHistory::getTasksList();
-
-        if (count($result)) {
-            return [
-                'success' => true,
-                'result' => $result,
-            ];
-        } else {
-            return [
-                'success' => false,
-            ];
-        }
-    }
-
-    /**
-     * Получение полной истории маршрута
-     *
-     * @return array
-     */
-    public function actionTaskHistory()
-    {
-        $history = TasksHistory::getFullHistory(Yii::$app->post->getRaw('id'));
-
-        if (count($history)) {
-            return [
-                'success' => true,
-                'history' => $history,
-            ];
-        } else {
-            return [
-                'success' => false,
-            ];
-        }
     }
 }

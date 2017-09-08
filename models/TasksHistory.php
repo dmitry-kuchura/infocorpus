@@ -56,6 +56,12 @@ class TasksHistory extends ActiveRecord
         ];
     }
 
+    /**
+     * Полная история тревоги
+     *
+     * @param $id
+     * @return array|null
+     */
     public static function getFullHistory($id)
     {
         $history = [];
@@ -77,7 +83,7 @@ class TasksHistory extends ActiveRecord
             ->all();
 
         foreach ($result as $obj) {
-            $history[] = [
+            $history['customer'][] = [
                 'longitude' => $obj['longitude'],
                 'latitude' => $obj['latitude'],
                 'user_id' => $obj['user_id'],
@@ -86,9 +92,26 @@ class TasksHistory extends ActiveRecord
             ];
         }
 
+        /* @var $group CarHistory */
+        $group = CarHistory::getCarHistory($id);
+
+        foreach ($group as $obj) {
+            $history['group'][] = [
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'car_id' => $obj->car_id,
+                'updated_at' => $obj->updated_at,
+            ];
+        }
+
         return $history ? $history : null;
     }
 
+    /**
+     * Получение последней тревоги
+     *
+     * @return array|null
+     */
     public static function getTasksList()
     {
         /* @var $model Tasks */

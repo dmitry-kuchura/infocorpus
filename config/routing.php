@@ -30,6 +30,10 @@ return [
     'frontend/request-delete' => 'frontend/request/delete',
     'frontend/request-status' => 'frontend/request/status',
 
+    /* Tasks actions */
+    'frontend/task-list' => 'frontend/tasks/task-list',
+    'frontend/task-history' => 'frontend/tasks/task-history',
+
     /* Others actions */
     'frontend/<action>' => 'frontend/frontend/<action>',
     'api/<action>' => 'api/api/<action>',
