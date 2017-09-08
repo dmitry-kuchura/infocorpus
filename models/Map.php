@@ -25,7 +25,7 @@ class Map
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
                 'name' => $obj->user->username,
-                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
+                'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->user->image) : Url::to('/img/no-photo.png'),
                 'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
                 'phone' => $obj->user->phone,
                 'type' => 'alert',
