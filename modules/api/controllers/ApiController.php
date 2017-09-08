@@ -136,11 +136,9 @@ class ApiController extends Controller
             $model->date = $data['date'];
             $model->time = $data['time'];
             $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
-            $model->recall_after = $data['time'];
-            $model->recall_during = $data['time'];
-            $model->call_security_after = $data['time'];
-
-            Logger::saveLog($data, 'recall', null);
+            $model->recall_after = $data['recallDuring'];
+            $model->recall_during = $data['recallDuring'];
+            $model->call_security_after = $data['callSecurityAfter'];
 
             if ($model->validate() && $model->save()) {
                 return [
