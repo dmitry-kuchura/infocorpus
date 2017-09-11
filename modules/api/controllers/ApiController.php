@@ -141,6 +141,7 @@ class ApiController extends Controller
                 $model->recall_after = $data['recallDuring'];
                 $model->recall_during = $data['recallDuring'];
                 $model->call_security_after = $data['callSecurityAfter'];
+                $model->status = 0;
             } else {
                 $model = new Recall();
 
@@ -152,6 +153,7 @@ class ApiController extends Controller
                 $model->recall_after = $data['recallDuring'];
                 $model->recall_during = $data['recallDuring'];
                 $model->call_security_after = $data['callSecurityAfter'];
+                $model->status = 0;
             }
 
             if ($model->validate() && $model->save()) {

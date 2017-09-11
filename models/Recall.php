@@ -16,6 +16,7 @@ use Yii;
  * @property integer $call_security_after
  * @property integer $call_request
  * @property integer $user_id
+ * @property integer $status
  *
  * @property Users $user
  */
@@ -36,7 +37,7 @@ class Recall extends \yii\db\ActiveRecord
     {
         return [
             [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'required'],
-            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'integer'],
+            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'status'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
