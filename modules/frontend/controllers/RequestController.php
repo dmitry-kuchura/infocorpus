@@ -32,7 +32,7 @@ class RequestController extends BaseController
                 'user' => $obj->user->username,
                 'phone' => $obj->user->phone,
                 'status' => $obj->call_request,
-                'time_created' => date('Y-m-d H:i:s', $obj->time),
+                'time_created' => date('Y-m-d H:i:s', $obj->date / 1000),
                 'alert_after' => $obj->call_security_after,
             ];
         }
@@ -124,7 +124,7 @@ class RequestController extends BaseController
         if ($call) {
             return [
                 'success' => true,
-                'recalls' => $recall,
+                'recalls' => $array,
             ];
         } else {
             return [

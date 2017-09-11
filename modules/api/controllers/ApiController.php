@@ -129,16 +129,30 @@ class ApiController extends Controller
 
             $data = Yii::$app->post->getRaw();
 
-            $model = new Recall();
+            $result = Recall::findOne(['user_id' => $user->id]);
 
-            $model->user_id = $user->id;
-            $model->call_request = $data['call'] == true ? 1 : 0;
-            $model->date = $data['date'];
-            $model->time = $data['time'];
-            $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
-            $model->recall_after = $data['recallDuring'];
-            $model->recall_during = $data['recallDuring'];
-            $model->call_security_after = $data['callSecurityAfter'];
+            if ($result) {
+                $model = $result;
+
+                $model->call_request = $data['call'] == true ? 1 : 0;
+                $model->date = $data['date'];
+                $model->time = $data['time'];
+                $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
+                $model->recall_after = $data['recallDuring'];
+                $model->recall_during = $data['recallDuring'];
+                $model->call_security_after = $data['callSecurityAfter'];
+            } else {
+                $model = new Recall();
+
+                $model->user_id = $user->id;
+                $model->call_request = $data['call'] == true ? 1 : 0;
+                $model->date = $data['date'];
+                $model->time = $data['time'];
+                $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
+                $model->recall_after = $data['recallDuring'];
+                $model->recall_during = $data['recallDuring'];
+                $model->call_security_after = $data['callSecurityAfter'];
+            }
 
             if ($model->validate() && $model->save()) {
                 return [
