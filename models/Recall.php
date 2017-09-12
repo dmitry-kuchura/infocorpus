@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "recall".
@@ -20,7 +21,7 @@ use Yii;
  *
  * @property Users $user
  */
-class Recall extends \yii\db\ActiveRecord
+class Recall extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -70,7 +71,7 @@ class Recall extends \yii\db\ActiveRecord
 
     public static function findCalls()
     {
-        $time = time() * 1000;
-        return Recall::find()->where(['>=', 'date', $time])->groupBy('user_id')->all();
+        $time = time() * 1000 + 270000;
+        return Recall::find()->where(['<=', 'date', $time])->andWhere(['status' => 0])->groupBy('user_id')->all();
     }
 }

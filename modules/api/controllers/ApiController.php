@@ -388,6 +388,11 @@ class ApiController extends Controller
         }
     }
 
+    public function actionUpdateCall()
+    {
+
+    }
+
     /**
      * Получение последнего мессаджа
      *

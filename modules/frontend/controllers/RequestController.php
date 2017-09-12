@@ -29,6 +29,8 @@ class RequestController extends BaseController
         foreach ($result as $obj) {
             $recall[] = [
                 'id' => $obj->id,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
                 'user' => $obj->user->username,
                 'phone' => $obj->user->phone,
                 'status' => $obj->call_request,
@@ -109,10 +111,12 @@ class RequestController extends BaseController
         if (count($recall)) {
             foreach ($recall as $obj) {
                 $array[] = [
-                    'date-recall' => date('Y-m-d H:i:s', $obj->date / 1000),
-                    'recall-after' => $obj->recall_after,
-                    'recall-after-date' => date('H:i:s', $obj->recall_after / 1000),
+                    'id' => $obj->id,
+                    'date-recall' => date('Y-m-d H:i', $obj->date / 1000),
+                    'recall-during' => date('H:i', mktime(0, 0, $obj->recall_after / 1000)),
+                    'recall-every' => date('H:i', mktime(0, 0, $obj->call_security_after / 1000)),
                     'user' => $obj->user->username,
+                    'status' => $obj->status,
                 ];
             }
 
@@ -130,6 +134,13 @@ class RequestController extends BaseController
             return [
                 'success' => false,
             ];
+        }
+    }
+
+    public function actionUpdateRecall()
+    {
+        if (Yii::$app->post->getRaw('id')) {
+            $model = Recall::findOne(Yii::$app->post->getRaw('id'));
         }
     }
 }
