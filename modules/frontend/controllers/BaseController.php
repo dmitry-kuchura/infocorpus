@@ -53,6 +53,7 @@ class BaseController extends Controller
             'reset-password',
             'customer-create',
             'customer-update',
+            'check-recall',
         ];
 
         if (!in_array($action->id, $actions)) {
