@@ -159,6 +159,7 @@ class ApiController extends Controller
             if ($model->validate() && $model->save()) {
                 return [
                     'success' => true,
+                    'callId' => $model->id,
                 ];
             } else {
                 return [

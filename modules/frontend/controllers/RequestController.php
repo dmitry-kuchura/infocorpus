@@ -116,6 +116,7 @@ class RequestController extends BaseController
                     'recall-during' => date('H:i', mktime(0, 0, $obj->recall_after / 1000)),
                     'recall-every' => date('H:i', mktime(0, 0, $obj->call_security_after / 1000)),
                     'user' => $obj->user->username,
+                    'userID' => $obj->user->id,
                     'status' => $obj->status,
                 ];
             }
