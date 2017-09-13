@@ -32,7 +32,7 @@ class UserInterface extends ActiveRecord implements IdentityInterface
 
     public static function findByUid($uid)
     {
-        return static::findOne(['uid' => $uid]);
+        return static::findOne(['uid' => $uid, 'status' => 1]);
     }
 
     public static function findByEmail($email)
