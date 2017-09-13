@@ -63,14 +63,27 @@ class Map
         return $cars ? $cars : null;
     }
 
+    /**
+     * Получение улицы от GOOGLE API
+     *
+     * @param $lat
+     * @param $lng
+     * @return null
+     */
     public static function getAddressAPI($lat, $lng)
     {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json?language=ru&latlng=' . trim($lat) . ',' . trim($lng) . '&sensor=false';
-        $json = @file_get_contents($url);
-        $data = json_decode($json);
-        $status = $data->status;
-        if ($status == 'OK') {
-            return $data->results[0]->formatted_address;
+        if ($lat != null && $lng != null) {
+            $url = 'http://maps.googleapis.com/maps/api/geocode/json?language=ru&latlng=' . trim($lat) . ',' . trim($lng) . '&sensor=false';
+            $json = @file_get_contents($url);
+            $data = json_decode($json);
+            $status = $data->status;
+            if ($data) {
+                if ($status == 'OK') {
+                    return $data->results[0]->formatted_address;
+                } else {
+                    return null;
+                }
+            }
         } else {
             return null;
         }
