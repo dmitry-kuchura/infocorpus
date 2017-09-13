@@ -3,8 +3,6 @@
 namespace app\modules\api\controllers;
 
 use Yii;
-use yii\web\Response;
-use yii\web\Controller;
 use app\models\Cars;
 use app\models\Users;
 use app\models\Tasks;
@@ -12,46 +10,9 @@ use app\models\Recall;
 use app\models\Messages;
 use app\models\CarHistory;
 use app\models\TasksHistory;
-use app\components\Logger;
 
-class ApiController extends Controller
+class ApiController extends BaseController
 {
-
-    /**
-     * Application/JSON response
-     *
-     * @param \yii\base\Action $action
-     * @return bool
-     */
-    public function beforeAction($action)
-    {
-        $result = parent::beforeAction($action);
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        return $result;
-    }
-
-    /**
-     * Сохранение логов
-     *
-     * @param \yii\base\Action $action
-     * @param mixed $result
-     * @return mixed
-     */
-    public function afterAction($action, $result)
-    {
-        $result = parent::afterAction($action, $result);
-
-        $request = Yii::$app->post->getRaw();
-
-        $request['Authorization-token'] = Yii::$app->request->headers->get('Authorization-token');
-
-        Logger::saveLog($request, $action->id, $result);
-
-        return $result;
-    }
-
     /**
      * Авторизация
      *
@@ -349,7 +310,54 @@ class ApiController extends Controller
      *
      * @return array
      */
-    public function actionStatus()
+    public function actionStatusChange()
+    {
+        $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
+
+        if (Yii::$app->post->getRaw()) {
+            if (!$car) {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Car not found!',
+                    ],
+                ];
+            }
+
+            $task = Tasks::getTaskForCar($car);
+
+            $model = Cars::updateCarStatus(Yii::$app->request->headers->get('Authorization-token'), Yii::$app->post->getRaw());
+
+            CarHistory::saveCarHistory(Yii::$app->post->getRaw(), $car->id);
+
+            $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
+
+            if ($model) {
+                return [
+                    'success' => true,
+                    'status' => $car->status,
+                    'message' => $this->getMessage($car->id),
+                    'user' => $task,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Cars status was not updated!',
+                    ],
+                ];
+            }
+        }
+    }
+
+    /**
+     * Обновление координатов автомобиля
+     *
+     * @return array
+     */
+    public function actionStatusUpdate()
     {
         $car = Cars::findByToken(Yii::$app->request->headers->get('Authorization-token'));
 
@@ -391,7 +399,7 @@ class ApiController extends Controller
 
     public function actionUpdateCall()
     {
-
+        
     }
 
     /**

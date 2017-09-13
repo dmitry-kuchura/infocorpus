@@ -126,4 +126,18 @@ class Cars extends ActiveRecord
             return false;
         }
     }
+
+    public static function updateCarStatus($token, $data)
+    {
+        $model = Cars::findOne(['token' => $token]);
+
+        $model->status = $data['status'];
+        $model->updated_at = time();
+
+        if ($model->validate() && $model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
