@@ -199,4 +199,39 @@ class Recall extends ActiveRecord
             return false;
         }
     }
+
+    /**
+     * Обновление перезвона
+     *
+     * @param $id
+     * @return int
+     */
+    public static function updateRecall($id)
+    {
+        $model = Recall::findOne($id);
+
+        // Текущее время
+        $current = time() * 1000;
+        // Продолжительность звонков
+        $recallDuring = $model->date + $model->recall_during;
+        // Интервал перезвонов
+        $recallTime = $model->date + $model->recall_after;
+
+        if ($current > $model->time) {
+            $model->status = 1;
+            $model->save();
+        } else {
+            if (($model->time < $current) && ($recallDuring <= $model->time)) {
+                $model->time = $recallDuring;
+                $model->status = 1;
+                $model->save();
+            } else {
+                $model->time = $recallTime;
+                $model->status = 0;
+                $model->save();
+            }
+        }
+
+        return $model->status;
+    }
 }
