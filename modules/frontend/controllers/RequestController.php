@@ -175,7 +175,32 @@ class RequestController extends BaseController
 
             $model = Recall::findOne($post['id']);
 
-//            $recallTime = $model->date *
+            $current = time() * 1000;
+            $recallDuring = $model->date + $model->recall_during;
+            $recallTime = $model->date + $model->recall_after;
+
+            var_dump($current);
+            var_dump(date('Y-m-d H:i', $current / 1000));
+            var_dump($recallDuring);
+            var_dump(date('Y-m-d H:i', $recallDuring / 1000));
+            var_dump($recallTime);
+            var_dump(date('Y-m-d H:i', $recallTime / 1000));
+            var_dump($recallDuring < $current);
+            die;
+
+            if ($recallDuring < $current) {
+                if ($recallTime < $recallDuring) {
+                    $model->time = $recallTime;
+                    $model->save();
+                } else {
+                    $model->time = $recallDuring;
+                    $model->status = 1;
+                    $model->save();
+                }
+            } else {
+                $model->status = 1;
+                $model->save();
+            }
         }
     }
 }

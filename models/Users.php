@@ -44,7 +44,6 @@ class Users extends UserInterface
             [['uid', 'password'], 'required'],
             [['v', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
             [['longitude', 'latitude'], 'number'],
-            [['email'], 'unique'],
             [['imei'], 'string', 'max' => 16],
             [['uid', 'username', 'skype', 'car_name', 'car_color', 'car_number'], 'string', 'max' => 50],
             [['email', 'image', 'password', 'phone', 'address', 'organization', 'location', 'auth_key', 'hash'], 'string', 'max' => 150],
