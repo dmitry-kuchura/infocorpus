@@ -19,6 +19,8 @@ use yii\db\ActiveRecord;
  * @property integer $user_id
  * @property integer $task_id
  * @property integer $status
+ * @property integer $latitude
+ * @property integer $longitude
  *
  * @property Users $user
  * @property Tasks $task
@@ -40,7 +42,7 @@ class Recall extends ActiveRecord
     {
         return [
             [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'required'],
-            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'status'], 'integer'],
+            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'status', 'latitude', 'longitude'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
@@ -179,6 +181,12 @@ class Recall extends ActiveRecord
         $user->latitude = $post['latitude'];
 
         $user->save();
+
+        $recall = Recall::findOne($post['id']);
+        $recall->latitude = $post['latitude'];
+        $recall->longitude = $post['longitude'];
+
+        $recall->save();
 
         if ($task->save(false) && $history->save()) {
             return $task;
