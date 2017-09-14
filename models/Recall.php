@@ -186,7 +186,7 @@ class Recall extends ActiveRecord
         $recall->latitude = $post['latitude'];
         $recall->longitude = $post['longitude'];
 
-        $recall->save();
+        $recall->save(false);
 
         if ($task->save(false) && $history->save()) {
             return $task;

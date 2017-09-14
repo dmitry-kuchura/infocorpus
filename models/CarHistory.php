@@ -92,7 +92,7 @@ class CarHistory extends ActiveRecord
         $model = new CarHistory();
 
         $model->car_id = $car;
-        $model->task_id = $task->id;
+        $model->task_id = $task ? $task->id : null;
         $model->latitude = $post['latitude'];
         $model->longitude = $post['longitude'];
         $model->updated_at = time();
