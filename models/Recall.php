@@ -18,9 +18,9 @@ use yii\db\ActiveRecord;
  * @property integer $call_request
  * @property integer $user_id
  * @property integer $task_id
+ * @property string $longitude
+ * @property string $latitude
  * @property integer $status
- * @property integer $latitude
- * @property integer $longitude
  *
  * @property Users $user
  * @property Tasks $task
@@ -41,8 +41,9 @@ class Recall extends ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id'], 'required'],
-            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'status', 'latitude', 'longitude'], 'integer'],
+            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'status'], 'required'],
+            [['date', 'time', 'automatic_redial', 'recall_after', 'recall_during', 'call_security_after', 'call_request', 'user_id', 'task_id', 'status'], 'integer'],
+            [['longitude', 'latitude'], 'number'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
@@ -63,6 +64,10 @@ class Recall extends ActiveRecord
             'call_security_after' => 'Call Security After',
             'call_request' => 'Call Request',
             'user_id' => 'User ID',
+            'task_id' => 'Task ID',
+            'longitude' => 'Longitude',
+            'latitude' => 'Latitude',
+            'status' => 'Status',
         ];
     }
 

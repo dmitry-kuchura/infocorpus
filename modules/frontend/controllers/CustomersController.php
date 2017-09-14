@@ -53,7 +53,6 @@ class CustomersController extends BaseController
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
         }
