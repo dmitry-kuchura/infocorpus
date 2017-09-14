@@ -285,7 +285,7 @@ class ApiController extends BaseController
     {
         $user = Users::findIdentityByAccessToken(Yii::$app->request->headers->get('Authorization-token'));
 
-        if (Yii::$app->post->getRaw()) {
+        if (Yii::$app->post->getRaw() && $user) {
             $data = Yii::$app->post->getRaw();
             $time = time();
 
