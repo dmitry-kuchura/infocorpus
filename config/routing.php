@@ -31,6 +31,7 @@ return [
     'frontend/request-status' => 'frontend/request/status',
     'frontend/check-recall' => 'frontend/request/check-recall',
     'frontend/create-alert-recall' => 'frontend/request/create-alert-recall',
+    'frontend/update-recall' => 'frontend/request/update-recall',
 
     /* Tasks actions */
     'frontend/task-list' => 'frontend/tasks/task-list',

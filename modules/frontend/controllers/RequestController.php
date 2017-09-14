@@ -167,4 +167,15 @@ class RequestController extends BaseController
             }
         }
     }
+
+    public function actionUpdateRecall()
+    {
+        if (Yii::$app->post->getRaw()) {
+            $post = Yii::$app->post->getRaw();
+
+            $model = Recall::findOne($post['id']);
+
+//            $recallTime = $model->date *
+        }
+    }
 }
