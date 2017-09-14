@@ -97,7 +97,7 @@ class ApiController extends BaseController
                 $model->date = $data['date'];
                 $model->time = $data['time'];
                 $model->automatic_redial = $data['automaticRedial'] == true ? 1 : 0;
-                $model->recall_after = $data['recallDuring'];
+                $model->recall_after = $data['recallAfter'];
                 $model->recall_during = $data['recallDuring'];
                 $model->call_security_after = $data['callSecurityAfter'];
                 $model->status = 0;
