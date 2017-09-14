@@ -138,10 +138,33 @@ class RequestController extends BaseController
         }
     }
 
-    public function actionUpdateRecall()
+    /**
+     * Создание тревоги из перезвона
+     *
+     * @return array
+     */
+    public function actionCreateAlertRecall()
     {
         if (Yii::$app->post->getRaw('id')) {
             $model = Recall::findOne(Yii::$app->post->getRaw('id'));
+
+            $alert = Recall::createAlert($model);
+
+            if ($alert) {
+                return [
+                    'success' => true,
+                    'isActive' => $alert ? true : false,
+                    'identity' => $alert,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Not created',
+                    ],
+                ];
+            }
         }
     }
 }

@@ -37,7 +37,6 @@ class ApiController extends BaseController
                 'token' => null,
             ];
         }
-
     }
 
     /**
@@ -64,7 +63,6 @@ class ApiController extends BaseController
                 'token' => null,
             ];
         }
-
     }
 
     /**
@@ -138,6 +136,42 @@ class ApiController extends BaseController
                     'code' => 500,
                     'message' => 'Wrong data!',
                 ],
+            ];
+        }
+    }
+
+    /**
+     * Обновление координат пользователя
+     *
+     * @return array
+     */
+    public function actionUpdateCall()
+    {
+        if (Yii::$app->post->getRaw()) {
+            $post = Yii::$app->post->getRaw();
+
+            $recall = Recall::checkRecallAlert($post);
+
+            if ($recall) {
+                $recallAlert = Recall::updateAlert($post, $recall);
+
+                return [
+                    'success' => true,
+                    'isActive' => $recallAlert->status == 1 ? true : false,
+                    'identity' => $recallAlert->id,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'error' => [
+                        'code' => 500,
+                        'message' => 'Not updated!',
+                    ],
+                ];
+            }
+        } else {
+            return [
+                'success' => 'You shall not pass!',
             ];
         }
     }
@@ -392,12 +426,15 @@ class ApiController extends BaseController
                     ],
                 ];
             }
+        } else {
+            return [
+                'success' => false,
+                'error' => [
+                    'code' => 500,
+                    'message' => 'Cars status was not updated!',
+                ],
+            ];
         }
-    }
-
-    public function actionUpdateCall()
-    {
-        
     }
 
     /**
