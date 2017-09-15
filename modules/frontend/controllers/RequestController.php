@@ -176,7 +176,17 @@ class RequestController extends BaseController
         if (Yii::$app->post->getRaw()) {
             $post = Yii::$app->post->getRaw();
 
-            var_dump(Recall::updateRecall($post['id']));
+            $status = Recall::updateRecall($post['id']);
+
+            if ($status) {
+                return [
+                    'success' => true,
+                ];
+            } else {
+                return [
+                    'success' => false,
+                ];
+            }
         }
     }
 }
