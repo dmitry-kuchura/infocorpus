@@ -106,6 +106,13 @@ class Recall extends ActiveRecord
      */
     public static function createAlert($post)
     {
+        /* @var $check Tasks */
+        $check = Tasks::getLastTask($post->user_id);
+
+        if ($check->status != 0) {
+            return false;
+        }
+
         $time = time();
 
         $task = new Tasks();
