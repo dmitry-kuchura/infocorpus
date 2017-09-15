@@ -218,6 +218,8 @@ class Recall extends ActiveRecord
         $recallTime = $model->date + $model->recall_after;
 
         if ($current > $model->time) {
+            self::createAlert($model);
+
             $model->status = 1;
             $model->save();
         } else {
