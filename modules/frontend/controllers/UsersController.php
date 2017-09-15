@@ -2,8 +2,8 @@
 
 namespace app\modules\frontend\controllers;
 
-use app\models\Tasks;
 use Yii;
+use app\models\Tasks;
 use app\models\Users;
 
 /**

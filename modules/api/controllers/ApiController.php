@@ -152,7 +152,9 @@ class ApiController extends BaseController
 
             $recall = Recall::checkRecallAlert($post);
 
-            if ($recall) {
+            $update = Recall::updateCoordinate($post);
+
+            if ($update) {
                 $recallAlert = Recall::updateAlert($post, $recall);
 
                 return [

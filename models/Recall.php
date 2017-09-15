@@ -139,7 +139,7 @@ class Recall extends ActiveRecord
     }
 
     /**
-     * Проверка на существование тревогис перезвона
+     * Проверка на существование тревоги с перезвона
      *
      * @param $post
      * @return int
@@ -235,5 +235,25 @@ class Recall extends ActiveRecord
         }
 
         return $model->status;
+    }
+
+    /**
+     * Обновление координат
+     *
+     * @param $post
+     * @return bool
+     */
+    public static function updateCoordinate($post)
+    {
+        $model = self::findOne($post['id']);
+
+        $model->latitude = $post['latitude'];
+        $model->longitude = $post['longitude'];
+
+        if ($model->save()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
