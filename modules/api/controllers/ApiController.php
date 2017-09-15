@@ -147,7 +147,7 @@ class ApiController extends BaseController
      */
     public function actionUpdateCall()
     {
-        if (Yii::$app->post->getRaw()) {
+        if (Yii::$app->post->getRaw() && Recall::checkRecall(Yii::$app->post->getRaw())) {
             $post = Yii::$app->post->getRaw();
 
             $alert = Recall::checkRecallAlert($post);
@@ -160,7 +160,6 @@ class ApiController extends BaseController
             }
 
             if ($recall) {
-
                 return [
                     'success' => true,
                     'isActive' => $recallAlert && $recallAlert->status == 1 ? true : false,
@@ -177,7 +176,8 @@ class ApiController extends BaseController
             }
         } else {
             return [
-                'success' => 'You shall not pass!',
+                'success' => false,
+                'message' => 'Recall not created!',
             ];
         }
     }

@@ -155,6 +155,17 @@ class Recall extends ActiveRecord
         }
     }
 
+    public static function checkRecall($post)
+    {
+        $recall = Recall::findOne($post['id']);
+
+        if (count($recall)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Обновление координат тревоги
      *
