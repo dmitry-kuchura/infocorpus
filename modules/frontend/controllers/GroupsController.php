@@ -154,9 +154,7 @@ class GroupsController extends BaseController
 
             $car->status = Yii::$app->post->getRaw('status');
 
-            if ($car->status == 2) {
-                Tasks::changeStatus($car->id);
-            }
+            Tasks::changeStatus($car->id);
 
             if ($car->validate() && $car->save()) {
                 return [
@@ -168,7 +166,7 @@ class GroupsController extends BaseController
                     'success' => false,
                 ];
             }
-        };
+        }
     }
 
     /**
