@@ -171,6 +171,7 @@ class Recall extends ActiveRecord
         $task->latitude = $post['latitude'];
         $task->longitude = $post['longitude'];
         $task->updated_at = $time;
+        $task->status = 1;
 
         $history = new TasksHistory();
 
