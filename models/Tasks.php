@@ -129,4 +129,17 @@ class Tasks extends ActiveRecord
             return false;
         }
     }
+
+    public static function changeStatus($id)
+    {
+        /* @var $result Tasks */
+        $result = self::find()->where(['car_id' => $id])->orderBy('id DESC')->one();
+
+        if ($result->status != 0) {
+            $result->status = 1;
+            $result->save();
+        }
+
+        return true;
+    }
 }
