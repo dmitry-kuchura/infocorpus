@@ -234,7 +234,7 @@ class Recall extends ActiveRecord
         // Продолжительность звонков
         $recallDuring = $model->date + $model->recall_during;
         // Интервал перезвонов
-        $recallTime = $model->date + $model->recall_after;
+        $recallTime = $model->time + $model->recall_after;
 
 //        var_dump(date("Y-m-d H:i:s", $current / 1000));
 //        var_dump(date("Y-m-d H:i:s", $model->time / 1000));
@@ -246,15 +246,11 @@ class Recall extends ActiveRecord
             $model->status = 1;
             $model->save();
         } else {
-            if (($model->time < $current) && ($recallDuring <= $model->time)) {
-//                var_dump('done');
-//                die;
+            if (($recallDuring < $current) && ($recallDuring <= $model->time)) {
                 $model->time = $recallDuring;
                 $model->status = 1;
                 $model->save();
             } else {
-//                var_dump('continue');
-//                die;
                 $model->time = $recallTime;
                 $model->status = 0;
                 $model->save();
