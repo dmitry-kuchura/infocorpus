@@ -150,17 +150,20 @@ class ApiController extends BaseController
         if (Yii::$app->post->getRaw()) {
             $post = Yii::$app->post->getRaw();
 
-            $recall = Recall::checkRecallAlert($post);
-
-            $update = Recall::updateCoordinate($post);
-
-            if ($update) {
+            $alert = Recall::checkRecallAlert($post);
+            $recall = Recall::updateCoordinate($post);
+            if ($alert) {
                 $recallAlert = Recall::updateAlert($post, $recall);
+            } else {
+                $recallAlert = null;
+            }
+
+            if ($recall) {
 
                 return [
                     'success' => true,
-                    'isActive' => $recallAlert->status == 1 ? true : false,
-                    'identity' => $recallAlert->id,
+                    'isActive' => $recallAlert && $recallAlert->status == 1 ? true : false,
+                    'identity' => $recall->id,
                 ];
             } else {
                 return [

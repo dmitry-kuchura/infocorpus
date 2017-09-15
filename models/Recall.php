@@ -241,7 +241,7 @@ class Recall extends ActiveRecord
      * Обновление координат
      *
      * @param $post
-     * @return bool
+     * @return bool|static
      */
     public static function updateCoordinate($post)
     {
@@ -251,7 +251,7 @@ class Recall extends ActiveRecord
         $model->longitude = $post['longitude'];
 
         if ($model->save()) {
-            return true;
+            return $model;
         } else {
             return false;
         }
