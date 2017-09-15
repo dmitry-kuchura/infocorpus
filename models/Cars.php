@@ -140,4 +140,15 @@ class Cars extends ActiveRecord
             return false;
         }
     }
+
+    public static function getCarName($id)
+    {
+        if ($id) {
+            $result = self::findOne($id);
+
+            return $result->name;
+        } else {
+            return null;
+        }
+    }
 }

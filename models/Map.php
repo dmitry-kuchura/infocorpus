@@ -20,6 +20,7 @@ class Map
 
         foreach ($tasksData as $obj) {
             $task[] = [
+                'group' => Cars::getCarName($obj->car_id),
                 'id' => $obj->id,
                 'status' => $obj->status,
                 'longitude' => $obj->longitude,
