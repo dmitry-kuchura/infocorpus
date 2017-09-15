@@ -117,4 +117,16 @@ class Tasks extends ActiveRecord
             return null;
         }
     }
+
+    public static function checkAlert($id)
+    {
+        /* @var $result Tasks */
+        $result = self::find()->where(['user_id' => $id])->orderBy('updated_at DESC')->one();
+
+        if ($result->status == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

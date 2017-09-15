@@ -2,6 +2,7 @@
 
 namespace app\modules\frontend\controllers;
 
+use app\models\Tasks;
 use Yii;
 use app\models\Users;
 
@@ -114,7 +115,7 @@ class UsersController extends BaseController
         if (Yii::$app->post->getRaw('ID')) {
             $user = Users::findOne(Yii::$app->post->getRaw('ID'));
 
-            if ($user->role != 666 && $user->delete()) {
+            if ($user->role != 666 && Tasks::checkAlert($user->id) && $user->delete()) {
                 return [
                     'success' => true,
                 ];
