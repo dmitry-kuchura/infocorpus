@@ -95,7 +95,7 @@ class Recall extends ActiveRecord
     public static function findCalls()
     {
         $time = time() * 1000 + 270000;
-        return Recall::find()->where(['<=', 'date', $time])->andWhere(['status' => 0])->groupBy('user_id')->all();
+        return Recall::find()->where(['<=', 'time', $time])->andWhere(['status' => 0])->groupBy('user_id')->all();
     }
 
     /**
@@ -236,24 +236,32 @@ class Recall extends ActiveRecord
         // Интервал перезвонов
         $recallTime = $model->date + $model->recall_after;
 
-        if ($current > $model->time) {
+//        var_dump(date("Y-m-d H:i:s", $current / 1000));
+//        var_dump(date("Y-m-d H:i:s", $model->time / 1000));
+//        var_dump(date("Y-m-d H:i:s", $recallDuring / 1000));
+//        die;
+        if ($current > $recallDuring) {
             self::createAlert($model);
 
             $model->status = 1;
             $model->save();
         } else {
             if (($model->time < $current) && ($recallDuring <= $model->time)) {
+//                var_dump('done');
+//                die;
                 $model->time = $recallDuring;
                 $model->status = 1;
                 $model->save();
             } else {
+//                var_dump('continue');
+//                die;
                 $model->time = $recallTime;
                 $model->status = 0;
                 $model->save();
             }
         }
 
-        return $model->status;
+        return true;
     }
 
     /**

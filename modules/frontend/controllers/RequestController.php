@@ -35,7 +35,7 @@ class RequestController extends BaseController
                 'user' => $obj->user->username,
                 'phone' => $obj->user->phone,
                 'status' => $obj->status,
-                'time_created' => date('Y-m-d H:i:s', $obj->date / 1000),
+                'time_created' => date('Y-m-d H:i:s', $obj->time / 1000),
                 'alert_after' => $obj->call_security_after,
                 'isActive' => Tasks::getActiveTask($obj->user_id) ? true : false,
             ];
@@ -114,8 +114,8 @@ class RequestController extends BaseController
             foreach ($recall as $obj) {
                 $array[] = [
                     'id' => $obj->id,
-                    'date-recall' => date('Y-m-d H:i', $obj->date / 1000),
-                    'recall-during' => date('H:i', mktime(0, 0, $obj->recall_after / 1000)),
+                    'date-recall' => date('Y-m-d H:i', $obj->time / 1000),
+                    'recall-during' => date('H:i', mktime(0, 0, $obj->recall_during / 1000)),
                     'recall-every' => date('H:i', mktime(0, 0, $obj->call_security_after / 1000)),
                     'user' => $obj->user->username,
                     'userID' => $obj->user->id,
