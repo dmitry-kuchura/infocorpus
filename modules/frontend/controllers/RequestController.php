@@ -34,7 +34,7 @@ class RequestController extends BaseController
                 'latitude' => $obj->latitude,
                 'user' => $obj->user->username,
                 'phone' => $obj->user->phone,
-                'status' => $obj->call_request,
+                'status' => $obj->status,
                 'time_created' => date('Y-m-d H:i:s', $obj->date / 1000),
                 'alert_after' => $obj->call_security_after,
                 'isActive' => Tasks::getActiveTask($obj->user_id) ? true : false,
