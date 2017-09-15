@@ -106,6 +106,13 @@ class Recall extends ActiveRecord
      */
     public static function createAlert($post)
     {
+        /* @var $check Tasks */
+        $check = Tasks::getLastTask($post->user_id);
+
+        if ($check->status != 0) {
+            return false;
+        }
+
         $time = time();
 
         $task = new Tasks();
@@ -150,6 +157,17 @@ class Recall extends ActiveRecord
 
         if ($recall && $recall->task_id != null) {
             return $recall->task_id;
+        } else {
+            return false;
+        }
+    }
+
+    public static function checkRecall($post)
+    {
+        $recall = Recall::findOne($post['id']);
+
+        if (count($recall)) {
+            return true;
         } else {
             return false;
         }
