@@ -100,6 +100,7 @@ class ApiController extends BaseController
                 $model->recall_after = $data['recallAfter'];
                 $model->recall_during = $data['recallDuring'];
                 $model->call_security_after = $data['callSecurityAfter'];
+                $model->task_id = null;
                 $model->status = 0;
             } else {
                 $model = new Recall();
@@ -112,6 +113,7 @@ class ApiController extends BaseController
                 $model->recall_after = $data['recallDuring'];
                 $model->recall_during = $data['recallDuring'];
                 $model->call_security_after = $data['callSecurityAfter'];
+                $model->task_id = null;
                 $model->status = 0;
             }
 
