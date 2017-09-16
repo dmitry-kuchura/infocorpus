@@ -127,7 +127,7 @@ class TasksHistory extends ActiveRecord
                 'photo' => $obj->user->image ? Url::to('/images/small/' . $obj->user->image) : Url::to('/img/no-photo.png'),
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
-                'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
+                //'location' => Map::getAddressAPI($obj->latitude, $obj->longitude),
                 'status' => $obj->status,
                 'created_at' => date('Y-m-d H:i:s', $obj->created_at),
                 'updated_at' => date('Y-m-d H:i:s', $obj->updated_at),
