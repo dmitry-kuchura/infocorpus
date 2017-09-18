@@ -232,7 +232,7 @@ class Recall extends ActiveRecord
         // Текущее время
         $current = time() * 1000;
         // Продолжительность звонков
-        $recallDuring = $model->date + $model->recall_during;
+        $recallDuring = $model->date + $model->recall_during + 210000;
         // Интервал перезвонов
         $recallTime = $model->time + $model->recall_after;
 
