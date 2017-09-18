@@ -109,7 +109,7 @@ class Recall extends ActiveRecord
         /* @var $check Tasks */
         $check = Tasks::getLastTask($post->user_id);
 
-        if ($check && $check->status != 0 || $check->status != 1) {
+        if ($check && $check->status != 0 || $check->status == 1) {
             return false;
         }
 
