@@ -2,11 +2,11 @@
 
 namespace app\modules\frontend\controllers;
 
-use app\models\Messages;
-use app\models\Recall;
 use Yii;
 use app\models\Cars;
 use app\models\Tasks;
+use app\models\Recall;
+use app\models\Messages;
 use app\models\TasksHistory;
 
 /**
@@ -243,8 +243,10 @@ class GroupsController extends BaseController
             }
 
             $recall = Recall::findOne(['user_id' => $model->user_id]);
-            $recall->task_id = null;
-            $recall->save();
+            if ($recall) {
+                $recall->task_id = null;
+                $recall->save();
+            }
 
             if ($model->save(false) && $history->save()) {
                 return [

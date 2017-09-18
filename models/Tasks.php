@@ -87,7 +87,7 @@ class Tasks extends ActiveRecord
 
     public static function getActiveTask($user)
     {
-        $result = self::find()->where(['user_id' => $user])->andWhere(['status' => 1])->orderBy('id DESC')->one();
+        $result = self::find()->where(['user_id' => $user])->andWhere(['!=', 'status', 0])->orderBy('id DESC')->one();
 
         if (count($result)) {
             return true;
