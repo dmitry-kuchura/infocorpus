@@ -165,7 +165,7 @@ class ApiController extends BaseController
                 return [
                     'success' => true,
                     'isActive' => $recallAlert && $recallAlert->status == 1 ? true : false,
-                    'identity' => $alert,
+                    'identity' => $alert ? $alert : 0,
                 ];
             } else {
                 return [
