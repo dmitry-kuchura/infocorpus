@@ -15,7 +15,7 @@ class LoginCest
 
     public function loginWithEmptyCredentials(\FunctionalTester $I)
     {
-        $I->submitForm('form', []);
+        $I->submitForm('.login-form', []);
         $I->expectTo('see validations errors');
         $I->see('Username cannot be blank.');
         $I->see('Password cannot be blank.');

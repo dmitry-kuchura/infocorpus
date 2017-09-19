@@ -104,7 +104,7 @@ class GroupsController extends BaseController
             $model = Tasks::findOne($data['alert-id']);
 
             if ($model->car_id != null) {
-                Cars::updateCarStatus();
+                Cars::changeActiveStatus($model->car_id);
             }
 
             $model->car_id = $data['group-id'];
