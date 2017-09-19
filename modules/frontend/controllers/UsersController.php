@@ -23,25 +23,13 @@ class UsersController extends BaseController
     public function actionUserCreate()
     {
         if (Yii::$app->post->getRaw()) {
-
-            $data = Yii::$app->post->getRaw();
-
-            $model = new Users();
-            $model->username = $data['name'];
-            $model->email = $data['email'];
-            $model->phone = $data['phone'];
-            $model->password = $data['password'];
-            $model->status = 1;
-            $model->role = $data['admin'] ? 666 : 1;
-
-            if ($model->signUp()) {
+            if (Users::signUp(Yii::$app->post->getRaw())) {
                 return [
                     'success' => true,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
         }
@@ -55,21 +43,13 @@ class UsersController extends BaseController
     public function actionUserUpdate()
     {
         if (Yii::$app->post->getRaw()) {
-            $data = Yii::$app->post->getRaw();
-
-            $model = Users::findOne($data['id']);
-            $model->username = $data['name'];
-            $model->email = $data['email'];
-            $model->phone = $data['phone'];
-
-            if ($model->save()) {
+            if (Users::updateUserData(Yii::$app->post->getRaw())) {
                 return [
                     'success' => true,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
         }
@@ -82,27 +62,18 @@ class UsersController extends BaseController
      */
     public function actionUserList()
     {
-        /* @var $result Users */
-        $result = Users::find()->where(['IN', 'role', [1, 666]])->all();
+        $users = Users::getUsersList();
 
-        $roles = Yii::$app->params['roles'];
-
-        foreach ($result as $obj) {
-            $users[] = [
-                'id' => $obj->id,
-                'email' => $obj->email,
-                'password' => $obj->password,
-                'phone' => $obj->phone,
-                'name' => $obj->username,
-                'status' => $obj->status,
-                'role' => $roles[$obj->role],
+        if (count($users)) {
+            return [
+                'success' => true,
+                'users' => $users,
+            ];
+        } else {
+            return [
+                'success' => false,
             ];
         }
-
-        return [
-            'success' => true,
-            'users' => $users,
-        ];
     }
 
     /**

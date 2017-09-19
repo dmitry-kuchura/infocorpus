@@ -77,25 +77,18 @@ class GroupsController extends BaseController
      */
     public function actionGroupList()
     {
-        /* @var $result Cars */
-        $result = Cars::find()->all();
+        $groups = Cars::getCarsList();
 
-        foreach ($result as $obj) {
-            $groups[] = [
-                'id' => $obj->id,
-                'name' => $obj->name,
-                'status' => $obj->status,
-                'available' => $obj->available,
-                'longitude' => $obj->longitude,
-                'latitude' => $obj->latitude,
-                'identity' => $obj->token,
+        if (count($groups)) {
+            return [
+                'success' => true,
+                'groups' => $groups,
+            ];
+        } else {
+            return [
+                'success' => false,
             ];
         }
-
-        return [
-            'success' => true,
-            'groups' => $groups,
-        ];
     }
 
     /**
@@ -109,6 +102,11 @@ class GroupsController extends BaseController
             $data = Yii::$app->post->getRaw();
 
             $model = Tasks::findOne($data['alert-id']);
+
+            if ($model->car_id != null) {
+                Cars::updateCarStatus();
+            }
+
             $model->car_id = $data['group-id'];
             $model->status = 2;
             $model->updated_at = time();

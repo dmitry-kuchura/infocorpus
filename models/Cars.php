@@ -127,6 +127,20 @@ class Cars extends ActiveRecord
         }
     }
 
+    /**
+     * Смена статуса
+     *
+     * @param $id
+     */
+    public static function changeActiveStatus($id)
+    {
+        $model = Cars::findOne($id);
+
+        $model->status = 1;
+        $model->updated_at = time();
+        $model->save();
+    }
+
     public static function updateCarStatus($token, $data)
     {
         $model = Cars::findOne(['token' => $token]);
@@ -147,6 +161,31 @@ class Cars extends ActiveRecord
             $result = self::findOne($id);
 
             return $result->name;
+        } else {
+            return null;
+        }
+    }
+
+    public static function getCarsList()
+    {
+        /* @var $result Cars */
+        $result = Cars::find()->all();
+        $groups = [];
+
+        foreach ($result as $obj) {
+            $groups[] = [
+                'id' => $obj->id,
+                'name' => $obj->name,
+                'status' => $obj->status,
+                'available' => $obj->available,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'identity' => $obj->token,
+            ];
+        }
+
+        if (count($groups)) {
+            return $groups;
         } else {
             return null;
         }

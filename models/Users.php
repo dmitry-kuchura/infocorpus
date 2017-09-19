@@ -76,18 +76,24 @@ class Users extends UserInterface
         ];
     }
 
-    public function signUp()
+    /**
+     * Регистрация пользователя
+     *
+     * @param $data
+     * @return Users|null
+     */
+    public static function signUp($data)
     {
-
         $user = new Users();
+
         $user->uid = Yii::$app->security->generateRandomString();
-        $user->username = $this->username;
-        $user->phone = $this->phone;
-        $user->email = $this->email;
-        $user->status = $this->status;
-        $user->role = $this->role;
-        $user->password = md5($this->password);
-        $user->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
+        $user->username = $data['name'];
+        $user->phone = $data['phone'];
+        $user->email = $data['email'];
+        $user->status = 1;
+        $user->role = $data['admin'] ? 666 : 1;
+        $user->password = md5($data['password']);
+        $user->hash = Yii::$app->security->generatePasswordHash($data['email'] . $data['password']);
         $user->created_at = time();
         $user->updated_at = time();
         $user->generateAuthKey();
@@ -99,6 +105,60 @@ class Users extends UserInterface
         return $user->save() ? $user : null;
     }
 
+    /**
+     * Редактирование данных
+     *
+     * @param $data
+     * @return bool
+     */
+    public static function updateUserData($data)
+    {
+        $model = Users::findOne($data['id']);
+        $model->username = $data['name'];
+        $model->email = $data['email'];
+        $model->phone = $data['phone'];
+
+        if ($model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Полный список пользователей
+     *
+     * @return array
+     */
+    public static function getUsersList()
+    {
+        /* @var $result Users */
+        $result = Users::find()->where(['IN', 'role', [1, 666]])->all();
+
+        $users = [];
+
+        $roles = Yii::$app->params['roles'];
+
+        foreach ($result as $obj) {
+            $users[] = [
+                'id' => $obj->id,
+                'email' => $obj->email,
+                'password' => $obj->password,
+                'phone' => $obj->phone,
+                'name' => $obj->username,
+                'status' => $obj->status,
+                'role' => $roles[$obj->role],
+            ];
+        }
+
+        return $users;
+    }
+
+    /**
+     * Создание клиента
+     *
+     * @return Users|null
+     */
     public function createCustomer()
     {
         $model = new Users();
