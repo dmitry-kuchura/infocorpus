@@ -165,7 +165,7 @@ class ApiController extends BaseController
                 return [
                     'success' => true,
                     'isActive' => $recallAlert && $recallAlert->status == 1 ? true : false,
-                    'identity' => $alert,
+                    'identity' => $alert ? $alert : 0,
                 ];
             } else {
                 return [
@@ -206,7 +206,7 @@ class ApiController extends BaseController
         /* @var $last Tasks */
         $last = Tasks::getLastTask($user);
 
-        if ($last && $last->status == 1) {
+        if ($last && $last->status == 1 || $last->status == 2) {
             return [
                 'success' => true,
                 'identity' => $last->id,
