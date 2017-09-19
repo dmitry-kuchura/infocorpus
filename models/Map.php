@@ -54,7 +54,7 @@ class Map
                 'id' => $obj->id,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
-                'location' => $obj->latitude != null ?  self::getAddressAPI($obj->latitude, $obj->longitude) : '',
+                'location' => $obj->latitude != null ? self::getAddressAPI($obj->latitude, $obj->longitude) : '',
                 'name' => $obj->name,
                 'status' => $obj->status,
                 'type' => 'group',
@@ -77,8 +77,8 @@ class Map
             $url = 'http://maps.googleapis.com/maps/api/geocode/json?language=ru&latlng=' . trim($lat) . ',' . trim($lng) . '&sensor=false';
             $json = @file_get_contents($url);
             $data = json_decode($json);
-            $status = $data->status;
             if ($data) {
+                $status = $data->status;
                 if ($status == 'OK') {
                     return $data->results[0]->formatted_address;
                 } else {
