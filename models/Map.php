@@ -54,7 +54,7 @@ class Map
                 'id' => $obj->id,
                 'longitude' => $obj->longitude,
                 'latitude' => $obj->latitude,
-                'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
+                'location' => $obj->latitude != null ?  self::getAddressAPI($obj->latitude, $obj->longitude) : '',
                 'name' => $obj->name,
                 'status' => $obj->status,
                 'type' => 'group',
