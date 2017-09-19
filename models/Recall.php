@@ -109,37 +109,37 @@ class Recall extends ActiveRecord
         /* @var $check Tasks */
         $check = Tasks::getLastTask($post->user_id);
 
-        if ($check || $check->status != 0 || $check->status == 1) {
-            return false;
-        }
+        if ($check && $check->status == 0) {
+            $time = time();
 
-        $time = time();
+            $task = new Tasks();
+            $task->created_at = $time;
+            $task->updated_at = $time;
+            $task->status = 1;
+            $task->user_id = $post->user_id;
+            $task->longitude = $post->longitude;
+            $task->latitude = $post->latitude;
+            $task->save();
 
-        $task = new Tasks();
-        $task->created_at = $time;
-        $task->updated_at = $time;
-        $task->status = 1;
-        $task->user_id = $post->user_id;
-        $task->longitude = $post->longitude;
-        $task->latitude = $post->latitude;
-        $task->save();
+            $history = new TasksHistory();
+            $history->updated_at = $time;
+            $history->task_id = $task->id;
+            $history->user_id = $post->user_id;
+            $history->longitude = $post->longitude;
+            $history->latitude = $post->latitude;
+            $history->status = 1;
 
-        $history = new TasksHistory();
-        $history->updated_at = $time;
-        $history->task_id = $task->id;
-        $history->user_id = $post->user_id;
-        $history->longitude = $post->longitude;
-        $history->latitude = $post->latitude;
-        $history->status = 1;
+            $recall = Recall::findOne($post->id);
+            $recall->task_id = $task->id;
 
-        $recall = Recall::findOne($post->id);
-        $recall->task_id = $task->id;
-
-        $recall->save();
+            $recall->save();
 
 
-        if ($history->save()) {
-            return $task->id;
+            if ($history->save()) {
+                return $task->id;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
