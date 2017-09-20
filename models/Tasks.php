@@ -104,13 +104,18 @@ class Tasks extends ActiveRecord
 
             $data = [];
 
-            if ($result) {
+            if ($result->user_id) {
                 $data = [
                     'uid' => $result->user->id,
                     'name' => $result->user->username,
                     'phone' => $result->user->phone,
                     'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
                     'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                    'longitude' => $result->longitude,
+                    'latitude' => $result->latitude,
+                ];
+            } else {
+                $data = [
                     'longitude' => $result->longitude,
                     'latitude' => $result->latitude,
                 ];
