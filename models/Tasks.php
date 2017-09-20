@@ -102,8 +102,6 @@ class Tasks extends ActiveRecord
             /* @var $result Tasks */
             $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
 
-            $data = [];
-
             if ($result->user_id) {
                 $data = [
                     'uid' => $result->user->id,
@@ -144,7 +142,7 @@ class Tasks extends ActiveRecord
         /* @var $result Tasks */
         $result = self::find()->where(['car_id' => $id])->orderBy('id DESC')->one();
 
-        if ($result->status != 0) {
+        if ($result && $result->status != 0) {
             $result->status = 1;
             $result->save();
         }
