@@ -6,6 +6,7 @@ use Yii;
 use app\components\File;
 use app\components\Image;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "users".
