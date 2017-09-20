@@ -230,7 +230,7 @@ class Recall extends ActiveRecord
         $model = Recall::findOne($id);
 
         if ($model->status == 1) {
-            return true;
+            return false;
         }
 
         // Текущее время

@@ -102,15 +102,19 @@ class Tasks extends ActiveRecord
             /* @var $result Tasks */
             $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
 
-            $data = [
-                'uid' => $result->user->id,
-                'name' => $result->user->username,
-                'phone' => $result->user->phone,
-                'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
-                'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
-                'longitude' => $result->longitude,
-                'latitude' => $result->latitude,
-            ];
+            $data = [];
+
+            if ($result) {
+                $data = [
+                    'uid' => $result->user->id,
+                    'name' => $result->user->username,
+                    'phone' => $result->user->phone,
+                    'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                    'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                    'longitude' => $result->longitude,
+                    'latitude' => $result->latitude,
+                ];
+            }
 
             return $data;
         } else {
