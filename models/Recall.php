@@ -109,7 +109,7 @@ class Recall extends ActiveRecord
         /* @var $check Tasks */
         $check = Tasks::getLastTask($post->user_id);
 
-        if ($check && $check->status == 0) {
+        if ($check && $check->status == 0 || $check == null) {
             $time = time();
 
             $task = new Tasks();
@@ -119,7 +119,7 @@ class Recall extends ActiveRecord
             $task->user_id = $post->user_id;
             $task->longitude = $post->longitude;
             $task->latitude = $post->latitude;
-            $task->save();
+            $task->save(false);
 
             $history = new TasksHistory();
             $history->updated_at = $time;
@@ -135,7 +135,7 @@ class Recall extends ActiveRecord
             $recall->save();
 
 
-            if ($history->save()) {
+            if ($history->save(false)) {
                 return $task->id;
             } else {
                 return false;

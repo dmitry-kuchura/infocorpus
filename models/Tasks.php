@@ -100,7 +100,7 @@ class Tasks extends ActiveRecord
     {
         if ($car->status == 2) {
             /* @var $result Tasks */
-            $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
+            $result = Tasks::find()->where(['car_id' => $car])->andWhere(['status' => 2])->orderBy('id DESC')->one();
 
             if ($result->user_id) {
                 $data = [
