@@ -22,24 +22,7 @@ class RequestController extends BaseController
      */
     public function actionList()
     {
-        /* @var $result Recall */
-        $result = Recall::find()->all();
-
-        $recall = [];
-
-        foreach ($result as $obj) {
-            $recall[] = [
-                'id' => $obj->id,
-                'longitude' => $obj->longitude,
-                'latitude' => $obj->latitude,
-                'user' => $obj->user->username,
-                'phone' => $obj->user->phone,
-                'status' => $obj->status,
-                'time_created' => date('Y-m-d H:i:s', $obj->time / 1000),
-                'alert_after' => $obj->call_security_after,
-                'isActive' => Tasks::getActiveTask($obj->user_id) ? true : false,
-            ];
-        }
+        $result = Recall::getListRequest();
 
         if ($result) {
             return [

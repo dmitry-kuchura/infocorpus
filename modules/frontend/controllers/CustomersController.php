@@ -22,31 +22,8 @@ class CustomersController extends BaseController
      */
     public function actionCustomerCreate()
     {
-        $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
-
         if (Yii::$app->request->post()) {
-
-            $data = Yii::$app->request->post();
-
-            $model = new Users();
-            $model->username = $data['name'];
-            $model->uid = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
-            $model->phone = $data['phone'];
-            $model->imei = $data['imei'];
-            $model->email = $data['email'];
-            $model->skype = $data['skype'];
-            $model->address = $data['location'];
-            $model->organization = $data['company'];
-            $model->location = $data['company-location'];
-            $model->car_name = $data['car'];
-            $model->car_color = $data['car-color'];
-            $model->car_number = $data['car-number'];
-            $model->password = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
-            $model->image = Users::uploadPhoto();
-            $model->status = 1;
-            $model->role = 0;
-
-            if ($model->createCustomer()) {
+            if (Users::createCustomer(Yii::$app->request->post())) {
                 return [
                     'success' => true,
                 ];
@@ -66,33 +43,13 @@ class CustomersController extends BaseController
     public function actionCustomerUpdate()
     {
         if (Yii::$app->request->post()) {
-
-            $data = Yii::$app->request->post();
-
-            $model = Users::findOne($data['id']);
-            $model->username = $data['name'];
-            $model->phone = $data['phone'];
-            $model->imei = $data['imei'];
-            $model->email = $data['email'];
-            $model->skype = $data['skype'];
-            $model->address = $data['location'];
-            $model->organization = $data['company'];
-            $model->location = $data['company-location'];
-            $model->car_name = $data['car'];
-            $model->car_color = $data['car-color'];
-            $model->car_number = $data['car-number'];
-            if (Users::uploadPhoto()) {
-                $model->image = Users::uploadPhoto();
-            }
-
-            if ($model->save()) {
+            if (Users::updateCustomer(Yii::$app->request->post())) {
                 return [
                     'success' => true,
                 ];
             } else {
                 return [
                     'success' => false,
-                    'errors' => $model->getErrors(),
                 ];
             }
         }
@@ -105,25 +62,17 @@ class CustomersController extends BaseController
      */
     public function actionCustomerList()
     {
-        /* @var $result Users */
-        $result = Users::find()->where(['role' => 0])->all();
+        $customers = Users::getListCustomers();
 
-        foreach ($result as $obj) {
-            $customers[] = [
-                'id' => $obj->id,
-                'name' => $obj->username,
-                'phone' => $obj->phone,
-                'imei' => $obj->imei,
-                'identity' => $obj->uid,
-                'location' => $obj->address,
-                'status' => $obj->status,
-                'image' => $obj->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
+        if (count($customers)) {
+            return [
+                'success' => true,
+                'customers' => $customers,
+            ];
+        } else {
+            return [
+                'success' => false,
             ];
         }
-
-        return [
-            'success' => true,
-            'customers' => $customers,
-        ];
     }
 }

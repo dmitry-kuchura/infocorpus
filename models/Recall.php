@@ -109,7 +109,7 @@ class Recall extends ActiveRecord
         /* @var $check Tasks */
         $check = Tasks::getLastTask($post->user_id);
 
-        if ($check && $check->status == 0) {
+        if ($check && $check->status == 0 || $check == null) {
             $time = time();
 
             $task = new Tasks();
@@ -119,7 +119,7 @@ class Recall extends ActiveRecord
             $task->user_id = $post->user_id;
             $task->longitude = $post->longitude;
             $task->latitude = $post->latitude;
-            $task->save();
+            $task->save(false);
 
             $history = new TasksHistory();
             $history->updated_at = $time;
@@ -135,7 +135,7 @@ class Recall extends ActiveRecord
             $recall->save();
 
 
-            if ($history->save()) {
+            if ($history->save(false)) {
                 return $task->id;
             } else {
                 return false;
@@ -230,7 +230,7 @@ class Recall extends ActiveRecord
         $model = Recall::findOne($id);
 
         if ($model->status == 1) {
-            return true;
+            return false;
         }
 
         // Текущее время
@@ -282,5 +282,29 @@ class Recall extends ActiveRecord
         } else {
             return false;
         }
+    }
+
+    public static function getListRequest()
+    {
+        /* @var $result Recall */
+        $result = Recall::find()->with(['user'])->all();
+
+        $recall = [];
+
+        foreach ($result as $obj) {
+            $recall[] = [
+                'id' => $obj->id,
+                'longitude' => $obj->longitude,
+                'latitude' => $obj->latitude,
+                'user' => $obj->user->username,
+                'phone' => $obj->user->phone,
+                'status' => $obj->status,
+                'time_created' => date('Y-m-d H:i:s', $obj->time / 1000),
+                'alert_after' => $obj->call_security_after,
+                'isActive' => Tasks::getActiveTask($obj->user_id) ? true : false,
+            ];
+        }
+
+        return $recall;
     }
 }

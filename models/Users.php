@@ -6,6 +6,7 @@ use Yii;
 use app\components\File;
 use app\components\Image;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "users".
@@ -157,29 +158,32 @@ class Users extends UserInterface
     /**
      * Создание клиента
      *
+     * @param $data
      * @return Users|null
      */
-    public function createCustomer()
+    public static function createCustomer($data)
     {
-        $model = new Users();
-        $model->uid = $this->uid;
-        $model->username = $this->username;
-        $model->phone = $this->phone;
-        $model->imei = $this->imei;
-        $model->email = $this->email;
-        $model->skype = $this->skype;
-        $model->address = $this->address;
-        $model->organization = $this->organization;
-        $model->location = $this->location;
-        $model->car_name = $this->car_name;
-        $model->car_color = $this->car_color;
-        $model->car_number = $this->car_number;
-        $model->password = md5($this->password);
-        $model->status = $this->status;
-        $model->role = $this->role;
-        $model->image = $this->image;
+        $symbol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz0123456789';
 
-        $model->hash = Yii::$app->security->generatePasswordHash($this->email . $this->password);
+        $model = new Users();
+        $model->uid = substr(str_shuffle(str_repeat($symbol, 8)), 0, 10);
+        $model->username = $data['name'];
+        $model->phone = $data['phone'];
+        $model->imei = $data['imei'];
+        $model->email = $data['email'];
+        $model->skype = $data['skype'];
+        $model->address = $data['location'];
+        $model->organization = $data['company'];
+        $model->location = $data['company-location'];
+        $model->car_name = $data['car'];
+        $model->car_color = $data['car-color'];
+        $model->car_number = $data['car-number'];
+        $model->password = md5(substr(str_shuffle(str_repeat($symbol, 8)), 0, 10));
+        $model->status = 1;
+        $model->role = 0;
+        $model->image = Users::uploadPhoto();
+
+        $model->hash = Yii::$app->security->generatePasswordHash($data['email'] . $model->password);
         $model->created_at = time();
         $model->updated_at = time();
         $model->generateAuthKey();
@@ -191,11 +195,75 @@ class Users extends UserInterface
         return $model->save() ? $model : null;
     }
 
+    /**
+     * Обновление клиента
+     *
+     * @param $data
+     * @return bool
+     */
+    public static function updateCustomer($data)
+    {
+        $model = Users::findOne($data['id']);
+        $model->username = $data['name'];
+        $model->phone = $data['phone'];
+        $model->imei = $data['imei'];
+        $model->email = $data['email'];
+        $model->skype = $data['skype'];
+        $model->address = $data['location'];
+        $model->organization = $data['company'];
+        $model->location = $data['company-location'];
+        $model->car_name = $data['car'];
+        $model->car_color = $data['car-color'];
+        $model->car_number = $data['car-number'];
+        if (Users::uploadPhoto()) {
+            $model->image = Users::uploadPhoto();
+        }
+
+        if ($model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Получение списка клиентов
+     *
+     * @return array
+     */
+    public static function getListCustomers()
+    {
+        /* @var $result Users */
+        $result = Users::find()->where(['role' => 0])->all();
+
+        $customers = [];
+
+        foreach ($result as $obj) {
+            $customers[] = [
+                'id' => $obj->id,
+                'name' => $obj->username,
+                'phone' => $obj->phone,
+                'imei' => $obj->imei,
+                'identity' => $obj->uid,
+                'location' => $obj->address,
+                'status' => $obj->status,
+                'image' => $obj->image ? Url::to('/images/small/' . $obj->image) : Url::to('/img/no-photo.png'),
+            ];
+        }
+
+        return $customers;
+    }
+
+    /**
+     * Авторизация
+     *
+     * @return bool
+     */
     public function login()
     {
         $user = self::findByEmail($this->email);
 
-        if ($this->validatePassword() && in_array($user->role, [666, 1])) {
+        if ($this->validatePassword() && in_array($user->role, [666, 1]) && $user->status == 1) {
             Yii::$app->user->login($user, 3600 * 24 * 30);
 
             return true;
@@ -205,6 +273,12 @@ class Users extends UserInterface
 
     }
 
+    /**
+     * Сброс пароля
+     *
+     * @param $email
+     * @return bool|string
+     */
     public static function resetPassword($email)
     {
         $result = self::findByEmail($email);

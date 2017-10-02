@@ -100,17 +100,24 @@ class Tasks extends ActiveRecord
     {
         if ($car->status == 2) {
             /* @var $result Tasks */
-            $result = Tasks::find()->where(['car_id' => $car])->orderBy('id DESC')->one();
+            $result = Tasks::find()->where(['car_id' => $car])->andWhere(['status' => 2])->orderBy('id DESC')->one();
 
-            $data = [
-                'uid' => $result->user->id,
-                'name' => $result->user->username,
-                'phone' => $result->user->phone,
-                'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
-                'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
-                'longitude' => $result->longitude,
-                'latitude' => $result->latitude,
-            ];
+            if ($result->user_id) {
+                $data = [
+                    'uid' => $result->user->id,
+                    'name' => $result->user->username,
+                    'phone' => $result->user->phone,
+                    'big_photo' => $result->user->image ? Url::to('@web/images/big/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                    'small_photo' => $result->user->image ? Url::to('@web/images/small/' . $result->user->image, true) : Url::to('@web/img/no-photo.png', true),
+                    'longitude' => $result->longitude,
+                    'latitude' => $result->latitude,
+                ];
+            } else {
+                $data = [
+                    'longitude' => $result->longitude,
+                    'latitude' => $result->latitude,
+                ];
+            }
 
             return $data;
         } else {
@@ -135,7 +142,7 @@ class Tasks extends ActiveRecord
         /* @var $result Tasks */
         $result = self::find()->where(['car_id' => $id])->orderBy('id DESC')->one();
 
-        if ($result->status != 0) {
+        if ($result && $result->status != 0) {
             $result->status = 1;
             $result->save();
         }
