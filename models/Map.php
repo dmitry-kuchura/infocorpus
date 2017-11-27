@@ -50,15 +50,17 @@ class Map
         $cars = [];
 
         foreach ($carsData as $obj) {
-            $cars[] = [
-                'id' => $obj->id,
-                'longitude' => $obj->longitude,
-                'latitude' => $obj->latitude,
-                'location' => $obj->latitude != null ? self::getAddressAPI($obj->latitude, $obj->longitude) : '',
-                'name' => $obj->name,
-                'status' => $obj->status,
-                'type' => 'group',
-            ];
+            if ($obj->latitude != null) {
+                $cars[] = [
+                    'id' => $obj->id,
+                    'longitude' => $obj->longitude,
+                    'latitude' => $obj->latitude,
+                    'location' => self::getAddressAPI($obj->latitude, $obj->longitude),
+                    'name' => $obj->name,
+                    'status' => $obj->status,
+                    'type' => 'group',
+                ];
+            }
         }
 
         return $cars ? $cars : null;
