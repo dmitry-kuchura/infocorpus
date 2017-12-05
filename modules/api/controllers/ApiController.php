@@ -206,12 +206,14 @@ class ApiController extends BaseController
         /* @var $last Tasks */
         $last = Tasks::getLastTask($user);
 
-        if (isset($last) && $last->status == 1 || $last->status == 2) {
-            return [
-                'success' => true,
-                'identity' => $last->id,
-                'isActive' => $last->status == 1 ? true : false,
-            ];
+        if ($last) {
+            if ($last->status == 1 || $last->status == 2) {
+                return [
+                    'success' => true,
+                    'identity' => $last->id,
+                    'isActive' => $last->status == 1 ? true : false,
+                ];
+            }
         } else {
             return [
                 'success' => true,
